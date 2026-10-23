@@ -1,0 +1,16 @@
+{
+  "url": "https://github.com/JustJay7/skillguard",
+  "public": true,
+  "license": "MIT",
+  "initial_public_commit": "57ab78a",
+  "original_history_published": false,
+  "private_runtime_published": false,
+  "configured_credentials_excluded": true,
+  "source_export_tests": {
+    "passed": 899,
+    "skipped": 1,
+    "environment": "Existing pinned dependency environment; source checkout extracted from the clean archive",
+    "skip": "Optional native evaluator CLI is absent from the export own .venv; tests used the existing pinned dependency interpreter"
+  },
+  "public_demo": "https://skillguard-evidence-demo.jaymalhotra.chatgpt.site"
+}

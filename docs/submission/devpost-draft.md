@@ -6,6 +6,9 @@ Your personal AI can learn new skills. SkillGuard makes it show what changes fir
 ## Recorded walkthrough
 https://skillguard-evidence-demo.jaymalhotra.chatgpt.site — recorded evidence only; the native review backend is local.
 
+## Source
+https://github.com/JustJay7/skillguard — MIT licensed; clean source release without private runtime data.
+
 ## Inspiration
 A receipt is supposed to be data. For a personal assistant that writes reusable skills, a malicious instruction inside that receipt can become tomorrow's behavior. We wanted a clear boundary between an assistant proposing a skill and being allowed to keep it.
 

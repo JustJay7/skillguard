@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "anonymous_access": true,
+  "url": "https://skillguard-evidence-demo.jaymalhotra.chatgpt.site",
+  "statuses": {
+    "/": 200,
+    "/demo.js": 200,
+    "/demo.css": 200,
+    "/evidence.json": 200,
+    "/api/state": 200,
+    "/.env": 200
+  },
+  "published_evidence_matches_local_bundle": true,
+  "live_api_exposed": false,
+  "unknown_route_behavior": "Static SPA fallback serves public demo HTML, not API state or environment data; per-response HTML metadata makes byte identity vary"
+}

@@ -7,12 +7,12 @@
 - [x] Verify all four deployed walkthrough stages, probe switching, model holds and recorded rollback in the browser; inspect the actual 717×804 layout and save screenshots.
 - [x] Prepare Devpost description, narration, recording runbook and concrete vendor/tool feedback.
 - [x] Declare the verified Python runtime dependencies required by the app.
-- [ ] Verify and package the clean source export, excluding credentials, history and private runtime data.
-- [ ] Commit final release changes locally.
-- [ ] Publish public source after explicit approval; no GitHub remote exists yet.
+- [x] Verify and package the clean source export, excluding credentials, history and private runtime data.
+- [x] Commit final release changes locally.
+- [x] Publish the explicitly approved clean source to https://github.com/JustJay7/skillguard with MIT license and public demo link.
 - [ ] Record functioning-app footage, upload the public video after approval and submit the actual Devpost entry.
 
-Public demo: https://skillguard-evidence-demo.jaymalhotra.chatgpt.site . It is a clearly labeled recorded-evidence replay, not a hosted native review backend or a model security pass. Local app/runtime and private archives remain private. Public-demo browser checks do not retroactively verify the live local app's layout. The user reported residence outside Quebec after the official rules check; other eligibility/account declarations remain the entrant's responsibility.
+Public demo: https://skillguard-evidence-demo.jaymalhotra.chatgpt.site . It is a clearly labeled recorded-evidence replay, not a hosted native review backend or a model security pass. Local app/runtime and private archives remain private. Full local suite: 900 passed. Extracted-source suite: 899 passed, one optional native-source check skipped. A local 2:19 narration WAV and recording script are ready. No new model calls or budget/installed-version changes occurred in this release work. Public-demo browser checks do not retroactively verify the live local app's layout. The user reported residence outside Quebec after the official rules check; other eligibility/account declarations remain the entrant's responsibility.
 
 ## Current priority — completed local SkillGuard security flow
 - [x] Connect pending skill → native static/functional checks → native generated probes → real sandbox agent trials → Nemotron evidence verdict → policy preview → gated install/reject in one app action.

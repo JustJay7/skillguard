@@ -8,7 +8,7 @@ The local product intercepts native Hermes pending skills, runs NVIDIA SkillEval
 
 [Open the public SkillGuard walkthrough](https://skillguard-evidence-demo.jaymalhotra.chatgpt.site). This is a read-only replay of the verified fictional security review, including the blocked update, actual agent commands, both model holds and the human-exception rollback. It has no live agent, credential, approval endpoint or private runtime access.
 
-Build the portable bundle with `make demo-bundle`; `make demo` serves it locally on port 8769. The archive is `dist/skillguard-demo.zip`. The full native review application remains separate below. [Submission and recording handoff](docs/submission/README.md).
+In the [public source](https://github.com/JustJay7/skillguard), run `python3 -m http.server 8769 --bind 127.0.0.1 --directory recorded-demo` to inspect the included replay. On the configured development checkout, `make demo-bundle` builds the portable bundle and `make demo` serves it on port 8769. The archive is `dist/skillguard-demo.zip`. The full native review application remains separate below. [Submission and recording handoff](docs/submission/README.md).
 
 ## Run the app
 

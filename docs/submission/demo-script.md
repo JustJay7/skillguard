@@ -1,6 +1,6 @@
 # Recording runbook
 
-Target 2:45–2:55. Narration: `narration.txt`. Use an actual screen recording of the app; this script is not a finished video. Avoid music, unrelated tabs, credentials and personal receipts. Keep the recorded-evidence banner visible in the walkthrough.
+Target under 3:00. The local system-voice narration file is `dist/skillguard-narration.wav` (2:19); record the actual UI while it plays, or record your own voice. Narration: `narration.txt`. Use an actual screen recording of the app; this script is not a finished video. Avoid music, unrelated tabs, credentials and personal receipts. Keep the recorded-evidence banner visible in the walkthrough.
 
 | Time | Screen | Narration/action |
 | --- | --- | --- |

@@ -49,7 +49,8 @@ class AsyncHarborTransport(httpx.AsyncBaseTransport):
 @asynccontextmanager
 async def native_harbor_client(budget: AgentCallBudget, *, api_key: str,
                                upstream: httpx.BaseTransport | None = None,
-                               compatibility_probe: bool = False):
+                               compatibility_probe: bool = False,
+                               authorized_limit_usd: float = .75):
     """Yield SDK kwargs consumed by the installed native Harbor LiteLLM client.
 
     Count actual HTTP requests, including hidden native/SDK retries. This primitive
@@ -58,7 +59,7 @@ async def native_harbor_client(budget: AgentCallBudget, *, api_key: str,
     if type(compatibility_probe) is not bool:
         raise ValueError('Native Harbor compatibility flag must be boolean')
     ceiling = 6 if compatibility_probe else 4
-    if (budget.model != MODEL or not 0 < budget.total_limit_usd <= 0.75
+    if (budget.model != MODEL or not 0 < budget.total_limit_usd <= authorized_limit_usd <= 50
             or type(budget.max_calls) is not int or not 1 <= budget.max_calls <= ceiling):
         raise ValueError('Native Harbor probe exceeds the current aggregate/request limits')
     transport = AsyncHarborTransport(HarborRequestTransport(budget, upstream))

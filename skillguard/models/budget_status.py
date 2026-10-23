@@ -6,10 +6,13 @@ import fcntl
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
+from skillguard.models.spending_policy import project_cap
+
 
 def read(path: Path) -> dict:
+    cap = project_cap(path.parent)
     if not path.exists():
-        return {'available': False, 'cap_usd': .75}
+        return {'available': False, 'cap_usd': cap}
     with path.with_suffix('.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_SH)
         with path.open() as source:
@@ -23,6 +26,6 @@ def read(path: Path) -> dict:
         raise ValueError('Invalid inference ledger') from error
     usage = sum((p[0] for p in values), Decimal(0))
     reserved = sum((p[1] for p in values), Decimal(0))
-    return {'available': True, 'cap_usd': .75, 'estimated_cost_usd': float(usage),
+    return {'available': True, 'cap_usd': cap, 'estimated_cost_usd': float(usage),
             'reserved_usd': float(reserved), 'accounted_usd': float(usage + reserved),
             'completed_requests': sum(r['status'] == 'completed' for r in rows)}

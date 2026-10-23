@@ -47,6 +47,10 @@ def test_core_ui_serves_local_assets_and_verified_state_only(service):
     assert request(service, '/api/state', headers={'Origin': 'https://evil.example'})[0] == 403
     assert request(service, '/../../.env')[0] == 404
     assert request(service, '/api/action', method='DELETE')[0] == 405
+    health = json.loads(request(service, '/health')[1])
+    assert health['status'] == 'listening' and health['deployment'] == 'local'
+    assert health['provider']['status'] == 'missing_key'
+    assert json.loads(request(service, '/api/state')[1])['connection'] == health['provider']
 
 
 def test_demo_serves_only_allowlisted_read_only_assets(service, tmp_path, monkeypatch):

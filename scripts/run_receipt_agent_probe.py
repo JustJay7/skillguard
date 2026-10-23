@@ -18,6 +18,7 @@ from scripts.native_receipt_controller import FAKE_KEY
 from scripts.run_native_evaluation import PREFIX
 from skillguard.evaluation.receipt_answer_grader import grade_answer
 from skillguard.models.probe_claim import claim_probe, proposal_claim_path, reconcile_probe
+from skillguard.models.spending_policy import proposal_cap
 from skillguard.review.snapshot import artifact_tree_digest, digest
 
 BOOT = '''import pathlib,sys,tarfile
@@ -110,6 +111,7 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
             proposal.get('runtime') != 'openshell' or not capture_native):
         raise ValueError('Fresh OpenShell execution requires a scoped proposal and native capture')
     proposal_sha = digest(proposal_path.read_bytes())
+    aggregate_cap = proposal_cap(root / 'results', proposal.get('aggregate_cap_usd', .75))
     limit = proposal.get('maximum_model_requests')
     if type(limit) is not int or limit not in {4, 6}:
         raise ValueError('Receipt probe requires an explicit four- or six-request bound')
@@ -134,6 +136,8 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
                       'reviewed_files', 'prerequisites'):
             if field == 'reviewed_files' and proposal.get('review_target'):
                 continue
+            if field == 'aggregate_cap_usd' and proposal.get('review_target'):
+                continue  # Independently checked against the operator-owned spending policy.
             if proposal.get(field) != previous.get(field):
                 raise ValueError('Continuation proposal expands the approved export/bounds')
     if live and claim_path.exists():
@@ -173,6 +177,7 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
         'native_skill_discovery': proposal.get('native_skill_discovery', False),
         'frontmatter_compat': proposal.get('frontmatter_compat', False),
         'maximum_model_requests': limit,
+        'aggregate_cap_usd': aggregate_cap,
         'reservation_profile': proposal.get('reservation_profile', 'legacy'),
         'instruction_protocol': proposal.get('instruction_protocol'),
         'require_skill_use_proof': proposal.get('require_skill_use_proof', False),
@@ -296,6 +301,7 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
                          'security_trial': proposal.get('security_trial'),
                          'require_skill_use_proof': proposal.get('require_skill_use_proof', False),
                          'maximum_model_requests': limit,
+                         'aggregate_cap_usd': aggregate_cap,
                          'runtime': runtime,
                          'reservation_profile': report['reservation_profile'],
                          'event_format': SYSDIG_FORMAT}).encode() + b'\n'

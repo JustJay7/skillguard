@@ -115,13 +115,14 @@ def test_new_app_probe_can_fit_cap_without_releasing_historical_unknown(selected
     w, rid = selected
     proposal = json.loads(prepare_proposal(w.root, w.store.root, w.store.get(rid)).read_text())
     path = w.root / 'results/cost.csv'
-    ledger(path, [{'call_id': 'unknown', 'reserved_cost_usd': '.1'},
-                  {'call_id': 'earlier', 'estimated_cost_usd': '.15'}])
+    ledger(path, [{'call_id': 'unknown', 'reserved_cost_usd': '.25'},
+                  {'call_id': 'earlier', 'estimated_cost_usd': '.12544566'}])
     claim_probe(path, w.root / 'results/new.claim.json', {**proposal, 'run_id': 'app'})
     rows = list(csv.DictReader(path.open()))
-    assert rows[0]['reserved_cost_usd'] == '.1'
+    assert rows[0]['reserved_cost_usd'] == '.25'
     assert sum(float(r['reserved_cost_usd'] or r['estimated_cost_usd'] or 0)
-               for r in rows) == pytest.approx(.7)
+               for r in rows) == pytest.approx(.43544566)
+    assert rows[-1]['reserved_cost_usd'] == '0.06'
 
 
 def test_installed_agent_run_is_fresh_bound_to_active_source_and_rejects_stale_version(

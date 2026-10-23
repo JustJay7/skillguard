@@ -6,7 +6,8 @@ import uuid
 from pathlib import Path
 
 from skillguard.evaluation.agent_task_protocol import CORE_PROTOCOLS, REPAIRED_PROTOCOL
-from skillguard.models.bounded_transport import CONTEXT_RESERVATION
+from skillguard.models.bounded_transport import TEXT_RESERVATION
+from skillguard.models.spending_policy import project_cap
 from skillguard.review.snapshot import digest
 from skillguard.review.store import ReviewStore
 
@@ -90,8 +91,9 @@ def prepare_proposal(root: Path, store: Path, review: dict, *,
         target['installed_version'] = installed_version
     selected_candidate(root, target)
     proposal.update(review_target=target, instruction_protocol=REPAIRED_PROTOCOL,
+        aggregate_cap_usd=project_cap(root / 'results'),
         app_request_id=uuid.uuid4().hex,
-        reservation_profile=CONTEXT_RESERVATION,
+        reservation_profile=TEXT_RESERVATION,
         scope='One native agent test of this reviewed candidate on the fixed fictional receipt',
         continuation_of='receipt-agent-72fc12e8',
         reviewed_files={str(candidate / name): digest((candidate / name).read_bytes())

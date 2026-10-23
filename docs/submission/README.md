@@ -1,6 +1,6 @@
 # Release and submission handoff
 
-Prepared locally: working restricted application, portable recorded-evidence demo, source, MIT license, Devpost draft, narration, recording runbook and concrete tool feedback. The read-only walkthrough has been publicly published with explicit approval; the clean source is public at https://github.com/JustJay7/skillguard ; actual video upload and final submission remain pending.
+Prepared locally: working restricted application, portable recorded-evidence demo, source, MIT license, Devpost draft, narration, recording runbook and concrete tool feedback. The read-only walkthrough has been publicly published with explicit approval; the clean source is public at https://github.com/JustJay7/skillguard ; the 2:19 narrated browser walkthrough video is prepared locally. The user declined video upload and asked to finish live product work first; final submission remains pending.
 
 ## Verified official requirements
 
@@ -21,8 +21,8 @@ Checked October 23 against the [official rules](https://nebiusglobalaihackathon.
 | Recorded evidence walkthrough | Public at https://skillguard-evidence-demo.jaymalhotra.chatgpt.site ; portable zip ready; no live backend |
 | Source / MIT license | Public: https://github.com/JustJay7/skillguard ; MIT detected; original private history excluded |
 | Devpost description and tool feedback | Drafts ready in this folder |
-| Narration and recording runbook | Ready; local system-voice WAV is 2:19; actual footage still required |
-| Browser visual review | Public replay checked at 717×804; local live app and other viewport sizes remain unverified |
+| Narration and recording runbook | 2:19 MP4 captured from actual public browser UI, with local system-voice narration; edited replay label retained |
+| Browser visual review | Public replay checked at 717×804 and captured at 1440×756; local live app remains visually unverified |
 | Public demo / public source / video URLs | Demo and source live; video pending |
 | Final submission | Not submitted |
 

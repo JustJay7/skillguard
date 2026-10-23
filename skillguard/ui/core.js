@@ -214,6 +214,13 @@ async function refresh() {
       evidenceMetric(state.previous ? 'Available' : 'No prior version', 'version rollback'));
     const comparisonBusy = ['running', 'verifying'].includes(state.learning?.status);
     const busy = state.job?.status === 'running' || comparisonBusy;
+    const connection = state.connection || {};
+    const connectionLabels = {connected: 'Nebius authenticated · Lightning and Super available',
+      not_checked: 'API key saved · connection not checked', missing_key: 'Nebius API key is missing',
+      rejected_key: 'Nebius rejected the saved API key', missing_models: 'Nebius connected · a required model is unavailable',
+      unavailable: 'Nebius connection unavailable · check again before a live review'};
+    byId('connection').textContent = `${connectionLabels[connection.status] || 'Connection not checked'}${connection.checked_at ? ' · checked ' + new Date(connection.checked_at).toLocaleTimeString() : ''}. Connection checks do not generate model responses.`;
+    byId('check-connection').disabled = busy;
     learningComparison(state.learning);
     byId('progress').hidden = !busy;
     byId('progress').textContent = state.job?.message || (['test_agent', 'run_agent'].includes(state.job?.action) ? 'The agent is reading the skill and completing the fictional receipt in its sandbox…' : state.job?.action === 'test' ? 'Testing in the restricted workspace. This may take a minute…' : 'Working in your local workspace…');
@@ -226,7 +233,7 @@ async function refresh() {
     byId('import-skill').disabled = busy || pending;
     byId('run').disabled = busy || !state.active;
     byId('run-agent').disabled = busy || !state.reviews.some(r => r.installed && r.eligible);
-    byId('budget').textContent = state.budget?.available ? `Current project estimate: $${state.budget.estimated_cost_usd.toFixed(5)} + $${state.budget.reserved_usd.toFixed(2)} reserved = $${state.budget.accounted_usd.toFixed(5)} of the $0.75 cap. Estimates are not provider billing totals.` : 'Current inference ledger unavailable.';
+    byId('budget').textContent = state.budget?.available ? `Current project estimate: $${state.budget.estimated_cost_usd.toFixed(5)} + $${state.budget.reserved_usd.toFixed(2)} reserved = $${state.budget.accounted_usd.toFixed(5)} of your $${state.budget.cap_usd.toFixed(2)} authorized cap. Estimates are not provider billing totals.` : 'Current inference ledger unavailable.';
     byId('rollback').disabled = busy || !state.previous;
     byId('installed').textContent = state.active ? `Installed · ${state.active.candidate_sha256.slice(0, 12)} · ${state.active.security_decision === 'operator_approved_hold' ? 'human exception; model verdict remains held' : state.active.security_decision === 'restricted_pass' ? 'security review passed for this workspace' : 'historical installation; separate evidence preserved'}` : 'No skill installed. Review and approve one first.';
     byId('previous').textContent = state.previous ? 'A previous tested version is available.' : 'Install an update to create a previous version.';
@@ -270,4 +277,5 @@ byId('import-skill').addEventListener('click', () => act('import', {content: {gu
 byId('run').addEventListener('click', () => act('run', {text: byId('receipt').value}));
 byId('run-agent').addEventListener('click', () => act('run_agent', {expected_active: state.active?.id}));
 byId('rollback').addEventListener('click', () => act('rollback', {expected_active: state.active?.id}));
+byId('check-connection').addEventListener('click', () => act('check_connection'));
 refresh();

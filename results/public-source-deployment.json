@@ -12,5 +12,11 @@
     "environment": "Existing pinned dependency environment; source checkout extracted from the clean archive",
     "skip": "Optional native evaluator CLI is absent from the export own .venv; tests used the existing pinned dependency interpreter"
   },
-  "public_demo": "https://skillguard-evidence-demo.jaymalhotra.chatgpt.site"
+  "public_demo": "https://skillguard-evidence-demo.jaymalhotra.chatgpt.site",
+  "latest_clean_export_tests": {
+    "passed": 915,
+    "skipped": 1,
+    "environment": "Existing pinned dependency interpreter; extracted clean source, not fresh native provisioning",
+    "skip": "Optional native evaluator CLI absent in export own .venv"
+  }
 }

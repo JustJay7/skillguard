@@ -16,7 +16,8 @@ PREFIXES = {'skillguard', 'scripts', 'tests', 'skills', 'config', 'docs'}
 EVIDENCE = {'oct23-security-product-verification.json', 'oct23-security-product-history.json',
             'oct23-release-tests.txt', 'demo-build.json', 'demo-render-verification.json',
             'public-demo-deployment.json', 'public-demo-browser-verification.json',
-            'public-source-deployment.json', 'public-demo-http-verification.json'}
+            'public-source-deployment.json', 'public-demo-http-verification.json',
+            'oct23-release-verification.json'}
 
 
 def build(root: Path) -> dict:

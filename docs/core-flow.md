@@ -1,5 +1,13 @@
 # SkillGuard security review core
 
+## Latest live-local check — October 23
+
+The real local app authenticated the saved Nebius key and completed fresh installed-agent run `receipt-agent-a754e9b2`: six real model requests, original receipt total 23.00, guide reads before/after input, answer write and native completion. Cost estimate $0.00136542; the earlier zero-inference reservation refusal remains preserved. The installed-agent route now uses the already-enforced short-text profile rather than reserving the entire model context. This does not truncate prompts or reprice unknown calls.
+
+The connection panel distinguishes server listening from successful provider authentication. An operator-owned, ignored spending authorization now controls the aggregate cap for new app proposals and native controllers; old proposals keep their own limits. Current costs and unknown holds stay counted. Default source releases retain the $0.75 trial cap. The 916-test offline suite and a zero-model native preflight of the updated cap passed. All four native VMs are stopped; the installed version and both model holds remain intact.
+
+The app is live locally, not publicly hosted. The public Site remains a recorded replay. Browser visual verification of the local app remains unavailable. No video upload or final submission has occurred.
+
 ## Current product flow — October 23
 
 The main app reviews whether to admit a pending skill. Receipt extraction is the isolated test workload, not the product's primary action. Every automatically detected native pending write receives a security-required marker; the older actual-agent diagnostic cannot bypass that gate.

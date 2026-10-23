@@ -10,6 +10,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from skillguard.models.bounded_transport import FIELDS, MODEL, request_reservation
+from skillguard.models.spending_policy import proposal_cap
 
 
 def proposal_claim_path(results: Path, proposal: Path) -> Path:
@@ -36,6 +37,7 @@ def claim_probe(ledger: Path, claim: Path, identity: dict) -> tuple[str, bytes]:
         raise ValueError('Unsupported whole-probe request bound')
     reserve = round(limit * request_reservation(MODEL,
         identity.get('reservation_profile', 'legacy')), 2)
+    cap = proposal_cap(ledger.parent, identity.get('aggregate_cap_usd', .75))
     with ledger.with_suffix('.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         if claim.exists():
@@ -46,7 +48,7 @@ def claim_probe(ledger: Path, claim: Path, identity: dict) -> tuple[str, bytes]:
                  for r in rows]
         if any(not math.isfinite(cost) or cost < 0 for cost in costs):
             raise ValueError('Historical accounting is invalid; reservation withheld')
-        if sum(costs) + reserve > .75:
+        if sum(costs) + reserve > cap:
             raise ValueError('Aggregate credit ceiling cannot reserve the whole probe')
         call_id = 'native-probe-' + identity['run_id']
         # Exclusive and fsynced before any credential leaves the host.

@@ -151,11 +151,13 @@ def compile_policy() -> dict:
 
 
 def native_client(root: Path, folder: Path, max_calls=1, model=MODEL):
+    from skillguard.models.spending_policy import project_cap
+
     key = dotenv_values(root / '.env').get('NEBIUS_API_KEY', '')
     if not key:
         raise ValueError('Private Nebius credential missing')
     budget = AgentCallBudget(root / 'results/cost_log.csv', folder / 'responses',
-        max_calls=max_calls, total_limit_usd=.75, model=model,
+        max_calls=max_calls, total_limit_usd=project_cap(root / 'results'), model=model,
         reservation_profile=CONTEXT_RESERVATION if model == MODEL else 'legacy')
     class AuditedTransport(BoundedInferenceTransport):
         def handle_request(self, request):
@@ -544,6 +546,9 @@ def run(workspace, review_id, progress=lambda text: None, *, resume=False):
                     app_request_id=uuid.uuid4().hex, reservation_profile=manifest.get(
                         'reservation_profile', CONTEXT_RESERVATION),
                     reviewed_files={}, scope='One generated fictional receipt security probe')
+                from skillguard.models.spending_policy import project_cap
+
+                template['aggregate_cap_usd'] = project_cap(workspace.root / 'results')
                 proposal = workspace.root / 'results' / ('receipt-live-probe-security-' +
                                                           uuid.uuid4().hex + '.json')
                 proposal.write_text(json.dumps(template, indent=2) + '\n')

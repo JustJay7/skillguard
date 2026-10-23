@@ -9,6 +9,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from skillguard.core import CoreWorkspace
+from skillguard.live_status import check_provider, configuration
 
 ASSETS = Path(__file__).parent
 DEMO = Path(__file__).resolve().parents[2] / 'dist/skillguard-demo'
@@ -21,6 +22,7 @@ class Application:
         self.guard = threading.Lock()
         self.job = None
         self.thread = None
+        self.connection = configuration(getattr(workspace, 'root', None))
 
     def state(self):
         while True:
@@ -29,13 +31,14 @@ class Application:
             summary = self.workspace.summary()
             with self.guard:
                 if job is self.job:
-                    return {**summary, 'csrf': self.token, 'job': job}
+                    return {**summary, 'csrf': self.token, 'job': job,
+                            'connection': dict(self.connection)}
 
     def start(self, action, payload):
         if action not in {'stage', 'update', 'unsafe', 'test', 'approve', 'reject',
                           'rollback', 'run', 'test_agent', 'repaired', 'run_agent',
                           'review_security', 'import', 'repair_and_review', 'resume_security',
-                          'escalate_security'}:
+                          'escalate_security', 'check_connection'}:
             raise ValueError('Unknown action')
         with self.guard:
             if self.job and self.job['status'] == 'running':
@@ -46,7 +49,11 @@ class Application:
             try:
                 w = self.workspace
                 with w.lock():
-                    if action in {'stage', 'update', 'unsafe', 'repaired'}:
+                    if action == 'check_connection':
+                        result = check_provider(w.root)
+                        with self.guard:
+                            self.connection = result
+                    elif action in {'stage', 'update', 'unsafe', 'repaired'}:
                         result = {'review_id': w.stage_example(update=(action == 'update'
                             or action in {'unsafe', 'repaired'} and bool(w.installed()['active'])),
                             unsafe=action == 'unsafe', repaired=action == 'repaired')}
@@ -149,7 +156,8 @@ def handler_for(app):
                 except (ValueError, KeyError, OSError):
                     self.send(409, {'error': 'Evidence or installed version changed; actions held'})
             elif self.path == '/health':
-                self.send(200, {'status': 'ready', 'mode': 'restricted-receipt-workspace'})
+                self.send(200, {'status': 'listening', 'mode': 'restricted-receipt-workspace',
+                                'deployment': 'local', 'provider': dict(app.connection)})
             elif self.path in {'/demo/', '/demo/demo.js', '/demo/demo.css',
                                '/demo/evidence.json', '/demo/provenance.json'}:
                 name, mime = {
@@ -208,6 +216,7 @@ def main():
     app = Application(CoreWorkspace(root, args.workspace))
     server = ThreadingHTTPServer(('127.0.0.1', args.port), handler_for(app))
     signal.signal(signal.SIGTERM, lambda *_: threading.Thread(target=server.shutdown).start())
+    app.start('check_connection', {})
     try:
         server.serve_forever()
     finally:

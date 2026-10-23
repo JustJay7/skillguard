@@ -1,5 +1,16 @@
 # Progress
 
+## Live product follow-through — October 23
+- [x] Authenticate the saved private Nebius key against the real model catalog; both required Nemotron models are available.
+- [x] Add an explicit live-local connection panel and a zero-inference recheck; distinguish HTTP listening, authenticated provider access and on-demand native execution.
+- [x] Retain the zero-inference failed app check: the older full-context six-call reservation of $0.45 could not fit the remaining trial cap. No claim was consumed or cost released.
+- [x] Apply the existing enforced 64 KiB text profile to new installed-agent proposals. The same six-request bound reserves $0.06 without changing prompts, token ceilings or old holds.
+- [x] Fresh installed-agent execution `receipt-agent-a754e9b2` completed through the real app: six actual Nebius requests, original total 23.00, guide read before/after input, answer write and completion confirmed; no parser invocation. Cost estimate $0.00136542. All native VMs stopped.
+- [x] User superseded the $0.75 trial cap with the available account funds. Store the concrete authorization privately; new app proposals inherit it, old proposals retain their original caps, and historical estimates/unknown holds remain counted. The public source retains the conservative default.
+- [x] Verify the updated spending policy through native fake-key preflight `receipt-agent-c36869e3` (two scripted responses, zero model requests), final authenticated app readback, exact installed-version preservation, retained holds and stopped runners; commit the checked changes.
+
+The real app is local at http://127.0.0.1:8768/ and uses the private server-side Nebius key. The public Site remains a recorded replay. A public native execution backend has not been deployed. The live local app's layout remains visually unverified because earlier browser inspection was refused. Full offline suite after the connection and budget changes: 916 passed, Ruff clean. Clean updated source export: 915 passed, one optional native CLI check skipped in the existing dependency environment.
+
 ## Release finish — October 23
 - [x] Add a visible native behavior overview and keep scope/attribution caveats next to the counts.
 - [x] Build a sanitized portable walkthrough of actual retained evidence, with no model calls or approval routes.
@@ -10,9 +21,10 @@
 - [x] Verify and package the clean source export, excluding credentials, history and private runtime data.
 - [x] Commit final release changes locally.
 - [x] Publish the explicitly approved clean source to https://github.com/JustJay7/skillguard with MIT license and public demo link.
-- [ ] Record functioning-app footage, upload the public video after approval and submit the actual Devpost entry.
+- [x] Capture the approved public walkthrough, encode the narrated 2:19 video and verify encoded frames/audio. It is explicitly an edited evidence replay, not live native execution.
+- [ ] Public video upload and final Devpost submission: paused at the user's direction to finish live product work first; video upload was declined.
 
-Public demo: https://skillguard-evidence-demo.jaymalhotra.chatgpt.site . It is a clearly labeled recorded-evidence replay, not a hosted native review backend or a model security pass. Local app/runtime and private archives remain private. Full local suite: 900 passed. Extracted-source suite: 899 passed, one optional native-source check skipped. A local 2:19 narration WAV and recording script are ready. No new model calls or budget/installed-version changes occurred in this release work. Public-demo browser checks do not retroactively verify the live local app's layout. The user reported residence outside Quebec after the official rules check; other eligibility/account declarations remain the entrant's responsibility.
+Public demo: https://skillguard-evidence-demo.jaymalhotra.chatgpt.site . It is a clearly labeled recorded-evidence replay, not a hosted native review backend or a model security pass. Local app/runtime and private archives remain private. Full local suite: 900 passed. Extracted-source suite: 899 passed, one optional native evaluator CLI check skipped. The agent captured 266 browser-page frames from the approved public walkthrough and encoded a 139.25-second narrated MP4. Both video/audio streams decode; representative frames and volume were checked. No protected Codex window or private desktop was recorded. The user declined uploading it and redirected work to the real app. Public-demo browser checks do not retroactively verify the live local app's layout. The user reported residence outside Quebec after the official rules check; other eligibility/account declarations remain the entrant's responsibility.
 
 ## Current priority — completed local SkillGuard security flow
 - [x] Connect pending skill → native static/functional checks → native generated probes → real sandbox agent trials → Nemotron evidence verdict → policy preview → gated install/reject in one app action.

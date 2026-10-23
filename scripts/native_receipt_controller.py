@@ -107,7 +107,7 @@ async def execute(root: Path, header: dict):
     if type(limit) is not int or limit not in {4, 6}:
         raise ValueError('Unsupported native controller request limit')
     budget = AgentCallBudget(root / 'cost.csv', root / 'responses', max_calls=limit,
-                             total_limit_usd=.75,
+                             total_limit_usd=header.get('aggregate_cap_usd', .75),
                              reservation_profile=header.get('reservation_profile', 'legacy'))
     requests = []
     state = {'confinement_passed': False}
@@ -248,6 +248,7 @@ async def execute_job(root, header, budget, state, upstream_class, capture):
     if runtime not in {'docker', 'openshell'}:
         raise ValueError('Unsupported native runtime')
     async with native_harbor_client(budget, api_key=header['api_key'],
+                                   authorized_limit_usd=header.get('aggregate_cap_usd', .75),
             upstream=upstream_class(), compatibility_probe=(runtime == 'openshell'
                 and header.get('frontmatter_compat') is True
                 and (header.get('native_skill_discovery') is True

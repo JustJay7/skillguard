@@ -1,25 +1,20 @@
-# Recording runbook
+# Recorded walkthrough video
 
-Target under 3:00. The local system-voice narration file is `dist/skillguard-narration.wav` (2:19); record the actual UI while it plays, or record your own voice. Narration: `narration.txt`. Use an actual screen recording of the app; this script is not a finished video. Avoid music, unrelated tabs, credentials and personal receipts. Keep the recorded-evidence banner visible in the walkthrough.
+`dist/skillguard-demo-video.mp4` is the finished local 2:19 video. It shows actual browser-page captures of the explicitly approved public walkthrough, with local system-voice narration from `narration.txt`. It is not footage of a fresh native run or the protected Codex application. The persistent footer says recorded evidence replay, fictional staged attack and edited timing. Public upload was declined by the user.
 
-| Time | Screen | Narration/action |
-| --- | --- | --- |
-| 0:00–0:20 | Main SkillGuard app, learning overview | Personal assistant learns a receipt skill; explain persistence risk. |
-| 0:20–0:45 | Recorded walkthrough, Catch the change | Identify the attack as staged and fictional. Show failed functionality and extra private-file denial. Explain counts include setup/verifier observations. |
-| 0:45–1:25 | Watch the agent | Switch through four probe tabs. Expand real terminal commands. Show original total 23.00 and completion. State this is recorded native execution, not live inference. |
-| 1:25–1:55 | Review the boundary | Say Nebius Token Factory, NVIDIA Nemotron 3.5 Lightning and Nemotron 3 Super aloud. Show policy, no external network grants and held recommendations. |
-| 1:55–2:25 | Main app and recorded Keep control | Show human-exception label and recorded rollback sequence. Do not click live rollback merely to simulate a recording. |
-| 2:25–2:50 | Evidence limits | Explain receipt-only scope, retained incomplete trial and partial metadata. Close on visible, deliberate, reversible learning. |
+The browser capture contains 266 frames at an approximate two-per-second acquisition cadence, edited to the narration. Navigation/tool pauses were removed and scene durations adjusted. The footage is not a latency measurement. The encoded file has H.264 video at 1440×798, AAC audio, 24 output frames/second, and duration 139.25 seconds.
 
-## Before recording
+| Time | Actual captured page |
+| --- | --- |
+| 0:00–0:25 | Public walkthrough introduction |
+| 0:25–0:46 | Blocked staged skill update and native comparison |
+| 0:46–1:05 | Four generated annotation/control tabs and preserved receipt result |
+| 1:05–1:19 | Archived native agent terminal commands |
+| 1:19–1:56 | Declared sandbox boundary and retained model hold explanation |
+| 1:56–2:05 | Recorded human exception, installation and rollback |
+| 2:05–2:12.5 | Evidence limits and retained incomplete trial |
+| 2:12.5–2:19.25 | Closing introduction view |
 
-- Run `make demo-bundle` and `make review` on the configured development machine.
-- Open `http://127.0.0.1:8768/demo/`; the live application remains at `/`.
-- The separate `make demo` command serves the portable replay on port 8769.
-- Record the actual UI. Browser visual inspection remains pending; inspect desktop and narrow widths manually before publishing.
-- Do not call the replay a live attack, general protection, an independently blind benchmark, a model-approved pass, or a cloud sandbox deployment.
-- Reuse archived results rather than generating new calls for a take. No model budget is required to navigate the replay.
+Verification: decoded the entire MP4, checked both streams and duration, inspected representative encoded frames, and measured non-silent audio without clipping. Source frames and the edit manifest remain locally under `dist/video-frames`. No extra model calls were used for recording. No YouTube URL exists and no Devpost submission has been made.
 
-## After recording
-
-Verify duration, audio naming the tools, readable UI and the persistent recorded-evidence label. Public YouTube upload needs operator approval. Store the real URL in the submission checklist; a script or audio file is not a substitute for the functioning-app video.
+For a future live-product recording, use the real local app at http://127.0.0.1:8768/ and identify which actions execute now versus display archived evidence. The public URL is a separate replay. Never call the replay a live attack, general protection, a blind benchmark, a model-approved pass or a cloud sandbox deployment.

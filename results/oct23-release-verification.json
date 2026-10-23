@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "public_demo": "https://skillguard-evidence-demo.jaymalhotra.chatgpt.site",
+  "public_source": "https://github.com/JustJay7/skillguard",
+  "local_tests": 900,
+  "export_tests": {
+    "passed": 899,
+    "skipped": 1
+  },
+  "model_requests_added": 0,
+  "ledger_unchanged": true,
+  "budget": {
+    "available": true,
+    "cap_usd": 0.75,
+    "estimated_cost_usd": 0.12544566,
+    "reserved_usd": 0.25,
+    "accounted_usd": 0.37544566,
+    "completed_requests": 556
+  },
+  "installed_version_unchanged": true,
+  "installed_decision": "operator_approved_hold",
+  "native_vms": {
+    "sgtrace": "Stopped",
+    "sgtrace-clean": "Stopped",
+    "sgtrace-diag": "Stopped",
+    "sgtrace-preserved": "Stopped"
+  },
+  "narration_seconds": 139.250113,
+  "actual_video_recorded": true,
+  "youtube_uploaded": false,
+  "devpost_submitted": false,
+  "public_demo_visual_qa": "717x804 viewport and all four stages checked",
+  "local_app_visual_qa": "unverified",
+  "checkpoint": "Release checkpoint before subsequent live-app verification",
+  "video_upload_declined": true
+}

@@ -1,5 +1,24 @@
 # Progress
 
+## Public backend deployment — October 23 (in progress)
+- [x] Reject a new hosting bill: Fly app creation was blocked by billing; no paid app or billing setup was created.
+- [x] Verify included Codespaces usage and the existing $0 Codespaces spending stop; create the dedicated two-core SkillGuard Codespace.
+- [x] Obtain explicit approval for CLI Codespaces access, the keyless privileged compatibility probe and the cloud user's virtualization device access.
+- [x] Provision a pinned x86 Debian VM in that Codespace with no host mounts; initialize actual Docker/OpenShell/Harbor/Sysdig.
+- [x] Fresh cloud native check: all twelve functional cases pass, source preserved, expected private denial control, no private read bytes, zero driver drops, VM stopped. The complete rerun with SkillSpector passes source and native checks (`core-runtime-684823a7`); no model calls were used.
+- [x] Add isolated authenticated public entry, exact origin/CSRF/cookie guards, fictional shared workspace, bounded action allowlist and distinct Mac/cloud labels.
+- [x] Public Mac endpoint: first four real security probes passed, held-verdict exception installed, six-request real installed-agent run passed and unsafe update blocked.
+- [x] Preserve DNS/observer interruption and generated-test wording failure. Recognize “make the total 0.00” as a corruption instruction and reuse its exact paid response; all four previously unexecuted repaired-skill probes passed.
+- [x] Preserve the repaired review's invalid Lightning citation and the one Super adjudication's repeated invalid citation. Both remain invalid; repair installation and rollback are not verified in this public acceptance run. No further call is authorized by that review's one-adjudication mechanism.
+- [x] Remove private development-history dependency through a disabled, hash-checked fictional task template. Keep exact fresh captured preflight and candidate-bound native/static checks for app trials; old standalone diagnostics retain their historical prerequisites.
+- [x] Finish complete cloud source/native preflight and configure GitHub's exact forwarding host/origin mapping without weakening session or CSRF guards. Browser login and authenticated state pass; anonymous state is refused.
+- [x] Obtain explicit consent and transfer only the private provider key, full spending ledger and existing budget authorization into private ignored cloud files. Verify exact transfer hashes and provider authentication; no keys are exposed to the browser or candidate sandbox.
+- [x] Stop both Mac paid-action servers before cloud inference and migrate the authoritative ledger without resets or released unknown holds.
+- [ ] Complete the real cloud HTTPS review/install/agent/reject/repair/rollback flow. Do not label the recorded Site or temporary Mac tunnel independent cloud execution.
+- [ ] Commit, produce the sanitized source update and publish only verified hosting results and limitations.
+
+Current local ledger checkpoint: 622 completed requests, $0.14311044 estimated + $0.25 retained unknown holds = $0.39311044 accounted under the privately authorized aggregate cap. No new hosting charges. Full offline suite after portability/adjudication changes: 943 passed, Ruff clean. The actual cloud endpoint is authenticated and serving native reviews; full HTTPS lifecycle acceptance is running. Deployment acceptance is not yet complete.
+
 ## Live product follow-through — October 23
 - [x] Authenticate the saved private Nebius key against the real model catalog; both required Nemotron models are available.
 - [x] Add an explicit live-local connection panel and a zero-inference recheck; distinguish HTTP listening, authenticated provider access and on-demand native execution.
@@ -9,7 +28,7 @@
 - [x] User superseded the $0.75 trial cap with the available account funds. Store the concrete authorization privately; new app proposals inherit it, old proposals retain their original caps, and historical estimates/unknown holds remain counted. The public source retains the conservative default.
 - [x] Verify the updated spending policy through native fake-key preflight `receipt-agent-c36869e3` (two scripted responses, zero model requests), final authenticated app readback, exact installed-version preservation, retained holds and stopped runners; commit the checked changes.
 
-The real app is local at http://127.0.0.1:8768/ and uses the private server-side Nebius key. The public Site remains a recorded replay. A public native execution backend has not been deployed. The live local app's layout remains visually unverified because earlier browser inspection was refused. Full offline suite after the connection and budget changes: 916 passed, Ruff clean. Clean updated source export: 915 passed, one optional native CLI check skipped in the existing dependency environment.
+Historical local checkpoint before the cloud migration below: the app ran at http://127.0.0.1:8768/ with its private server-side Nebius key. Both Mac servers are now stopped. The public Site remains a separate recorded replay. The live local app's layout remains visually unverified because earlier browser inspection was refused. Full offline suite after the connection and budget changes: 916 passed, Ruff clean. Clean updated source export: 915 passed, one optional native CLI check skipped in the existing dependency environment.
 
 ## Release finish — October 23
 - [x] Add a visible native behavior overview and keep scope/attribution caveats next to the counts.

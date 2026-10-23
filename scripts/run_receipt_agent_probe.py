@@ -93,6 +93,21 @@ def prepared_task(root: Path, folder: Path, proposal_path: Path | None = None
     return task, reference, tasks
 
 
+def verify_enforced_prerequisites(root: Path, proposal: dict, preflight: dict):
+    if preflight.get('runtime') != 'openshell' or preflight.get('capture_native') is not True:
+        raise ValueError('Fresh captured OpenShell preflight required')
+    if proposal.get('review_target'):
+        # Recheck this host's current source-bound native/static review. A
+        # different machine's historical replay does not provide this credit.
+        from skillguard.core_agent import selected_candidate
+
+        selected_candidate(root, proposal['review_target'])
+    else:
+        comparison = json.loads((root / 'results/receipt-agent-workflow-latest.json').read_text())
+        if not comparison.get('diagnostic_passed'):
+            raise ValueError('Native recorded enforcement and captured preflight required')
+
+
 def run(root: Path, *, live: bool, recorded_from: Path | None = None,
         proposal_path: Path | None = None, capture_native: bool = False,
         runtime: str = 'docker') -> dict:
@@ -257,11 +272,7 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
                     (root / 'scripts/native_receipt_controller.py').read_bytes())):
             raise ValueError('Exact native credential-confinement preflight required')
         if runtime == 'openshell':
-            comparison_path = root / 'results/receipt-agent-workflow-latest.json'
-            comparison = json.loads(comparison_path.read_text())
-            if (not comparison.get('diagnostic_passed')
-                    or preflight.get('runtime') != runtime or not preflight.get('capture_native')):
-                raise ValueError('Native recorded enforcement and captured preflight required')
+            verify_enforced_prerequisites(root, proposal, preflight)
         import httpx
         from dotenv import dotenv_values
 

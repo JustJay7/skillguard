@@ -80,7 +80,9 @@ def prepare_proposal(root: Path, store: Path, review: dict, *,
         raise ValueError('Earlier prohibited disclosure remains blocking; review a new candidate')
     if not parser_checks_valid(review):
         raise ValueError('Run passing local receipt/static checks before the agent test')
-    source = root / 'results/receipt-live-probe-agent-record-complete-2026-10-22.json'
+    from skillguard.evaluation.receipt_template import template_path
+
+    source = template_path(root)
     proposal = json.loads(source.read_text())
     candidate = Path(review['snapshot'])
     target = {'store': str(store.resolve()), 'review_id': review['id'],
@@ -91,6 +93,7 @@ def prepare_proposal(root: Path, store: Path, review: dict, *,
         target['installed_version'] = installed_version
     selected_candidate(root, target)
     proposal.update(review_target=target, instruction_protocol=REPAIRED_PROTOCOL,
+        execution_enabled=True, status='authorized_2026_10_22',
         aggregate_cap_usd=project_cap(root / 'results'),
         app_request_id=uuid.uuid4().hex,
         reservation_profile=TEXT_RESERVATION,

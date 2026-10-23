@@ -61,6 +61,7 @@ class CoreWorkspace:
         if not self.workspace.is_relative_to(self.root / 'results'):
             raise ValueError('Core workspace must be local and separate from ambient profiles')
         self.workspace.mkdir(parents=True, exist_ok=True, mode=0o700)
+        (self.root / 'results/integration').mkdir(parents=True, exist_ok=True, mode=0o700)
         self.profile = self.workspace / 'learning-profile'
         self.store = ReviewStore(self.workspace / 'reviews')
         self.source = self.root.parent / 'work/hermes-agent'

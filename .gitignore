@@ -23,3 +23,6 @@ results/evaluation-discovery/
 results/tokenizer-bound-verification/
 
 results/core/
+results/public-core/
+results/cloud-public-hosting/
+results/public-hosting*

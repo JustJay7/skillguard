@@ -42,6 +42,9 @@ demo-bundle:
 demo: demo-bundle
 	$(VENV_PYTHON) -m http.server 8769 --bind 127.0.0.1 --directory dist/skillguard-demo
 
+public-live:
+	$(VENV_PYTHON) -m scripts.serve_public_backend
+
 review-history:
 	$(VENV_PYTHON) -m skillguard.ui.server --store results/integration/local-parser-8fc64684/reviews --review 38277c97edea21841daf6446ad2394af178b29cb538f584c909cd991228e1a01
 

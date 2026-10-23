@@ -10,7 +10,8 @@ async function act(action, data = {}) {
   byId('error').hidden = true;
   try {
     const response = await fetch('/api/action', {method: 'POST',
-      headers: {'Content-Type': 'application/json', 'X-SkillGuard-CSRF': state.csrf},
+      headers: {'Content-Type': 'application/json', 'X-SkillGuard-CSRF': state.csrf,
+        'X-SkillGuard-Origin': location.origin},
       body: JSON.stringify({action, ...data})});
     if (!response.ok) throw Error((await response.json()).error);
     await refresh();

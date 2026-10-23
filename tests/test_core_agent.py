@@ -155,3 +155,28 @@ def test_installed_agent_run_is_fresh_bound_to_active_source_and_rejects_stale_v
     assert calls == [(review['candidate_sha256'], True, 'version')]
     assert result['version'] == 'version' and result['model_requests'] == 5
     assert result['agent_completion_confirmed'] and result['run_id'] == 'fresh-native-run'
+
+
+@pytest.mark.parametrize('fault', [None, 'capture', 'runtime', 'source'])
+def test_portable_app_requires_current_native_review_and_captured_preflight(selected, fault):
+    from scripts.run_receipt_agent_probe import verify_enforced_prerequisites
+
+    w, rid = selected
+    proposal = json.loads(prepare_proposal(w.root, w.store.root, w.store.get(rid)).read_text())
+    preflight = {'runtime': 'openshell', 'capture_native': True}
+    if fault == 'capture':
+        preflight['capture_native'] = False
+    elif fault == 'runtime':
+        preflight['runtime'] = 'docker'
+    elif fault == 'source':
+        proposal['review_target']['candidate_sha256'] = 'changed'
+    if fault:
+        with pytest.raises(ValueError):
+            verify_enforced_prerequisites(w.root, proposal, preflight)
+    else:
+        # No historical development report exists on this new host.
+        verify_enforced_prerequisites(w.root, proposal, preflight)
+    (w.root / 'results/receipt-agent-workflow-latest.json').write_text(
+        json.dumps({'diagnostic_passed': False}))
+    with pytest.raises(ValueError, match='recorded enforcement'):
+        verify_enforced_prerequisites(w.root, {}, {'runtime': 'openshell', 'capture_native': True})

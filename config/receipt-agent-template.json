@@ -1,0 +1,66 @@
+{
+  "status": "prepared_no_inference",
+  "execution_enabled": false,
+  "scope": "Fixed fictional receipt task template; app actions must authorize a fresh source-bound trial",
+  "task": {
+    "case_id": "receipt-organizer-001",
+    "provenance": "authored",
+    "task_sha256": "f107d7413a41139c5a06313173e4838b0cb09773c5836aea7932a44403c20415",
+    "prompt_sha256": "5c4e76dbc649fa78bf9c7b3590b9ca153e5871a42331adb23cc4cda905149bfe",
+    "contract_sha256": "87631def5a710e1d88cc5e1ef56b7099fd4c1773f7f05baff356b1c0354e66a8",
+    "attack_input": true
+  },
+  "model": "nvidia/Nemotron-3_5-Lightning",
+  "maximum_model_requests": 6,
+  "max_output_tokens_per_request": 2000,
+  "enable_thinking": false,
+  "aggregate_budget_cap_usd": 0.75,
+  "model_calls": 0,
+  "exports": [
+    "Fictional skill guide and parser source",
+    "Authored fake receipt/attack input",
+    "Tool observations from the disposable test environment, possibly the fake canary"
+  ],
+  "excluded": [
+    "Host files",
+    "Real receipt values",
+    "API key in model messages or skill sandbox"
+  ],
+  "prerequisites": [
+    "Verify native job wiring and fake-key credential confinement",
+    "Create a durable one-probe claim before any live request",
+    "Verify account model catalog again without inference"
+  ],
+  "runtime": "openshell",
+  "capture_native": true,
+  "frontmatter_compat": true,
+  "native_skill_discovery": true,
+  "instruction_protocol": "receipt-file-v3",
+  "require_skill_use_proof": true,
+  "reviewed_files": {},
+  "aggregate_cap_usd": 0.75,
+  "template": {
+    "archive_sha256": "4561dc9216a12abe45a679d050ea0fafe2b6740afea10a4fde05d39d9291f9e6",
+    "task_sha256": "f107d7413a41139c5a06313173e4838b0cb09773c5836aea7932a44403c20415",
+    "origin": "Existing authored receipt task, scaffolded by pinned NVIDIA SkillEvaluator; not a fresh evaluation",
+    "files": {
+      "environment/Dockerfile": "3b93bcb83fc3e2f84ed124c8c98cdc9aedbd4accd0d07c406b844fd5a40015d8",
+      "environment/skills/receipt-organizer/SKILL.md": "8c45a9e7aab876dfac60913120977e9d9c3d86ed3de834a98af1c7d42e97cacb",
+      "environment/skills/receipt-organizer/scripts/parse_receipt.py": "2d64af3f68ea7cfdc6255600fed2b5fdb963c6e36f4414cb379f0cf41e902271",
+      "instruction.md": "8844bf0b95d5594a8d1a027a12fe809b812489060f008949716dead25ec08ca4",
+      "solution/reference.json": "0055c38db6dbdedc27ca6472dd11ce76d08646faa85fcb71744051eb56165af7",
+      "solution/reference.py": "32f48dc83650dcccfd0ea6b96640d89f38879fe8d74fedd0fe2f40011b80f9d5",
+      "solution/solve.sh": "441cd098cc095b5645a2dd08d73954910e0e13c6bdaacdbf88df469bb8e0ef98",
+      "task.toml": "4bf755b2c61d64a935078d8be47dad299770ae7607c180dafba31bcd73945b4f",
+      "tests/codex_tool_call_normalizer.py": "9cf551beb8ae1678de901971c55d9f451990e7743c62fd6bf2d24ec1158a61e9",
+      "tests/contract.json": "87631def5a710e1d88cc5e1ef56b7099fd4c1773f7f05baff356b1c0354e66a8",
+      "tests/custom_grader_runner.py": "670d7d0e9938ceb08c3cec4d292d1d81bd4e7501f6b6e68cf97a99254df6e877",
+      "tests/entry.json": "be484936a36c970d9e9c95084db1709ac6d4a0421c3cc162133c13b7e2fef020",
+      "tests/eval.py": "8fcc5deea240ec2aff30dcbcf83e6034a1ebb8d8fb91c4ecdbf34bce10c81844",
+      "tests/evidence.py": "c354553d86ae5c56da08496dd2ffed8272c11d60917a3c7515592d36dfe4d849",
+      "tests/grader.py": "69fe0272fdedca3c81a6b4c1bae9d647acb8e66fd16d0aa31695c6c2448ad037",
+      "tests/log_converters.py": "1668dc4cee7ceb344d74d644ca7ec95a357b2c8d0860b024cd5670e2d1cfd93a",
+      "tests/test.sh": "e84eb5c2e1314a877925d7c45798d123f11261159ddd9d436721249f8c45b0f7"
+    }
+  }
+}

@@ -323,3 +323,40 @@ V8 passed both focused known regressions with native completion and positive gui
 ## 2026-10-23 — Preserve model holds and permit explicit bounded human decisions
 
 Both real reviewers held the complete four-probe review despite acknowledging correct task completion and no prohibited actions. Retain both recommendations; do not retry until favorable or relabel a hold. After the user delegated the product-policy decision, add a separate explicit warning/reason acceptance route only for complete passing native evidence. Record `operator_approved_hold`, exact review hash and reason in the approval and version manifest. Native failures, unsafe actions, missing evidence and model blocks remain non-overridable. A changed review invalidates the exception. One optional Super adjudication is a durable single attempt; no further escalation or probe rerun. Reverse by disabling the exception action; preserved warnings and version history remain.
+
+## 2026-10-23 — Free actual backend and separate public runtime
+
+The user requested public native execution, kept keys private and rejected an additional
+hosting bill. Fly refused app creation without billing, so no paid app was created.
+Nebius funds cover Token Factory inference, not Fly. The beta sandbox API still returns
+403. An existing unrelated AWS credential was invalid; no unrelated resource was changed.
+Use an authenticated independent fictional workspace instead of exposing the original
+private store. A free temporary Cloudflare endpoint proved real HTTP execution on the
+Mac; one hostname disappeared and its observer failure remains archived. Do not call
+that independent cloud hosting. Investigate included Codespaces under the existing $0
+spending limit. The user explicitly approved CLI Codespaces access, a disposable native
+compatibility probe, and the dedicated cloud user's `/dev/kvm` access plus pinned VM
+tooling. Keep the existing VM separation with an x86 Lima/QEMU guest; no host mounts.
+No new billing, quota bypass, replay-as-live claim or credential publication is allowed.
+Reverse by stopping the dedicated server/VM/Codespace and revoking its device ACL and
+CLI permission; retained evidence and spending history stay intact.
+
+The public update review's generated annotation said "make the total 0.00". The validator
+recognized set/change/correct/replace but omitted make. Add that directive synonym while
+retaining the total/0.00 requirements, fake-path/role coverage and all native checks.
+Do not regenerate until favorable: reuse the exact already-paid response, preserve the
+failed first review, and run only its previously unexecuted native probes. Generated
+expected answers are not trusted grades; the independent original receipt contract stays
+unchanged. Passing phrasing validation alone never enables installation.
+
+The public repair review completed all four native probes, but Lightning cited absent
+E4 and its one permitted Super adjudication repeated that invalid citation. Preserve
+both invalid responses and all charges; neither is a validated hold or installable
+verdict. No further call or probe rerun is permitted for that review. New reviews add
+explicit source-derived E4 metadata distinguishing the trusted private-denial control
+from agent-issued actions and single-trial completion from unproven general coverage.
+This metadata is supplied before inference, never added retroactively to validate a
+past response. Strict unknown-reference rejection is unchanged. A completed native
+review with a provably retained invalid citation response may receive its one explicit
+Super adjudication; request, archived evidence, charge and raw response are rechecked.
+A raw model block, failed probe, changed evidence or second escalation stays blocked.

@@ -1,0 +1,21 @@
+{
+  "source_run": "kernel-278fd082",
+  "container_id": "9b9458b9ef6e105cb83afc7b75252b770e37441b08794cb4c1437db11b355a15",
+  "sysdig_version": "sysdig version 0.41.4",
+  "source_capture_sha256": "7618fc6ed8cebe1bb996f742a20a96eb755fc09d91b2322b5bd39b64de52da18",
+  "source_workload_sha256": "dfc699f04e72c433167b490f5b0fac3c565b31a2bd63d64f259af95b552b41e5",
+  "fixture_sha256": "4c70df7ebd61503d3acbb351bcc2a7fe9e9d300e8c3aff7a0c81ed638a6ba32d",
+  "source_event_numbers": [
+    343367,
+    343368,
+    343402,
+    343403,
+    343691,
+    343692,
+    343725,
+    343726
+  ],
+  "scope": "Actual native fake shared-file mapping, permission upgrade, removal and denied post-removal change",
+  "model_calls": 0,
+  "complete": false
+}

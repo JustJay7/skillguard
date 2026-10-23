@@ -1,0 +1,42 @@
+{
+  "source_run": "kernel-e01620e0",
+  "container_id": "40306cc37632710da96e291579db40d86393fd593a55b5bb55708eab40db703e",
+  "source_artifacts": {
+    "workload.jsonl": "088140dd149de2691355194d5576d61c1390c08fcc7d15f35dff5b683c92c856",
+    "probe-console.json": "04580f6519406f4415d44d42a8275436c6d7c4f3894dfd24178b6104c3baf135",
+    "events.scap": "8020a8f4884daeaca0c8a58b7a76622552b9518fe3ca6968aff327d87273a286",
+    "fixed-probe.py": "c63f737803a6dc6c19d31e8b7eb674962d7413336d571cad6fdac5b7dd56f45e"
+  },
+  "fixture_sha256": "7952679ef631f62a6ca3b9c3219bcdab6077f340fe726b32d83b4dba3bd3289f",
+  "socket_ipc_checks": {
+    "unix_fds": [
+      3,
+      4
+    ],
+    "unix_sent": 17,
+    "unix_received": 17,
+    "unix_written": 15,
+    "unix_read": 15,
+    "pipe_fds": [
+      3,
+      4
+    ],
+    "pipe_written": 15,
+    "pipe_read": 15,
+    "udp_fd": 3,
+    "udp_target": [
+      "127.0.0.1",
+      34240
+    ],
+    "udp_errno": 89
+  },
+  "fixed_process_identity": [
+    5737,
+    1791395942855967890
+  ],
+  "tcp_metadata_refs": [
+    "sysdig:84853",
+    "sysdig:84863"
+  ],
+  "scope": "Six fixed fake IPC transfers and one unsuccessful UDP attempt; runtime TCP metadata separately; no contents/inference, no independent TCP peer or delivery proof"
+}

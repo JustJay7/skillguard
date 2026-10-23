@@ -1,0 +1,68 @@
+{
+  "source_run": "kernel-260ee2b4",
+  "container_id": "97b3d9c908f0eccf77d4b72c34731e1e781c41068a58bd65f04ed52da39faebf",
+  "source_artifacts": {
+    "workload.jsonl": "89ef29b3c71d4b6a80254ad57c955fa08db2a05134c8021d8f6d9d6eb3ca5414",
+    "probe-console.json": "9fbdda6bc2d64e8f981592548b9279ea383eb255e9c81cac8531af8b85f4baa7",
+    "events.scap": "16c602305de4f6a02ca1e4248c5e9bfcd534785b89f907597f49da288534569e",
+    "fixed-probe.py": "69fb8d2aecad77b9f256b75de7430b28e9f84b87207fb783c5c7365c7450ff0d"
+  },
+  "fixture_sha256": "1ef3caa47d5194a703cbd3d321ea85f9f846bb622d5f1a6a5b5f905424f31475",
+  "file_identity_checks": {
+    "paths": {
+      "source": "/sandbox/fixed-trace-probe/identity-source.txt",
+      "alias": "/sandbox/fixed-trace-probe/identity-hardlink.txt",
+      "renamed": "/sandbox/fixed-trace-probe/identity-renamed.txt",
+      "reused": "/sandbox/fixed-trace-probe/identity-reused.txt"
+    },
+    "observations": {
+      "original_open": {
+        "fd": 3,
+        "device_major": 0,
+        "device_minor": 56,
+        "inode": 279891
+      },
+      "original_after_rename": {
+        "fd": 3,
+        "device_major": 0,
+        "device_minor": 56,
+        "inode": 279891,
+        "bytes_read": 22,
+        "content_correct": true
+      },
+      "hardlink_read": {
+        "fd": 4,
+        "device_major": 0,
+        "device_minor": 56,
+        "inode": 279891,
+        "bytes_read": 22,
+        "content_correct": true
+      },
+      "replacement_read": {
+        "fd": 4,
+        "device_major": 0,
+        "device_minor": 56,
+        "inode": 279892,
+        "bytes_read": 25,
+        "content_correct": true
+      },
+      "original_after_replacement": {
+        "fd": 3,
+        "device_major": 0,
+        "device_minor": 56,
+        "inode": 279891,
+        "bytes_read": 22,
+        "content_correct": true
+      },
+      "reused_descriptor_read": {
+        "fd": 3,
+        "device_major": 0,
+        "device_minor": 56,
+        "inode": 279893,
+        "bytes_read": 22,
+        "content_correct": true
+      }
+    }
+  },
+  "scope": "Actual fake hardlink, rename, replacement and FD reuse controls; metadata only; no general inode generation, canonical path or lifetime proof"
+}

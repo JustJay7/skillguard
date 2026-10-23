@@ -1,0 +1,12 @@
+{
+  "project_id": "appgprj_6adb805b03d0819190bd87677071a13e",
+  "version_id": "appgprj_6adb805b03d0819190bd87677071a13e~appgver_f0b3f2d7e34c8191b32e12f926fe410c",
+  "commit_sha": "b9670bee9607cd7dbf9477b8f545e69ca0da245e",
+  "deployment_id": "appgdep_6adb80a9be84819182adcf0676f152b8",
+  "status": "succeeded",
+  "url": "https://skillguard-evidence-demo.jaymalhotra.chatgpt.site",
+  "access_mode": "public",
+  "has_live_backend": false,
+  "new_model_requests": 0,
+  "published_content": "Sanitized recorded fictional security evidence only"
+}

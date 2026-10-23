@@ -1,0 +1,21 @@
+{
+  "source_run": "kernel-684be4d4",
+  "container_id": "d4ce1fb5e2a4f357b7b9423b6d0968241b13d39820181b3e3c083fbf8678ab68",
+  "sysdig_version": "sysdig version 0.41.4",
+  "source_capture_sha256": "a79616b78a3b0f1a2dde1ca0be8d99cd5d81febbeaa9d17db924b1864fd75246",
+  "source_workload_sha256": "762962885dbf728b75992a0e754ad465b6e893a072130729d311ce29870015d6",
+  "fixture_sha256": "7205d8e436438cd1902c1317683013de5ce0cf51cf56e4d2dea8d2f26082366a",
+  "directory_open_checks": {
+    "directory_path": "/sandbox/fixed-trace-probe/directory-open-control",
+    "directory_fd": 3,
+    "directory_is_directory": true,
+    "directory_access_mode": 0,
+    "tmpfile_supported": true,
+    "tmpfile_fd": 3,
+    "tmpfile_is_regular": true,
+    "tmpfile_link_count": 0
+  },
+  "model_calls": 0,
+  "complete": false,
+  "scope": "Actual readonly directory and writable unnamed-temp-file controls; native descriptor type is wrong for true TMPFILE"
+}

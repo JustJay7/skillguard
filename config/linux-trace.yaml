@@ -1,0 +1,55 @@
+# Official image and digest from Lima v2.2.0's Debian 13 template.
+# No fallback to an unpinned daily image.
+minimumLimaVersion: 2.2.0
+vmType: vz
+arch: aarch64
+cpus: 2
+memory: 2GiB
+disk: 8GiB
+images:
+  - location: https://cloud.debian.org/images/cloud/trixie/20260712-2537/debian-13-genericcloud-arm64-20260712-2537.qcow2
+    arch: aarch64
+    digest: sha512:8543d795f2fde630eb66c492f245a8c1da19dedc636e0a8e7b3d0f95920e1a05aa911ef2d82d177d41cc53ced5fccbd2a3945d07fa5e15018914c4d864bb07ed
+mounts: []
+ssh:
+  loadDotSSHPubKeys: false
+  forwardAgent: false
+containerd:
+  system: false
+  user: false
+propagateProxyEnv: false
+portForwards:
+  - guestIP: 0.0.0.0
+    guestIPMustBeZero: false
+    guestPortRange: [1, 65535]
+    proto: any
+    ignore: true
+provision:
+  - mode: system
+    script: |
+      #!/bin/sh
+      set -eu
+      apt-get update
+      env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends strace python3 curl ca-certificates
+      install -m 0755 -d /etc/apt/keyrings
+      curl --fail --silent --show-error --location https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+      chmod a+r /etc/apt/keyrings/docker.asc
+      cat > /etc/apt/sources.list.d/docker.sources <<'DOCKER'
+      Types: deb
+      URIs: https://download.docker.com/linux/debian
+      Suites: trixie
+      Components: stable
+      Architectures: arm64
+      Signed-By: /etc/apt/keyrings/docker.asc
+      DOCKER
+      apt-get update
+      env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends docker-ce=5:29.8.2-1~debian.13~trixie docker-ce-cli=5:29.8.2-1~debian.13~trixie containerd.io=2.3.6-1~debian.13~trixie docker-compose-plugin=5.6.0-1~debian.13~trixie
+      systemctl enable --now docker
+      curl --fail --silent --show-error --location https://github.com/NVIDIA/OpenShell/releases/download/v0.1.2/openshell_0.1.2-1_arm64.deb -o /tmp/openshell_0.1.2-1_arm64.deb
+      echo '14838b811b54148060da99fd2aabe78f05c777002c0a8fc39b106e0de0ddd796  /tmp/openshell_0.1.2-1_arm64.deb' | sha256sum -c -
+      env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends /tmp/openshell_0.1.2-1_arm64.deb
+      curl --fail --silent --show-error --location https://github.com/draios/sysdig/releases/download/0.41.4/sysdig-0.41.4-aarch64.deb -o /tmp/sysdig-0.41.4-aarch64.deb
+      echo '0ddea47bf147002e072fd1647e0691ce18d094c28012da2f3c54fb676efe5a6f  /tmp/sysdig-0.41.4-aarch64.deb' | sha256sum -c -
+      install -m 0700 -d /opt/skillguard-sysdig
+      # Use the upstream standalone binary and modern BPF. No DKMS/postinstall.
+      dpkg-deb -x /tmp/sysdig-0.41.4-aarch64.deb /opt/skillguard-sysdig

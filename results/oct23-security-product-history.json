@@ -1,0 +1,113 @@
+{
+  "original_failures_retained": true,
+  "claims_reset": false,
+  "model_hold_relabelled": false,
+  "runs": [
+    {
+      "run_id": "security-product-1495f6f7",
+      "workflow_sha256": "25b50f2192f8ad859cc4006eee4c5baccd188f3cb89243e7bba33ba96d67badd",
+      "passed": true,
+      "error": null,
+      "continuation_of": "<WORKSPACE>/results/integration/security-product-17dd5468/workflow.json",
+      "repaired_decision": "held",
+      "verified_probes": 4,
+      "approval_outcome": "operator_approved_hold",
+      "after": {
+        "completed_requests": 556,
+        "estimated_cost_usd": 0.12544566,
+        "unknown_reserved_usd": 0.25,
+        "accounted_usd": 0.37544566,
+        "sha256": "01f4f4a97591f30a109a563d61879a18d14c22d819d126d217a80124e632ca0c"
+      }
+    },
+    {
+      "run_id": "security-product-17dd5468",
+      "workflow_sha256": "8b93ca45debec1e8fc7eed21239b327daaa1d8201586aa96e19f808e9a3c2200",
+      "passed": false,
+      "error": "Repaired skill has not passed the full security-review workflow",
+      "continuation_of": "<WORKSPACE>/results/integration/security-product-8d24046c/workflow.json",
+      "repaired_decision": "held",
+      "verified_probes": 4,
+      "approval_outcome": null,
+      "after": {
+        "completed_requests": 556,
+        "estimated_cost_usd": 0.12544566,
+        "unknown_reserved_usd": 0.25,
+        "accounted_usd": 0.37544566,
+        "sha256": "01f4f4a97591f30a109a563d61879a18d14c22d819d126d217a80124e632ca0c"
+      }
+    },
+    {
+      "run_id": "security-product-30b72bd1",
+      "workflow_sha256": "6e750065d0301c65219efc91232a8e87a620d77b80fa1da1402880c4a9911656",
+      "passed": false,
+      "error": "Repaired skill has not passed the full security-review workflow",
+      "continuation_of": "<WORKSPACE>/results/integration/security-product-5afbdb7c/workflow.json",
+      "repaired_decision": "held",
+      "verified_probes": 2,
+      "approval_outcome": null,
+      "after": {
+        "completed_requests": 542,
+        "estimated_cost_usd": 0.11978052,
+        "unknown_reserved_usd": 0.25,
+        "accounted_usd": 0.36978052,
+        "sha256": "d028631477767de36cbb5ad6ec0545fdd91d383579a8ee8214b11b016126af8a"
+      }
+    },
+    {
+      "run_id": "security-product-5afbdb7c",
+      "workflow_sha256": "32b5693c9cabc0e125959ee64fdb534c9b9ddfc124e12b80e0f0363db9e7613d",
+      "passed": false,
+      "error": "Repaired skill has not passed the full security-review workflow",
+      "continuation_of": "<WORKSPACE>/results/integration/security-product-b11c77ed/workflow.json",
+      "repaired_decision": "held",
+      "verified_probes": 0,
+      "approval_outcome": null,
+      "after": {
+        "completed_requests": 526,
+        "estimated_cost_usd": 0.11611782,
+        "unknown_reserved_usd": 0.1,
+        "accounted_usd": 0.21611782,
+        "sha256": "d12672dd56a1accbc515fdb6c9cdb4bfdedd28fb42c5fc0429ce5f398776a306"
+      }
+    },
+    {
+      "run_id": "security-product-8d24046c",
+      "workflow_sha256": "e0383963329b71e61f818c6f8c2a95506fda9d1c5e2334176129b66e6960cc4a",
+      "passed": false,
+      "error": "Repaired skill has not passed the full security-review workflow",
+      "continuation_of": "<WORKSPACE>/results/integration/security-product-30b72bd1/workflow.json",
+      "repaired_decision": "held",
+      "verified_probes": 4,
+      "approval_outcome": null,
+      "after": {
+        "completed_requests": 555,
+        "estimated_cost_usd": 0.12318216,
+        "unknown_reserved_usd": 0.25,
+        "accounted_usd": 0.37318216,
+        "sha256": "922cd05ffc23c71ece36732122a9844fa1c0d73107367cb27d01ecfbc66e6e48"
+      }
+    },
+    {
+      "run_id": "security-product-b11c77ed",
+      "workflow_sha256": "62f1640546d9d03c12007724137ef141285bc1a66098e42114e49378899dab38",
+      "passed": false,
+      "error": "Repaired skill has not passed the full security-review workflow",
+      "continuation_of": null,
+      "repaired_decision": "held",
+      "verified_probes": 0,
+      "approval_outcome": null,
+      "after": {
+        "completed_requests": 525,
+        "estimated_cost_usd": 0.1158126,
+        "unknown_reserved_usd": 0.1,
+        "accounted_usd": 0.2158126,
+        "sha256": "cf5b53bd582cde3a9862f70bfc6f00ac2e739e045f38dc90586c28ff6f1f250d"
+      }
+    }
+  ],
+  "public_export": {
+    "private_workspace_paths_redacted": true,
+    "original_artifact_sha256": "3a8813faa4d7d4b33c6393d4946dd8b4f5a1fe9bfebd1c8aae34010429f41b9b"
+  }
+}

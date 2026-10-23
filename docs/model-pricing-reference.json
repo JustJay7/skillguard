@@ -1,0 +1,19 @@
+{
+  "verified_date": "2026-09-29",
+  "source": "https://github.com/nebius/token-factory-cookbook/blob/main/agents/agent-cost-comparison-1/agent_cost_comparison_1.py",
+  "note": "Official cookbook estimates; confirm billing prices before benchmarks. Exact IDs also confirmed against authenticated account catalog.",
+  "usd_per_million_tokens": {
+    "nvidia/Nemotron-3_5-Lightning": {
+      "input": 0.06,
+      "output": 0.24
+    },
+    "nvidia/nemotron-3-super-120b-a12b": {
+      "input": 0.3,
+      "output": 0.9
+    },
+    "nvidia/Nemotron-3-Ultra-550b-a55b": {
+      "input": 1.0,
+      "output": 3.0
+    }
+  }
+}

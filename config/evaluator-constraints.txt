@@ -1,0 +1,4 @@
+# Compatible with pinned SkillEvaluator, Harbor and existing Semgrep 1.178.0.
+harbor==0.13.2
+fastapi==0.141.1
+opentelemetry-api==1.37.0

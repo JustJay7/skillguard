@@ -1,0 +1,25 @@
+{
+  "source_run": "kernel-5edcb88c",
+  "container_id": "3412076d0001f464ca8f2226e95ec2caffe8b898af6a92e30a2de0dc6a061754",
+  "sysdig_version": "sysdig version 0.41.4",
+  "source_capture_sha256": "5ed31606ffdd4a5c63118a79366578cd0a8af1b81909ead016375c6589f6fa90",
+  "source_workload_sha256": "a6ba86905153944e36f5f58ff4a5b10bee049aa0226b914d95f1f074451bc0d7",
+  "fixture_sha256": "91d74ad83f7ed65a852409dcaa693ca497579598e6cb91ce4375595b80f4273f",
+  "source_event_numbers": [
+    344882,
+    345028,
+    345208,
+    345271,
+    345526,
+    345725,
+    346024,
+    346148,
+    346269,
+    346539,
+    346619,
+    346659
+  ],
+  "scope": "Actual native metadata from known fake-file changes; failed pre-correction coverage trial retained",
+  "model_calls": 0,
+  "complete": false
+}

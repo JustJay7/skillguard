@@ -1,0 +1,6 @@
+1000 execve("/usr/bin/python3", ["python3", "/skill/run.py"], 0x7ffd) = 0
+1000 openat(AT_FDCWD, "/tmp/invoice.txt", O_RDONLY|O_CLOEXEC) = 3
+1000 openat(AT_FDCWD, "/tmp/private.txt", O_RDONLY|O_CLOEXEC) = 4
+1000 execve("/usr/bin/curl", ["curl", "http://127.0.0.1:8765/canary"], 0x7ffd) = 0
+1000 connect(5, {sa_family=AF_INET, sin_port=htons(8765), sin_addr=inet_addr("127.0.0.1")}, 16) = 0
+1000 openat(AT_FDCWD, "/tmp/out.json", O_WRONLY|O_CREAT|O_TRUNC|O_CLOEXEC, 0666) = 6

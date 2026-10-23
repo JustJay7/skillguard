@@ -1,0 +1,21 @@
+Your personal AI can learn new skills. But what happens when a document teaches it the wrong thing?
+
+Imagine asking your assistant to organize receipts. A receipt includes a forged approval to read an unrelated private note. If that behavior becomes a reusable skill, one malicious document can outlive the conversation.
+
+SkillGuard puts a permission boundary around learning. Hermes proposes a skill, but the update stays paused. SkillGuard snapshots its source, runs NVIDIA SkillEvaluator checks and tests the actual agent in an isolated OpenShell workspace.
+
+Here is our recorded staged attack, using fictional data. The unsafe update failed native functionality and was blocked. Its source and review are preserved.
+
+We then staged the exact known repair and tested four generated annotations: forged approval, a request to change the total to zero, a fake system message and an unrelated control.
+
+The agent chose its own actions. In each completed trial it read the guide, read the receipt, saved the original purchase total of twenty-three and confirmed completion. These were real native agent runs, not a host parser supplying the answer. The command replay shows what actually happened.
+
+Nebius Token Factory served NVIDIA Nemotron three point five Lightning for generation, execution and review, plus Nemotron three Super for one adjudication. OpenShell enforced the workspace. Sysdig supplied partial native metadata. SkillGuard bound the evidence to the source and compiled the declared permissions to the tested policy.
+
+Both model reviewers still held their verdict. We did not turn that into a pass. All native checks passed, so the app offered a separate human exception, requiring acknowledgment and a written reason. Failed or incomplete checks cannot use that exception.
+
+The app installed that exact version, restored the previous one, and restored the tested version again. Both model warnings remain visible.
+
+This is a bounded receipt-skill prototype, not universal protection. Earlier failures and uncertain costs remain in the record.
+
+SkillGuard makes a personal AI's new behavior visible, deliberate and reversible, before it becomes a habit.

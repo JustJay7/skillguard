@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "url": "https://skillguard-evidence-demo.jaymalhotra.chatgpt.site",
+  "browser": "in-app browser",
+  "recorded_evidence_label_visible": true,
+  "stages_verified": 4,
+  "probe_switch_verified": true,
+  "model_hold_and_policy_visible": true,
+  "human_exception_and_rollback_visible": true,
+  "viewport_observed": [
+    717,
+    804
+  ],
+  "desktop_wide_and_phone_narrow": "not separately checked",
+  "screenshots": [
+    "results/public-demo-narrow.png",
+    "results/public-demo-decision.png"
+  ],
+  "local_live_app_visual_qa": "still unverified; earlier local-page browser refusal preserved"
+}

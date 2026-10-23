@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "method": "Offline DOM execution of packaged JavaScript and exact portable evidence",
+  "stages_verified": 4,
+  "probe_views_verified": 4,
+  "fetches": 1,
+  "post_requests": 0,
+  "model_calls": 0,
+  "browser_visual_qa": "unverified"
+}

@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["skillguard*"]
+
+[tool.setuptools.package-data]
+"skillguard.ui" = ["*.html", "*.js", "*.css"]
+
+[project]
+name = "skillguard"
+version = "0.1.0"
+description = "Behavioral trust gate for self-improving personal-agent skills"
+requires-python = ">=3.12"
+dependencies = [
+  "httpx==0.28.1",
+  "python-dotenv==1.2.3",
+  "PyYAML==6.0.3",
+  "openai==2.54.0",
+  "requests==2.34.2",
+]
+
+[project.optional-dependencies]
+live = ["requests>=2.32", "python-dotenv>=1.0", "httpx==0.28.1", "psutil==7.2.2"]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.8",
+  "httpx==0.28.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+  "live: requires live external services or credentials",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+# Byte-exact inherited parser: the guide-only study and source-digest test require it unchanged.
+"skills/repaired*/receipt-organizer/scripts/parse_receipt.py" = ["E501", "F841", "I001", "UP015"]

@@ -1,0 +1,48 @@
+{
+  "hermes-agent": {
+    "url": "https://github.com/NousResearch/hermes-agent.git",
+    "commit": "a9a54245b2311c705d29050b7f9868c015917aec"
+  },
+  "SkillEvaluator": {
+    "url": "https://github.com/NVIDIA/SkillEvaluator.git",
+    "commit": "33eb9dc74a09280bebf6fb4c921d290a0f874713"
+  },
+  "OpenShell": {
+    "url": "https://github.com/NVIDIA/OpenShell",
+    "release": "v0.1.2",
+    "source_commit": "6648bd0c290efbc41ba131ee9831ee45cd431f94"
+  },
+  "SkillSpector": {
+    "url": "https://github.com/NVIDIA/SkillSpector.git",
+    "commit": "ec6633e3eaf94d9884c0fe5b14a4de7a50ab5a62"
+  },
+  "contree-sdk": {
+    "url": "https://github.com/nebius/contree-sdk.git",
+    "commit": "38d973120ecdb8e459ab7ee375704c7aef54d035"
+  },
+  "contree-client": {
+    "version": "0.2.1"
+  },
+  "Semgrep": {
+    "version": "1.178.0"
+  },
+  "Gitleaks": {
+    "version": "8.30.1"
+  },
+  "Sysdig": {
+    "url": "https://github.com/draios/sysdig",
+    "release": "0.41.4",
+    "source_commit": "7f09646f010f257f3854bc7a6cfbf432c85897d3",
+    "linux_arm64_asset": "sysdig-0.41.4-aarch64.deb",
+    "asset_sha256": "0ddea47bf147002e072fd1647e0691ce18d094c28012da2f3c54fb676efe5a6f",
+    "mode": "Standalone binary extracted without DKMS/postinstall; native modern-BPF"
+  },
+  "Harbor": {
+    "version": "0.13.2",
+    "source": "installed pinned native SkillEvaluator tier3 extra"
+  },
+  "Docker Compose guest": {
+    "version": "5.6.0",
+    "package": "docker-compose-plugin 5.6.0-1~debian.13~trixie"
+  }
+}

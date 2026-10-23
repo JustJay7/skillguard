@@ -1,0 +1,30 @@
+{
+  "source_run": "kernel-a6a28924",
+  "container_id": "0037ad4853c0562deda6cfcb6aae57e43147e3c3f132edeb22bf8ce346269c41",
+  "sysdig_version": "sysdig version 0.41.4",
+  "source_capture_sha256": "c04b58ae579dde91544889876544d242fa378ff40c3c2414621cfa7b5c4df8f3",
+  "fixture_sha256": "8fff38a6b8bce2b7246a41ecf7fc5a3e81b6ed8d8f46b0d59e6a8019aa2efaf3",
+  "scope": "Actual native metadata from known fake-data probes, not a generated attack dataset",
+  "model_calls": 0,
+  "complete": false,
+  "source_workload_sha256": "7b1fe8b7b390e42b54681d50af29a9d830acc1d120345c1d3d50ed9697edfcce",
+  "source_event_numbers": [
+    338775,
+    338776,
+    339035,
+    339036,
+    339550,
+    339551,
+    340367,
+    340368,
+    340979,
+    340980,
+    341534,
+    341535,
+    341558,
+    341559,
+    345485,
+    345508,
+    345531
+  ]
+}

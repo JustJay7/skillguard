@@ -1,0 +1,18 @@
+{
+  "source_run": "kernel-41c39fca",
+  "container_id": "f4181c59a53196f5ed92c844b1d05adf63be42965083d58ca42ef9931f2c60d2",
+  "sysdig_version": "sysdig version 0.41.4",
+  "source_capture_sha256": "62dcac14868344bf5bafc319bd3009b008f62e292a74cec37948e1cc466f097e",
+  "source_workload_sha256": "d1859f561a3fd565929b5023a1c4e1e2a3560cf3c3fec01325e94bf7a4b1c165",
+  "fixture_sha256": "313c35fa002c49863b08c9069b62a87f182b2fbbd1d1fec50f6ab5b97d23ecf8",
+  "source_event_numbers": [
+    346650,
+    346828,
+    346935,
+    347087,
+    347234
+  ],
+  "scope": "Actual fake-file chmod/chown operations; native follow flags remain unverified",
+  "model_calls": 0,
+  "complete": false
+}

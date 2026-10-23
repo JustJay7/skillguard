@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SkillGuard · Review a learned skill</title><link rel="stylesheet" href="/style.css"><script defer src="/app.js"></script></head>
+<body><main><header><strong>SkillGuard</strong><span>Personal AI · Local review</span></header>
+<p class="eyebrow">Review before learning</p><h1>Your assistant learned a receipt skill.</h1>
+<p class="lead">It should organize your expenses. A receipt can also contain instructions that trick the assistant into reading unrelated private files. This review shows what happened in the fictional test.</p>
+<div id="error" role="alert" hidden></div><section class="verdict"><div><span id="status">Checking saved evidence…</span><h2 id="result">Loading review</h2><p id="action"></p></div><button id="refresh">Refresh evidence</button></section>
+<div class="grid"><section><h2>What the agent actually did</h2><div id="outcomes"></div><p class="note">The private note was a fake canary. The fresh agent read it before loading the skill, so the read is not attributed to the parser.</p></section>
+<section><h2>What enforcement changed</h2><div id="enforcement"></div><p class="note">The same retained commands were replayed without a new model call. A denied read does not prove the agent will resist every attack.</p></section></div>
+<section><h2>Behavioral comparison</h2><p id="behavior-scope" class="note"></p><div id="behavior"></div><p class="note">This comparison uses an empty Python control. It is not a before-and-after comparison with an installed previous skill.</p></section>
+<section><h2>Why learning is blocked</h2><ul id="reasons"></ul></section>
+<section><h2>Build status</h2><div id="features"></div><p id="scope" class="note"></p></section>
+<details><summary>Evidence history and identity</summary><p id="identity"></p><ol id="history"></ol></details>
+<footer>Read-only review · fictional test data · no approval or activation button</footer></main></body></html>

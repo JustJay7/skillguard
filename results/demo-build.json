@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "command": ".venv/bin/python -m scripts.build_demo",
+  "archive": "dist/skillguard-demo.zip",
+  "sha256": "e1ed8354070ac3215116d7e5e5737fc92cd1fe59973738c639496ad9f5d93b36",
+  "bytes": 10911,
+  "files": {
+    "index.html": "fd33abc824cc97a629e0143515c4c294dba197261e8f3497c0983ed9d9222f04",
+    "demo.js": "bc4fe408cec2d35a853bac538c5f741ce93195919d04ee61d5668e7fc9a60f90",
+    "demo.css": "d9a6f62fc751b0101465555b426fbd7b697d0df663943fdce5c5749499e4519d",
+    "evidence.json": "ef72ae01d46d2df050077842e4045f582917bc2a410bb4cc828c91e7f98755b1",
+    "LICENSE": "6ecba2b860e3dcc3c68b0eeebb0b03774e093c78eb50fb4d8c0ea0cd9fe12801",
+    "README.txt": "5fd642cb72f043c3a04ba1b5791fd92ec6dd5c9f7ceba1ae18fd3d8fbd89cb42"
+  },
+  "source_workflow": "security-product-1495f6f7",
+  "public_upload_performed": false,
+  "new_model_requests": 0,
+  "browser_visual_qa": "unverified"
+}

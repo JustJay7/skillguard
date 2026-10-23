@@ -1,0 +1,14 @@
+{
+  "source_run": "kernel-8eeedeeb",
+  "container_id": "afb4dc04142f66b184ed2864019228ddbd8a1ccd90afe9648aef37bee310a4af",
+  "sysdig_version": "sysdig version 0.41.4",
+  "source_capture_sha256": "6a03f1e26c91cb05e09e134af47c250286d7002ec5e9264a7fd3ccd99d7ff64c",
+  "source_workload_sha256": "fdae5c71e0016e8ca3a7d891d18fe4bc8c2e2c6328b3abcae6f7c015d593d76a",
+  "fixture_sha256": "cb5e5897f4160fdff43235f0b64ba4ad2f53b733e2b3337b32af23f914b5ec67",
+  "source_event_numbers": [
+    202286
+  ],
+  "scope": "Actual ordinary Python directory open; ambiguous native TMPFILE/create flags, not a safety result",
+  "model_calls": 0,
+  "complete": false
+}

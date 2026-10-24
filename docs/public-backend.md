@@ -73,7 +73,9 @@ and excluded from source releases. Never put the code in a URL or public README.
 
 `python -m scripts.public_backend_check` exercises the public HTTPS actions with the
 real native runtime and bounded model calls. It refuses an existing run record. Its
-explicit observation continuation never repeats a model action. Its separate validation
+explicit observation continuation never repeats a model action, including after a
+client-side observation timeout. The observer allows two hours for the bounded native
+preflight/live sequence; each individual native worker retains its own timeout. Its separate validation
 continuation preserves the first failure and reuses the exact paid test-generation
 response after a fixture-wording correction; earlier passed agent trials are retained.
 Neither continuation counts as a fresh independent attack benchmark.
@@ -94,3 +96,17 @@ App trials require current candidate-bound native/static checks and an exact cap
 fake-key preflight on the executing host. Legacy standalone research trials retain their
 additional historical recorded-replay prerequisite. A copied historical result cannot
 satisfy the app's fresh preflight, and no model request is made by template creation.
+
+The first independent cloud review retained a real completion failure: all four files
+were correct with no observed unsafe actions, but one agent exhausted six requests
+before native confirmation. New app proposals use the explicit eight-request completion
+profile; old six-request proposals, claims and comparison metrics remain unchanged.
+The one profile transition records the previous review/hash and exposes that history to
+the evidence reviewer. Native failure/unsafe actions still block installation. This is
+a prospective execution-bound change, not a new skill repair or blind benchmark.
+
+A Codespace resume can clear its forwarded port. Register port 8770 using the documented
+GitHub CLI port-forward command, restore its public visibility, then close that temporary
+local registration connection. Verify `/health` over the public URL afterward: the cloud
+app must remain reachable with `depends_on_mac=false`. Port registration does not turn
+the Mac into the backend. The operator's private launcher performs these checks.

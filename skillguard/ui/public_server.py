@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import secrets
 import signal
 import threading
@@ -258,6 +259,12 @@ def main():
                         default='local_tunnel')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]
+    results = root / 'results'
+    if results.is_symlink():
+        raise ValueError('Private operator results directory required')
+    results.mkdir(exist_ok=True, mode=0o700)
+    results.chmod(0o700)
+    os.umask(0o077)
     if args.access_file.is_symlink() or args.access_file.stat().st_mode & 0o077:
         raise ValueError('Regular access-code file with private permissions required')
     app = Application(CoreWorkspace(root, root / 'results/public-core'))

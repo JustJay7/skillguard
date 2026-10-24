@@ -172,3 +172,23 @@ def test_compatibility_profile_still_bounds_requests_before_sdk_initialization(t
         with pytest.raises(ValueError, match='limits'):
             asyncio.run(enter())
     assert account.calls == 0 and not (tmp_path / 'cost.csv').exists()
+
+
+@pytest.mark.parametrize('profile,compatibility,allowed', [(None, True, False),
+    ('unknown', True, False), ('receipt-app-eight-request-2026-10-23', False, False),
+    ('receipt-app-eight-request-2026-10-23', True, True)])
+def test_eight_request_native_client_requires_the_explicit_app_profile(tmp_path, profile,
+                                                                    compatibility, allowed):
+    account = budget(tmp_path, max_calls=8)
+
+    async def enter():
+        async with native_harbor_client(account, api_key='fake-offline-key',
+                upstream=httpx.MockTransport(lambda request: pytest.fail('No network call')),
+                compatibility_probe=compatibility, app_execution_profile=profile) as options:
+            assert options['num_retries'] == 0 and options['max_tokens'] == 2000
+    if allowed:
+        asyncio.run(enter())
+    else:
+        with pytest.raises(ValueError):
+            asyncio.run(enter())
+    assert account.calls == 0

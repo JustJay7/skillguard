@@ -11,7 +11,8 @@ import httpx
 
 
 def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
-             resume_model=False, hosting_folder=None) -> dict:
+             resume_model=False, resume_completion_profile=False, resume_runner_start=False,
+             hosting_folder=None) -> dict:
     folder = (hosting_folder or root / 'results/public-hosting').resolve()
     if not folder.is_relative_to((root / 'results').resolve()):
         raise ValueError('Operator-owned local hosting configuration required')
@@ -23,7 +24,9 @@ def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
         raise ValueError('Configured public HTTPS test endpoint required')
     mode = 'codespaces' if parsed.hostname.endswith('.app.github.dev') else 'local_tunnel'
     target = folder / 'acceptance.json'
-    if target.exists() and not (resume_first_review or resume_validation or resume_model):
+    if target.exists() and not (resume_first_review or resume_validation
+                                or resume_model or resume_completion_profile
+                                or resume_runner_start):
         raise ValueError('Preserve the prior run; do not retry paid trials automatically')
     result = {'passed': False, 'url': origin, 'hosting_mode': mode,
               'fully_cloud_hosted': mode == 'codespaces', 'steps': []}
@@ -32,7 +35,7 @@ def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
         if (result.get('steps') != [{'action': 'repaired', 'status': 'done'}]
                 or result.get('running_action') != 'review_security'
                 or result.get('error_type') not in {
-                    'RemoteProtocolError', 'ConnectError', 'ReadTimeout'}):
+                    'RemoteProtocolError', 'ConnectError', 'ReadTimeout', 'TimeoutError'}):
             raise ValueError('Only the interrupted first-review observer may resume')
         archive = folder / 'acceptance-observer-interrupted.json'
         if archive.exists():
@@ -82,6 +85,58 @@ def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
             'generation': 'Reuse the exact paid response; no regeneration'}
         result['url'] = origin
 
+    profile_preflight_recovery = False
+    if resume_completion_profile:
+        result = json.loads(target.read_text())
+        current_review = result.get('first_review', {})
+        profile_preflight_recovery = bool(
+            current_review.get('execution_profile_change')
+            and current_review.get('model_requests') ==
+                current_review.get('completed_model_requests') == 0
+            and current_review.get('verified_probes') == 0
+            and current_review.get('error') == ('Partial paid review requires explicit '
+                'continuation; completed probes will not be silently rerun'))
+        archive = folder / ('acceptance-profile-zero-call-preflight.json'
+                            if profile_preflight_recovery
+                            else 'acceptance-six-request-profile.json')
+        if archive.exists():
+            raise ValueError('Completion-profile transition already attempted')
+        if profile_preflight_recovery:
+            result['preserved_zero_call_preflight'] = current_review
+        else:
+            probes = current_review.get('probes', [])
+            if (result.get('steps') != [{'action': n, 'status': 'done'}
+                                       for n in ('repaired', 'review_security')]
+                    or result.get('error_type') != 'ValueError' or len(probes) != 4
+                    or not all(p.get('maximum_model_requests') == 6 and p.get('functional_passed')
+                               and not p.get('private_open_attempts')
+                               and not p.get('terminal_fake_canary_disclosure') for p in probes)
+                    or not any(not p.get('agent_completion_confirmed') for p in probes)):
+                raise ValueError('Only the retained six-request completion failure may transition')
+            result['prior_profile_review'] = current_review
+            result['completion_profile_change'] = {'old_bound': 6, 'new_bound': 8,
+                'old_claims_modified': False,
+                'scope': 'New bounded deployment trials, not a benchmark'}
+        result.pop('error_type', None)
+        result.pop('error', None)
+
+    if resume_runner_start:
+        result = json.loads(target.read_text())
+        review = result.get('first_review', {})
+        incomplete = review.get('incomplete_probe', {})
+        if (review.get('verified_probes') != 0
+                or review.get('error') != (
+                    'Native probe incomplete; retained evidence requires review')
+                or incomplete.get('model_requests') != 0
+                or incomplete.get('native_run') is not None):
+            raise ValueError('Only the exact zero-agent runner startup failure may continue')
+        archive = folder / ('acceptance-zero-agent-' + review['run_id'] + '.json')
+        if archive.exists():
+            raise ValueError('Runner-start continuation already attempted')
+        result.setdefault('preserved_zero_agent_failures', []).append(review)
+        result.pop('error_type', None)
+        result.pop('error', None)
+
     def save():
         target.write_text(json.dumps(result, indent=2) + '\n')
 
@@ -117,7 +172,9 @@ def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
                     'X-SkillGuard-Origin': origin,
                     'X-SkillGuard-CSRF': current['csrf']}, json={'action': name, **payload})
                 response.raise_for_status()
-            deadline = time.monotonic() + 1800
+            # Eight native preflight/live runs can each take up to 600 seconds.
+            # This is observation only; the server owns execution and never retries it.
+            deadline = time.monotonic() + 7200
             while time.monotonic() < deadline:
                 current = state()
                 job = current.get('job') or {}
@@ -152,10 +209,23 @@ def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
 
         try:
             current = state()
-            if not (resume_first_review or resume_validation or resume_model) and (
+            if not (resume_first_review or resume_validation or resume_model
+                    or resume_completion_profile or resume_runner_start) and (
                     current['active'] or any(r['pending'] for r in current['reviews'])):
                 raise ValueError('Public acceptance requires an empty dedicated workspace')
-            if resume_model:
+            if resume_runner_start:
+                review = pending(current)
+                if not review['security'].get('can_resume'):
+                    raise ValueError('Source-bound zero-agent runner recovery unavailable')
+                archive.write_bytes(target.read_bytes())
+                current = action('resume_security', review_id=review['id'])
+            elif resume_completion_profile:
+                review = pending(current)
+                if review['security'].get('can_change_completion_profile') is not True:
+                    raise ValueError('Source-bound completion-profile transition unavailable')
+                archive.write_bytes(target.read_bytes())
+                current = action('review_security', review_id=review['id'])
+            elif resume_model:
                 first = result['first_installation']
                 review = pending(current)
                 if review['security'].get('can_escalate') is not True:
@@ -220,11 +290,16 @@ if __name__ == '__main__':
     group.add_argument('--resume-first-review', action='store_true')
     group.add_argument('--resume-validation', action='store_true')
     group.add_argument('--resume-model', action='store_true')
+    group.add_argument('--resume-completion-profile', action='store_true')
+    group.add_argument('--resume-runner-start', '--resume-zero-agent',
+                       dest='resume_runner_start', action='store_true')
     parser.add_argument('--hosting-folder', type=Path)
     args = parser.parse_args()
     result = workflow(Path(__file__).resolve().parents[1],
                       resume_first_review=args.resume_first_review,
                       resume_validation=args.resume_validation, resume_model=args.resume_model,
+                      resume_completion_profile=args.resume_completion_profile,
+                      resume_runner_start=args.resume_runner_start,
                       hosting_folder=args.hosting_folder)
     print(json.dumps({k: result[k] for k in ('passed', 'url', 'hosting_mode',
                                            'rollback_verified')}, indent=2))

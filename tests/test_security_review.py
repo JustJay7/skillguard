@@ -460,3 +460,128 @@ def test_invalid_citation_has_one_grounded_adjudication_and_no_probe_rerun(
         assert len(calls) == 1 and calls[0]['E5']['value']['validation_error'] == prior['error']
         with pytest.raises(ValueError):
             module.escalate(w, rid)
+
+
+@pytest.mark.parametrize('fault', [None, 'private', 'functional', 'bound', 'source',
+                                  'prior_block', 'consumed'])
+def test_completion_profile_transition_never_overrides_unsafe_or_changed_evidence(workspace,
+                                                                                fault):
+    from skillguard.security_review import can_accept_hold, can_change_completion_profile
+
+    w = workspace
+    rid, data = held_review(w)
+    for p in data['probes']:
+        p.update(maximum_model_requests=6, functional_passed=True,
+                 agent_completion_confirmed=True)
+    data['probes'][2].update(agent_completion_confirmed=False, agent_task_passed=False)
+    if fault == 'private':
+        data['probes'][2]['private_open_attempts'] = ['observed denied read']
+    elif fault == 'functional':
+        data['probes'][2]['functional_passed'] = False
+    elif fault == 'bound':
+        data['probes'][2]['maximum_model_requests'] = 8
+    elif fault == 'source':
+        data['candidate_sha256'] = 'changed'
+    elif fault == 'prior_block':
+        w.store._append(rid, 'security_review', {**data, 'decision': 'blocked'})
+    elif fault == 'consumed':
+        w.store._append(rid, 'security_execution_profile_change', {'prior_run_id': 'preserved'})
+    w.store._append(rid, 'security_review', data)
+    review = w.store.get(rid)
+    assert can_change_completion_profile(review) is (fault is None)
+    assert not can_accept_hold(review)
+
+
+def test_explicit_profile_transition_reaches_new_trials_without_erasing_old_review(workspace,
+                                                                                monkeypatch):
+    from skillguard.security_review import run
+    from tests.test_probe_claim import ledger
+
+    w = workspace
+    rid, data = held_review(w)
+    for p in data['probes']:
+        p.update(maximum_model_requests=6, functional_passed=True,
+                 agent_completion_confirmed=True)
+    data['probes'][2].update(agent_completion_confirmed=False, agent_task_passed=False)
+    data['run_id'] = 'preserved-six-request-failure'
+    w.store._append(rid, 'security_review', data)
+    ledger(w.root / 'results/cost_log.csv', [])
+    calls = []
+
+    def stop_before_inference(*args):
+        calls.append('new trials reached')
+        raise ValueError('offline stop before inference')
+
+    monkeypatch.setattr('skillguard.security_review.generate', stop_before_inference)
+    result = run(w, rid)
+    assert calls == ['new trials reached']
+    assert result['error'] == 'offline stop before inference'
+    assert result['model_requests'] == 0
+    assert result['execution_profile_change']['prior_run_id'] == data['run_id']
+    assert any(e['kind'] == 'security_review' and e['data'].get('run_id') == data['run_id']
+               for e in w.store.get(rid)['history'])
+
+
+@pytest.mark.parametrize('fault', [None, 'paid', 'preflight', 'started', 'hash'])
+def test_runner_start_recovery_requires_no_agent_or_preflight_execution(tmp_path, fault):
+    from skillguard.security_review import verify_runner_start_recovery
+
+    folder = tmp_path / 'results/integration/failed-start'
+    folder.mkdir(parents=True)
+    value = {'status': 'failed', 'model_requests': 0, 'error_type': 'RuntimeError',
+             'runner_stopped': True}
+    if fault == 'paid':
+        value['model_requests'] = 1
+    elif fault == 'preflight':
+        value['preflight'] = 'already-ran'
+    elif fault == 'started':
+        value['live_run'] = 'already-live'
+    raw = json.dumps(value).encode()
+    (folder / 'workflow.json').write_bytes(raw)
+    (folder / 'vm-start.txt').write_bytes(b'known failed host startup')
+    previous = {'verified_probes': 0, 'probes': [], 'incomplete_probe': {
+        'workflow_run': folder.name, 'model_requests': 0, 'native_run': None}}
+    recovery = {'workflow_sha256': 'changed' if fault == 'hash' else digest(raw),
+                'vm_start_sha256': digest((folder / 'vm-start.txt').read_bytes())}
+    if fault:
+        with pytest.raises(ValueError, match='zero-agent'):
+            verify_runner_start_recovery(tmp_path, previous, recovery)
+    else:
+        verify_runner_start_recovery(tmp_path, previous, recovery)
+
+
+@pytest.mark.parametrize('fault', [None, 'live', 'cost', 'error', 'hash'])
+def test_keyless_profile_recovery_rejects_any_live_or_unmatched_preflight(tmp_path, fault):
+    from skillguard.models.bounded_transport import APP_COMPLETION_PROFILE
+    from skillguard.security_review import verify_runner_start_recovery
+
+    folder = tmp_path / 'results/integration/workflow'
+    preflight = tmp_path / 'results/integration/keyless'
+    folder.mkdir(parents=True)
+    (preflight / 'native-job').mkdir(parents=True)
+    workflow = {'status': 'failed', 'model_requests': 0, 'error_type': 'ValueError',
+                'runner_stopped': True, 'preflight': 'keyless'}
+    (folder / 'workflow.json').write_text(json.dumps(workflow))
+    (folder / 'vm-start.txt').write_text('ready before the keyless mismatch')
+    report = {'mode': 'live' if fault == 'live' else 'offline',
+              'maximum_model_requests': 8, 'model_requests': 1 if fault == 'cost' else 0,
+              'app_execution_profile': APP_COMPLETION_PROFILE}
+    controller = {'mode': 'offline', 'error_type': 'ValueError', 'offline_error':
+        'other error' if fault == 'error' else
+        'ValueError: Native Harbor probe exceeds the current aggregate/request limits\n'}
+    (preflight / 'report.json').write_text(json.dumps(report))
+    (preflight / 'native-job/controller-result.json').write_text(json.dumps(controller))
+    previous = {'verified_probes': 0, 'probes': [], 'incomplete_probe': {
+        'workflow_run': folder.name, 'model_requests': 0, 'native_run': None}}
+    recovery = {'reason': 'keyless_controller_profile_mismatch',
+        'workflow_sha256': digest((folder / 'workflow.json').read_bytes()),
+        'vm_start_sha256': digest((folder / 'vm-start.txt').read_bytes()),
+        'preflight_sha256': 'changed' if fault == 'hash' else
+            digest((preflight / 'report.json').read_bytes()),
+        'controller_result_sha256': digest(
+            (preflight / 'native-job/controller-result.json').read_bytes())}
+    if fault:
+        with pytest.raises(ValueError, match='keyless'):
+            verify_runner_start_recovery(tmp_path, previous, recovery)
+    else:
+        verify_runner_start_recovery(tmp_path, previous, recovery)

@@ -34,7 +34,10 @@ def verify_live_trial(report: dict, artifacts: dict[str, bytes], parser: bytes |
         raise ValueError('Native live trial identity/completion differs')
     options = agent.get('kwargs', {})
     limit = report.get('maximum_model_requests', 4)
-    if type(limit) is not int or limit not in {4, 6} or (limit == 6 and (
+    from skillguard.models.bounded_transport import probe_request_limit
+
+    probe_request_limit(limit, report.get('app_execution_profile'))
+    if (limit == 8 and not report.get('review_target')) or (limit >= 6 and (
             openshell_environment_sha256 is None or report.get('frontmatter_compat') is not True
             or (report.get('native_skill_discovery') is not True and not learning_mode))):
         raise ValueError('Native live trial request-bound profile differs')

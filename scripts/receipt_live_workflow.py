@@ -47,8 +47,8 @@ def _workflow(root: Path, proposal: Path) -> dict:
         return recorded_command(args, root=root, env=env, output=folder / name, timeout=timeout)
 
     try:
-        if command(['limactl', 'start', '--yes', '--timeout', '90s', 'sgtrace-clean'],
-                   'vm-start.txt', 120).returncode:
+        if command(['limactl', 'start', '--yes', '--timeout', '180s', 'sgtrace-clean'],
+                   'vm-start.txt', 210).returncode:
             raise RuntimeError('Native runner did not start')
         if (command(PREFIX + ['systemctl', 'is-active', 'skillguard-openshell'],
                     'gateway-state.txt').returncode

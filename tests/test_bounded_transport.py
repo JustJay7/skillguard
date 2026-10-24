@@ -112,3 +112,16 @@ def test_selected_super_model_is_costed_and_other_model_requests_are_refused(tmp
     row = list(csv.DictReader(budget.ledger.open()))[0]
     assert row["model"] == model
     assert float(row["estimated_cost_usd"]) == pytest.approx(0.000048)
+
+
+def test_provider_ledger_stays_private_with_permissive_process_umask(tmp_path):
+    import os
+    import stat
+
+    budget = AgentCallBudget(tmp_path / 'cost.csv', tmp_path / 'responses')
+    previous = os.umask(0)
+    try:
+        budget.reserve()
+    finally:
+        os.umask(previous)
+    assert stat.S_IMODE(budget.ledger.stat().st_mode) == 0o600

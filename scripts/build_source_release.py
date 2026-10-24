@@ -17,7 +17,8 @@ EVIDENCE = {'oct23-security-product-verification.json', 'oct23-security-product-
             'oct23-release-tests.txt', 'demo-build.json', 'demo-render-verification.json',
             'public-demo-deployment.json', 'public-demo-browser-verification.json',
             'public-source-deployment.json', 'public-demo-http-verification.json',
-            'oct23-release-verification.json'}
+            'oct23-release-verification.json', 'oct23-cloud-backend-verification.json',
+            'oct23-cloud-release-tests.txt'}
 
 
 def build(root: Path) -> dict:

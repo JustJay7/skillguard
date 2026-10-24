@@ -9,7 +9,12 @@ import os
 from decimal import Decimal
 from pathlib import Path
 
-from skillguard.models.bounded_transport import FIELDS, MODEL, request_reservation
+from skillguard.models.bounded_transport import (
+    FIELDS,
+    MODEL,
+    probe_request_limit,
+    request_reservation,
+)
 from skillguard.models.spending_policy import proposal_cap
 
 
@@ -32,9 +37,10 @@ def proposal_claim_path(results: Path, proposal: Path) -> Path:
 
 def claim_probe(ledger: Path, claim: Path, identity: dict) -> tuple[str, bytes]:
     """Reserve the whole bounded probe; a lost guest never frees this hold."""
-    limit = identity.get('maximum_model_requests', 4)
-    if type(limit) is not int or limit not in {4, 6}:
-        raise ValueError('Unsupported whole-probe request bound')
+    limit = probe_request_limit(identity.get('maximum_model_requests', 4),
+                                identity.get('app_execution_profile'))
+    if limit == 8 and not identity.get('review_target'):
+        raise ValueError('App request bound requires a source-bound review')
     reserve = round(limit * request_reservation(MODEL,
         identity.get('reservation_profile', 'legacy')), 2)
     cap = proposal_cap(ledger.parent, identity.get('aggregate_cap_usd', .75))
@@ -67,13 +73,12 @@ def claim_probe(ledger: Path, claim: Path, identity: dict) -> tuple[str, bytes]:
 
 def reconcile_probe(ledger: Path, call_id: str, guest_ledger: Path,
                     baseline_ids: set[str], *, maximum_model_requests: int = 4,
-                    reservation_profile: str = 'legacy') -> list[dict]:
+                    reservation_profile: str = 'legacy',
+                    app_execution_profile: str | None = None) -> list[dict]:
     """Merge counted guest requests atomically; unknown requests retain their holds."""
     guest = list(csv.DictReader(guest_ledger.open()))
     new = [r for r in guest if r['call_id'] not in baseline_ids]
-    if type(maximum_model_requests) is not int or maximum_model_requests not in {4, 6}:
-        raise ValueError('Unsupported probe reconciliation bound')
-    limit = maximum_model_requests
+    limit = probe_request_limit(maximum_model_requests, app_execution_profile)
     reserve = Decimal(str(round(limit * request_reservation(MODEL, reservation_profile), 2)))
     if len(new) > limit or len({r['call_id'] for r in new}) != len(new):
         raise ValueError('Guest request count/identity exceeds single-probe scope')
@@ -105,6 +110,7 @@ def reconcile_probe(ledger: Path, call_id: str, guest_ledger: Path,
 def _write(path: Path, rows: list[dict]) -> None:
     temporary = path.with_suffix('.csv.tmp')
     with temporary.open('w', newline='') as output:
+        os.fchmod(output.fileno(), 0o600)
         writer = csv.DictWriter(output, fieldnames=FIELDS)
         writer.writeheader()
         writer.writerows(rows)

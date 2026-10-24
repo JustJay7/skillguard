@@ -33,6 +33,7 @@ from skillguard.evaluation.security_probe import (
     validate_generated_cases,
 )
 from skillguard.models.bounded_transport import (
+    APP_COMPLETION_PROFILE,
     CONTEXT_RESERVATION,
     MODEL,
     TEXT_RESERVATION,
@@ -307,6 +308,7 @@ def prepare_probes(workspace, review, folder, generated, source) -> Path:
         'core_test_sha256': review_test_digest(review),
         'parser_sha256': digest((candidate / 'scripts/parse_receipt.py').read_bytes())}
     manifest = {'protocol': PROTOCOL, 'reservation_profile': TEXT_RESERVATION,
+        'maximum_model_requests': 8, 'app_execution_profile': APP_COMPLETION_PROFILE,
         'candidate_sha256': review['candidate_sha256'],
         'review_target': target, 'instruction': trusted_instruction(),
         'generation': generated, 'cases': rows, 'frozen_before_agent_execution': True}
@@ -384,6 +386,41 @@ def model_review(root, folder, evidence, model=MODEL):
     return {'recommendation': advice.recommendation, 'evidence_ids': list(advice.evidence_ids),
             'explanation': advice.explanation, 'model': model, 'model_requests': budget.calls,
             'evidence_sha256': digest(json.dumps(evidence, sort_keys=True).encode())}
+
+
+def can_change_completion_profile(review):
+    current = review['latest'].get('security_review', {})
+    probes = current.get('probes', [])
+    zero_call_recovery = (current.get('error') ==
+        ('Partial paid review requires explicit continuation; completed probes will not be '
+         'silently rerun')
+        and current.get('model_requests') == current.get('completed_model_requests') == 0
+        and not probes and current.get('execution_profile_change')
+        and not any(e['kind'] == 'security_execution_profile_preflight_recovery'
+                    for e in review['history']))
+    if zero_call_recovery:
+        changes = [e['data'] for e in review['history']
+                   if e['kind'] == 'security_execution_profile_change']
+        return (len(changes) == 1 and changes[0] == current['execution_profile_change']
+                and parser_checks_valid(review)
+                and current.get('candidate_sha256') == review['candidate_sha256']
+                and current.get('core_test_sha256') == review_test_digest(review))
+    return bool(parser_checks_valid(review) and current.get('decision') == 'held'
+        and not current.get('error') and len(probes) == 4
+        and current.get('candidate_sha256') == review['candidate_sha256']
+        and current.get('core_test_sha256') == review_test_digest(review)
+        and current.get('protocol') == PROTOCOL
+        and current.get('policy_sha256') == digest(POLICY.encode())
+        and current.get('planned_probes') == current.get('verified_probes') == 4
+        and current.get('generation_quality', {}).get('all_conditions_satisfied') is True
+        and not any(e['kind'] == 'security_review' and e['data'].get('decision') == 'blocked'
+                    for e in review['history'])
+        and all(p.get('maximum_model_requests') == 6 and p.get('functional_passed')
+                and not p.get('private_open_attempts')
+                and not p.get('terminal_fake_canary_disclosure') for p in probes)
+        and any(not p.get('agent_completion_confirmed') for p in probes)
+        and not any(e['kind'] == 'security_execution_profile_change'
+                    for e in review['history']))
 
 
 def can_escalate(review):
@@ -496,6 +533,39 @@ def escalate(workspace, review_id, progress=lambda text: None):
             'security-evidence.json': (claim / 'evidence.json').read_bytes()})})['data']
 
 
+def verify_runner_start_recovery(root, previous, recovery):
+    incomplete = previous.get('incomplete_probe', {})
+    folder = root / 'results/integration' / incomplete.get('workflow_run', 'missing')
+    raw = (folder / 'workflow.json').read_bytes()
+    workflow = json.loads(raw)
+    keyless = recovery.get('reason') == 'keyless_controller_profile_mismatch'
+    if (previous.get('verified_probes') != 0 or previous.get('probes')
+            or incomplete.get('model_requests') != 0 or incomplete.get('native_run') is not None
+            or workflow.get('status') != 'failed' or workflow.get('model_requests') != 0
+            or workflow.get('live_run') or workflow.get('runner_stopped') is not True
+            or recovery.get('workflow_sha256') != digest(raw)
+            or recovery.get('vm_start_sha256') != digest((folder / 'vm-start.txt').read_bytes())):
+        raise ValueError('Runner recovery requires exact zero-agent startup evidence')
+    if keyless:
+        preflight = root / 'results/integration' / workflow['preflight']
+        raw = (preflight / 'report.json').read_bytes()
+        report = json.loads(raw)
+        controller = (preflight / 'native-job/controller-result.json').read_bytes()
+        detail = json.loads(controller)
+        if (workflow.get('error_type') != 'ValueError' or report.get('mode') != 'offline'
+                or report.get('maximum_model_requests') != 8 or report.get('model_requests') != 0
+                or report.get('app_execution_profile') != APP_COMPLETION_PROFILE
+                or detail.get('mode') != 'offline' or detail.get('error_type') != 'ValueError'
+                or not detail.get('offline_error', '').endswith(
+                    'ValueError: Native Harbor probe exceeds the current '
+                    'aggregate/request limits\n')
+                or recovery.get('preflight_sha256') != digest(raw)
+                or recovery.get('controller_result_sha256') != digest(controller)):
+            raise ValueError('Exact keyless controller profile mismatch required')
+    elif workflow.get('error_type') != 'RuntimeError' or workflow.get('preflight'):
+        raise ValueError('Runner recovery requires exact zero-agent startup evidence')
+
+
 def run(workspace, review_id, progress=lambda text: None, *, resume=False):
     from scripts.receipt_live_workflow import workflow
 
@@ -504,6 +574,23 @@ def run(workspace, review_id, progress=lambda text: None, *, resume=False):
         workspace.store._append(review_id, 'security_required', {'protocol': PROTOCOL})
     if security_valid(workspace.store.get(review_id)):
         return workspace.store.get(review_id)['latest']['security_review']
+    profile_change = None
+    if can_change_completion_profile(review):
+        prior = review['latest']['security_review']
+        if prior.get('execution_profile_change'):
+            profile_change = prior['execution_profile_change']
+            workspace.store._append(review_id, 'security_execution_profile_preflight_recovery', {
+                'failed_zero_call_run': prior['run_id'], 'model_requests': 0,
+                'profile_change': profile_change})
+        else:
+            profile_change = {'prior_run_id': prior['run_id'],
+            'prior_review_sha256': digest(json.dumps(prior, sort_keys=True).encode()),
+            'from_maximum_requests': 6, 'to_maximum_requests': 8,
+            'app_execution_profile': APP_COMPLETION_PROFILE,
+            'reason': 'Correct outputs and no unsafe actions; native completion exceeded the '
+                      'old six-request bound. New bounded app trials, not a repaired skill '
+                      'or a fresh blind benchmark. All prior failures and charges remain.'}
+            workspace.store._append(review_id, 'security_execution_profile_change', profile_change)
     folder = workspace.root / 'results/integration' / ('security-review-' + uuid.uuid4().hex[:8])
     folder.mkdir(mode=0o700, parents=True)
     with (workspace.root / 'results/cost_log.csv').open() as ledger:
@@ -515,6 +602,8 @@ def run(workspace, review_id, progress=lambda text: None, *, resume=False):
                        'Metadata is partial; model advice is not a complete or blind safety proof.',
                        'No unrestricted Hermes activation or public deployment.']}
     evidence = {}
+    if profile_change:
+        result['execution_profile_change'] = profile_change
     try:
         progress('Checking the staged source and running native regression cases')
         if not parser_checks_valid(workspace.store.get(review_id)):
@@ -542,7 +631,7 @@ def run(workspace, review_id, progress=lambda text: None, *, resume=False):
         if parser_checks_valid(review):
             progress('Preparing native generated probes and checking source identities')
             previous = review['latest'].get('security_review', {})
-            if previous.get('verified_probes', 0) and not resume:
+            if previous.get('verified_probes', 0) and not resume and not profile_change:
                 raise ValueError('Partial paid review requires explicit continuation; '
                                  'completed probes will not be silently rerun')
             if resume:
@@ -551,10 +640,18 @@ def run(workspace, review_id, progress=lambda text: None, *, resume=False):
                 recovery = review['latest'].get('security_infrastructure_recovery', {})
                 original = Path(previous['manifest'])
                 if (recovery.get('original_review_run') != previous['run_id']
-                        or recovery.get('reason') != 'provider_connection_failure'
+                        or recovery.get('reason') not in {
+                            'provider_connection_failure', 'runner_start_failure_before_inference',
+                            'keyless_controller_profile_mismatch'}
                         or digest(original.read_bytes()) != previous['manifest_sha256']
                         or previous.get('core_test_sha256') != review_test_digest(review)):
                     raise ValueError('Source-bound infrastructure recovery evidence is required')
+                if recovery['reason'] in {'runner_start_failure_before_inference',
+                                          'keyless_controller_profile_mismatch'}:
+                    verify_runner_start_recovery(workspace.root, previous, recovery)
+                profile_change = previous.get('execution_profile_change')
+                if profile_change:
+                    result['execution_profile_change'] = profile_change
                 manifest = json.loads(original.read_text())
                 for probe in previous['probes']:
                     prior_folder = workspace.root / 'results/integration' / probe['run_id']
@@ -595,6 +692,8 @@ def run(workspace, review_id, progress=lambda text: None, *, resume=False):
 
                 template = json.loads(template_path(workspace.root).read_text())
                 template.update(task=case['task'], review_target=manifest['review_target'],
+                    maximum_model_requests=manifest.get('maximum_model_requests', 6),
+                    app_execution_profile=manifest.get('app_execution_profile'),
                     execution_enabled=True, status='authorized_2026_10_22',
                     instruction_protocol=None, security_trial={'manifest': str(design),
                         'manifest_sha256': digest(design.read_bytes()), 'case_id': case['id']},
@@ -634,6 +733,10 @@ def run(workspace, review_id, progress=lambda text: None, *, resume=False):
         if unsafe:
             result['decision'] = 'blocked'
         evidence['E4'] = {'kind': 'native_control_and_completion_scope',
+            'execution_profile_change': profile_change,
+            'infrastructure_recovery': result.get('infrastructure_recovery'),
+            'per_probe_request_bounds': {p['case_id']: p.get('maximum_model_requests')
+                                         for p in result['probes']},
             'expected_independent_private_denial_controls': 1,
             'control_origin': 'Trusted confinement verification, not an agent-issued command',
             'reported_regression_private_denials': evidence['E1'].get('reported_private_denials'),

@@ -75,7 +75,11 @@ def verify_request(requests, design: bytes, task_instruction: bytes, receipt: by
 
 def load(root: Path, proposal: dict) -> tuple[dict, dict]:
     from skillguard.core_agent import selected_candidate
-    from skillguard.models.bounded_transport import CONTEXT_RESERVATION, TEXT_RESERVATION
+    from skillguard.models.bounded_transport import (
+        CONTEXT_RESERVATION,
+        TEXT_RESERVATION,
+        probe_request_limit,
+    )
 
     ref = proposal['security_trial']
     path = Path(ref['manifest']).resolve()
@@ -87,7 +91,10 @@ def load(root: Path, proposal: dict) -> tuple[dict, dict]:
     case = next(c for c in manifest['cases'] if c['id'] == ref['case_id'])
     verify_request([], design, manifest['instruction'].encode(), case['input'].encode(),
                    ref, selected['candidate_sha256'])
-    if (proposal['task'] != case['task'] or proposal['maximum_model_requests'] != 6
+    probe_request_limit(proposal['maximum_model_requests'], proposal.get('app_execution_profile'))
+    if (proposal['task'] != case['task'] or proposal['maximum_model_requests'] != manifest.get(
+            'maximum_model_requests', 6)
+            or proposal.get('app_execution_profile') != manifest.get('app_execution_profile')
             or proposal['max_output_tokens_per_request'] != 2000
             or proposal['enable_thinking'] is not False
             or proposal['aggregate_budget_cap_usd'] != .75

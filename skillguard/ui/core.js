@@ -1,5 +1,5 @@
 const byId = id => document.getElementById(id);
-let state, timer, lastResult, lastView;
+let state, timer, lastResult, lastView, pollError = false;
 const accepted = new Set();
 const heldReasons = new Map();
 function text(tag, value, className) {
@@ -17,7 +17,7 @@ async function act(action, data = {}) {
     await refresh();
   } catch (e) { showError(e.message); }
 }
-function showError(message) { byId('error').hidden = false; byId('error').textContent = message; }
+function showError(message, fromPoll = false) { pollError = fromPoll; byId('error').hidden = false; byId('error').textContent = message; }
 function button(label, action, data, disabled = false) {
   const node = text('button', label); node.disabled = disabled;
   node.addEventListener('click', () => act(action, data)); return node;
@@ -105,7 +105,7 @@ function reviewCard(r, busy) {
   }
   if (r.pending) {
     const actions = document.createElement('div'); actions.className = 'actions';
-    actions.append(button(r.security?.run_id ? 'Run security review again' : 'Review skill security', 'review_security', {review_id: r.id}, busy || r.eligible || r.security?.decision === 'blocked' || !!r.security?.verified_probes));
+    actions.append(button(r.security?.can_change_completion_profile ? 'Review with eight-request profile' : r.security?.run_id ? 'Run security review again' : 'Review skill security', 'review_security', {review_id: r.id}, busy || r.eligible || r.security?.decision === 'blocked' || (!!r.security?.verified_probes && !r.security?.can_change_completion_profile)));
     if (r.security?.can_escalate) actions.append(button('Ask Super to adjudicate held verdict', 'escalate_security', {review_id: r.id}, busy));
     else if (r.security?.can_resume) actions.append(button('Resume remaining checks', 'resume_security', {review_id: r.id}, busy));
     if (r.security?.decision === 'blocked') actions.append(button('Stage known repair and review it', 'repair_and_review', {review_id: r.id, revision: r.revision}, busy));
@@ -207,6 +207,7 @@ async function refresh() {
     const response = await fetch('/api/state', {cache: 'no-store'});
     if (!response.ok) throw Error((await response.json()).error);
     state = await response.json();
+    if (pollError) { byId('error').hidden = true; pollError = false; }
     const focus = state.reviews.find(r => r.pending) || state.reviews.find(r => r.installed);
     byId('overview').replaceChildren(
       evidenceMetric(state.reviews.some(r => r.pending) ? 'Paused' : state.active ? 'Installed' : 'Ready', 'learning state'),
@@ -271,7 +272,7 @@ async function refresh() {
         text('pre', JSON.stringify(result.answer, null, 2)));
     } else byId('agent-output').replaceChildren();
     timer = setTimeout(refresh, busy ? 1500 : 5000);
-  } catch (e) { showError(e.message); timer = setTimeout(refresh, 3000); }
+  } catch (e) { showError(e.message, true); timer = setTimeout(refresh, 3000); }
 }
 for (const action of ['stage', 'update', 'unsafe']) byId(action).addEventListener('click', () => act(action === 'update' ? 'repaired' : action === 'stage' && state.active ? 'update' : action));
 byId('import-skill').addEventListener('click', () => act('import', {content: {guide: byId('skill-guide').value, parser: byId('skill-parser').value}}));

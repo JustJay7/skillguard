@@ -14,10 +14,13 @@
 - [x] Finish complete cloud source/native preflight and configure GitHub's exact forwarding host/origin mapping without weakening session or CSRF guards. Browser login and authenticated state pass; anonymous state is refused.
 - [x] Obtain explicit consent and transfer only the private provider key, full spending ledger and existing budget authorization into private ignored cloud files. Verify exact transfer hashes and provider authentication; no keys are exposed to the browser or candidate sandbox.
 - [x] Stop both Mac paid-action servers before cloud inference and migrate the authoritative ledger without resets or released unknown holds.
+- [x] Preserve the first cloud review: four correct files and no observed unsafe actions; P3 exhausted six calls before confirmation, so installation stayed held.
+- [x] Add prospective eight-request app bounds through proposal, Harbor adapter, transport, claim, reconciliation and native verification; preserve all legacy six-request proposals and comparison metrics.
+- [x] Preserve the timeout, pre-action port/login interruption, zero-call profile guard, reset KVM ACL and keyless adapter mismatch. Recover only exact zero-agent failures, reusing the saved paid generated design.
 - [ ] Complete the real cloud HTTPS review/install/agent/reject/repair/rollback flow. Do not label the recorded Site or temporary Mac tunnel independent cloud execution.
 - [ ] Commit, produce the sanitized source update and publish only verified hosting results and limitations.
 
-Current local ledger checkpoint: 622 completed requests, $0.14311044 estimated + $0.25 retained unknown holds = $0.39311044 accounted under the privately authorized aggregate cap. No new hosting charges. Full offline suite after portability/adjudication changes: 943 passed, Ruff clean. The actual cloud endpoint is authenticated and serving native reviews; full HTTPS lifecycle acceptance is running. Deployment acceptance is not yet complete.
+Current local ledger checkpoint: 622 completed requests, $0.14311044 estimated + $0.25 retained unknown holds = $0.39311044 accounted under the privately authorized aggregate cap. No new hosting charges. Full offline suite after app-profile, privacy and exact zero-agent recovery changes: 991 passed, Ruff clean. The actual cloud endpoint is authenticated. Its first six-request review retained four correct files but one unconfirmed completion and stayed held. A separate eight-request app profile is now executing the saved generated cases after exact zero-agent recovery; deployment acceptance is not yet complete.
 
 ## Live product follow-through — October 23
 - [x] Authenticate the saved private Nebius key against the real model catalog; both required Nemotron models are available.

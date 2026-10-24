@@ -63,3 +63,21 @@ def test_native_capture_rejects_tampered_or_promoted_projection(fault):
     artifacts['capture.json'] = json.dumps(metadata).encode()
     with pytest.raises(ValueError):
         verify_agent_capture(artifacts)
+
+
+def test_fast_native_compression_preserves_exact_raw_evidence(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+
+    from scripts.native_agent_capture import NativeAgentCapture
+
+    capture = NativeAgentCapture(tmp_path, 'offline-format')
+    raw = b'fictional native capture\n' * 10000
+    (capture.root / 'events.scap').write_bytes(raw)
+    monkeypatch.setattr('scripts.native_agent_capture.subprocess.run',
+                        lambda *a, **kw: SimpleNamespace(stdout='active', returncode=0))
+    capture.finish()
+    assert gzip.decompress((capture.root / 'events.scap.gz').read_bytes()) == raw
+    metadata = json.loads((capture.root / 'capture.json').read_text())
+    assert metadata['uncompressed_capture_sha256'] == digest(raw)
+    assert metadata['uncompressed_capture_bytes'] == len(raw)
+    assert not (capture.root / 'events.scap').exists()

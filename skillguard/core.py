@@ -429,7 +429,11 @@ class CoreWorkspace:
                 'unrestricted_activation_permitted': False}
 
     def security_view(self, review):
-        from skillguard.security_review import can_accept_hold, can_escalate
+        from skillguard.security_review import (
+            can_accept_hold,
+            can_change_completion_profile,
+            can_escalate,
+        )
 
         raw = review['latest'].get('security_review', {})
         if not raw:
@@ -456,8 +460,9 @@ class CoreWorkspace:
             view['native_regression'] = {k: native.get(k) for k in (
                 'passed', 'private_denials', 'reported_private_read_bytes', 'source_preserved')}
         view['can_resume'] = bool(raw.get('decision') == 'held'
-            and 0 < raw.get('verified_probes', 0) < raw.get('planned_probes', 0)
+            and 0 <= raw.get('verified_probes', 0) < raw.get('planned_probes', 0)
             and review['latest'].get('security_infrastructure_recovery'))
         view['can_escalate'] = can_escalate(review)
+        view['can_change_completion_profile'] = can_change_completion_profile(review)
         view['can_accept_hold'] = can_accept_hold(review)
         return view

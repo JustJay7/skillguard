@@ -128,3 +128,17 @@ def test_invalid_historical_and_guest_costs_cannot_free_or_create_a_claim(tmp_pa
     with pytest.raises(ValueError):
         reconcile_probe(path, call_id, guest, set())
     assert list(csv.DictReader(path.open()))[0]['reserved_cost_usd'] == '0.4'
+
+
+def test_probe_ledger_stays_private_with_permissive_process_umask(tmp_path):
+    import os
+    import stat
+
+    path = tmp_path / 'cost.csv'
+    ledger(path, [])
+    previous = os.umask(0)
+    try:
+        claim_probe(path, tmp_path / 'claim.json', {'run_id': 'private'})
+    finally:
+        os.umask(previous)
+    assert stat.S_IMODE(path.stat().st_mode) == 0o600

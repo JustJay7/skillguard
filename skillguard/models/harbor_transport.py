@@ -13,7 +13,12 @@ from unittest.mock import patch
 import httpx
 from openai import AsyncOpenAI
 
-from skillguard.models.bounded_transport import MODEL, AgentCallBudget, BoundedInferenceTransport
+from skillguard.models.bounded_transport import (
+    MODEL,
+    AgentCallBudget,
+    BoundedInferenceTransport,
+    probe_request_limit,
+)
 
 
 class HarborRequestTransport(BoundedInferenceTransport):
@@ -50,7 +55,8 @@ class AsyncHarborTransport(httpx.AsyncBaseTransport):
 async def native_harbor_client(budget: AgentCallBudget, *, api_key: str,
                                upstream: httpx.BaseTransport | None = None,
                                compatibility_probe: bool = False,
-                               authorized_limit_usd: float = .75):
+                               authorized_limit_usd: float = .75,
+                               app_execution_profile: str | None = None):
     """Yield SDK kwargs consumed by the installed native Harbor LiteLLM client.
 
     Count actual HTTP requests, including hidden native/SDK retries. This primitive
@@ -59,6 +65,11 @@ async def native_harbor_client(budget: AgentCallBudget, *, api_key: str,
     if type(compatibility_probe) is not bool:
         raise ValueError('Native Harbor compatibility flag must be boolean')
     ceiling = 6 if compatibility_probe else 4
+    if app_execution_profile is not None:
+        probe_request_limit(budget.max_calls, app_execution_profile)
+        if not compatibility_probe:
+            raise ValueError('App completion profile requires native compatibility proof')
+        ceiling = 8
     if (budget.model != MODEL or not 0 < budget.total_limit_usd <= authorized_limit_usd <= 50
             or type(budget.max_calls) is not int or not 1 <= budget.max_calls <= ceiling):
         raise ValueError('Native Harbor probe exceeds the current aggregate/request limits')

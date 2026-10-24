@@ -92,7 +92,10 @@ def prepare_proposal(root: Path, store: Path, review: dict, *,
     if installed_version is not None:
         target['installed_version'] = installed_version
     selected_candidate(root, target)
-    proposal.update(review_target=target, instruction_protocol=REPAIRED_PROTOCOL,
+    from skillguard.models.bounded_transport import APP_COMPLETION_PROFILE
+
+    proposal.update(maximum_model_requests=8, app_execution_profile=APP_COMPLETION_PROFILE,
+        review_target=target, instruction_protocol=REPAIRED_PROTOCOL,
         execution_enabled=True, status='authorized_2026_10_22',
         aggregate_cap_usd=project_cap(root / 'results'),
         app_request_id=uuid.uuid4().hex,

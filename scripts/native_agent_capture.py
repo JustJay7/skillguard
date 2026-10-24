@@ -86,7 +86,8 @@ class NativeAgentCapture:
         if raw.exists():
             with raw.open('rb') as source:
                 expected = hashlib.file_digest(source, 'sha256').hexdigest()
-            with raw.open('rb') as source, gzip.open(self.root / 'events.scap.gz', 'wb') as target:
+            with raw.open('rb') as source, gzip.open(
+                    self.root / 'events.scap.gz', 'wb', compresslevel=1) as target:
                 shutil.copyfileobj(source, target)
             with gzip.open(self.root / 'events.scap.gz', 'rb') as source:
                 if hashlib.file_digest(source, 'sha256').hexdigest() != expected:

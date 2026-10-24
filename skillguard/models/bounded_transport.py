@@ -6,6 +6,7 @@ import csv
 import fcntl
 import json
 import math
+import os
 import threading
 import time
 import uuid
@@ -31,6 +32,17 @@ MODEL_RATES = {MODEL: (RATE_IN, RATE_OUT), "nvidia/nemotron-3-super-120b-a12b": 
 MAX_OUTPUT = 2048
 CONTEXT_RESERVATION = 'lightning-context-2026-10-22'
 TEXT_RESERVATION = 'lightning-text-64k-2026-10-23'
+APP_COMPLETION_PROFILE = 'receipt-app-eight-request-2026-10-23'
+
+
+def probe_request_limit(limit, app_profile=None) -> int:
+    if type(limit) is not int or not (
+            (limit in {4, 6} and app_profile is None)
+            or (limit == 8 and app_profile == APP_COMPLETION_PROFILE)):
+        raise ValueError('Unsupported native request bound/profile')
+    return limit
+
+
 TEXT_REQUEST_BYTES = 65_536
 TEXT_INPUT_TOKEN_BOUND = 131_072
 
@@ -117,6 +129,7 @@ class AgentCallBudget:
                 index = next(i for i, r in enumerate(rows) if r["call_id"] == row["call_id"])
                 rows[index] = row
             with self.ledger.open("w", newline="") as output:
+                os.fchmod(output.fileno(), 0o600)
                 writer = csv.DictWriter(output, fieldnames=FIELDS)
                 writer.writeheader()
                 writer.writerows(rows)

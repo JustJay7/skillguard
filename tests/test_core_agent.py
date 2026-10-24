@@ -121,8 +121,8 @@ def test_new_app_probe_can_fit_cap_without_releasing_historical_unknown(selected
     rows = list(csv.DictReader(path.open()))
     assert rows[0]['reserved_cost_usd'] == '.25'
     assert sum(float(r['reserved_cost_usd'] or r['estimated_cost_usd'] or 0)
-               for r in rows) == pytest.approx(.43544566)
-    assert rows[-1]['reserved_cost_usd'] == '0.06'
+               for r in rows) == pytest.approx(.45544566)
+    assert rows[-1]['reserved_cost_usd'] == '0.08'
 
 
 def test_installed_agent_run_is_fresh_bound_to_active_source_and_rejects_stale_version(
@@ -180,3 +180,16 @@ def test_portable_app_requires_current_native_review_and_captured_preflight(sele
         json.dumps({'diagnostic_passed': False}))
     with pytest.raises(ValueError, match='recorded enforcement'):
         verify_enforced_prerequisites(w.root, {}, {'runtime': 'openshell', 'capture_native': True})
+
+
+def test_new_app_bound_does_not_modify_old_template_or_historical_trial(selected):
+    from skillguard.models.bounded_transport import APP_COMPLETION_PROFILE
+
+    w, rid = selected
+    template = w.root / 'results/receipt-live-probe-agent-record-complete-2026-10-22.json'
+    original = template.read_bytes()
+    proposal = json.loads(prepare_proposal(w.root, w.store.root, w.store.get(rid)).read_text())
+    assert proposal['maximum_model_requests'] == 8
+    assert proposal['app_execution_profile'] == APP_COMPLETION_PROFILE
+    assert template.read_bytes() == original
+    assert json.loads(original)['maximum_model_requests'] == 6

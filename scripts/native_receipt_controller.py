@@ -20,7 +20,7 @@ from pathlib import Path
 
 import httpx
 
-from skillguard.models.bounded_transport import MODEL, AgentCallBudget
+from skillguard.models.bounded_transport import MODEL, AgentCallBudget, probe_request_limit
 from skillguard.models.harbor_transport import native_harbor_client
 from skillguard.models.recorded_responses import RecordedResponses
 
@@ -103,9 +103,13 @@ async def execute(root: Path, header: dict):
     if header['mode'] not in {'live', 'offline', 'recorded'}:
         raise ValueError('Unknown controller mode')
     offline = header['mode'] != 'live'
-    limit = header.get('maximum_model_requests', 4)
-    if type(limit) is not int or limit not in {4, 6}:
-        raise ValueError('Unsupported native controller request limit')
+    limit = probe_request_limit(header.get('maximum_model_requests', 4),
+                                header.get('app_execution_profile'))
+    if limit == 8 and not (header.get('runtime') == 'openshell'
+            and header.get('capture_native') is True
+            and header.get('frontmatter_compat') is True
+            and header.get('native_skill_discovery') is True):
+        raise ValueError('Eight-request app controller requires native captured skill use')
     budget = AgentCallBudget(root / 'cost.csv', root / 'responses', max_calls=limit,
                              total_limit_usd=header.get('aggregate_cap_usd', .75),
                              reservation_profile=header.get('reservation_profile', 'legacy'))
@@ -249,6 +253,7 @@ async def execute_job(root, header, budget, state, upstream_class, capture):
         raise ValueError('Unsupported native runtime')
     async with native_harbor_client(budget, api_key=header['api_key'],
                                    authorized_limit_usd=header.get('aggregate_cap_usd', .75),
+            app_execution_profile=header.get('app_execution_profile'),
             upstream=upstream_class(), compatibility_probe=(runtime == 'openshell'
                 and header.get('frontmatter_compat') is True
                 and (header.get('native_skill_discovery') is True

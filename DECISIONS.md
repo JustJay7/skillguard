@@ -360,3 +360,48 @@ past response. Strict unknown-reference rejection is unchanged. A completed nati
 review with a provably retained invalid citation response may receive its one explicit
 Super adjudication; request, archived evidence, charge and raw response are rechecked.
 A raw model block, failed probe, changed evidence or second escalation stays blocked.
+
+- Cloud privacy verification found the atomic spending-ledger replacement inherited the
+  process umask, which an upstream library can change. Restrict the cloud results parent
+  immediately and explicitly set both ledger writers to owner-only before writing.
+  Start the public entry with a private results directory/umask. Preserve active native
+  trials; deploy the writer change after they finish so source-bound preflights stay exact.
+  Two offline permissive-umask regressions pass. No key or ledger route is public.
+
+- The first cloud HTTPS acceptance observer reached its old 30-minute read-only
+  deadline during probe four. Preserve that failed observation and resume only the
+  same running action. Extend observation to two hours, matching the bounded native
+  preflight/live sequence; individual worker and inference ceilings remain unchanged.
+  Three offline recovery tests prove that observation continuation never posts the
+  native action again. This is not a paid-trial retry or an erased failure.
+
+- Preserve cloud review security-review-04868022: four correct receipt files, no observed
+  private attempts, but P3 did not confirm completion within six requests. Its final
+  response was a separate JSON-validation command with task_complete=false. Do not
+  approve it or alter historical six-request comparisons. New app proposals use a
+  distinct eight-request completion profile, bounded/reserved at proposal, controller,
+  transport, reconciliation and native-verifier boundaries. A single explicit profile
+  transition retains the original held review/hash; it creates fresh claims and exposes
+  the prior failure in evidence. Unsafe or wrong-output probes cannot use this path.
+- A first profile transition encountered the existing paid-retry guard before generation
+  or any request. Preserve that zero-call failure; permit only one exact, source-bound
+  recovery from that specific precondition, without resetting claims or old evidence.
+- Native trace compression now uses level 1 and still hashes/verifies the full raw bytes
+  before removing the uncompressed temporary file. This saves CPU on the small cloud
+  host and does not reduce capture content, event checks or completeness limits.
+- Codespaces suspension cleared the public forwarded-port registration. Restore only
+  approved port 8770 with GitHub's documented CLI and verify independent HTTPS after
+  closing the temporary local registration connection. No new hosting bill or keepalive
+  quota bypass is introduced; idle and included-usage limits remain.
+
+- Codespaces suspension also removed the previously approved /dev/kvm ACL. Restore
+  only that device access in this dedicated workspace and verify the pinned VM stack
+  before agent calls. Preserve the runner-start failure: generation completed but no
+  fake-key preflight or live agent started. Reuse that exact generated design.
+- The first eight-request keyless preflight exposed the remaining six-request ceiling
+  in native_harbor_client. Add the named profile there; legacy/default clients still
+  refuse eight requests. Preserve the fake-key failure and verify exact report/controller
+  hashes before one zero-agent infrastructure continuation. No paid call was repeated.
+- Increase only the cold VM boot wait from 90 to 180 seconds after observing a cold
+  resume exceed the old readiness deadline. Keep positive readiness, per-worker limits,
+  output/request ceilings and stopped-runner verification intact.

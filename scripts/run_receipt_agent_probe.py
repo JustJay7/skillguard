@@ -17,6 +17,7 @@ from scripts.calibrate_receipt_agent_tasks import extract
 from scripts.native_receipt_controller import FAKE_KEY
 from scripts.run_native_evaluation import PREFIX
 from skillguard.evaluation.receipt_answer_grader import grade_answer
+from skillguard.models.bounded_transport import probe_request_limit
 from skillguard.models.probe_claim import claim_probe, proposal_claim_path, reconcile_probe
 from skillguard.models.spending_policy import proposal_cap
 from skillguard.review.snapshot import artifact_tree_digest, digest
@@ -127,14 +128,15 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
         raise ValueError('Fresh OpenShell execution requires a scoped proposal and native capture')
     proposal_sha = digest(proposal_path.read_bytes())
     aggregate_cap = proposal_cap(root / 'results', proposal.get('aggregate_cap_usd', .75))
-    limit = proposal.get('maximum_model_requests')
-    if type(limit) is not int or limit not in {4, 6}:
-        raise ValueError('Receipt probe requires an explicit four- or six-request bound')
+    limit = probe_request_limit(proposal.get('maximum_model_requests'),
+                                proposal.get('app_execution_profile'))
+    if limit == 8 and not proposal.get('review_target'):
+        raise ValueError('Eight-request app trial requires a source-bound review')
     if proposal.get('learning_trial'):
         from skillguard.evaluation.receipt_learning import load_trial
 
         load_trial(root, proposal)
-    if limit == 6 and not (runtime == 'openshell' and proposal.get('frontmatter_compat') is True
+    if limit >= 6 and not (runtime == 'openshell' and proposal.get('frontmatter_compat') is True
                           and (proposal.get('native_skill_discovery') is True
                                or proposal.get('learning_trial'))):
         raise ValueError('Six-request probe requires the scoped native compatibility profile')
@@ -192,6 +194,7 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
         'native_skill_discovery': proposal.get('native_skill_discovery', False),
         'frontmatter_compat': proposal.get('frontmatter_compat', False),
         'maximum_model_requests': limit,
+        'app_execution_profile': proposal.get('app_execution_profile'),
         'aggregate_cap_usd': aggregate_cap,
         'reservation_profile': proposal.get('reservation_profile', 'legacy'),
         'instruction_protocol': proposal.get('instruction_protocol'),
@@ -312,6 +315,7 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
                          'security_trial': proposal.get('security_trial'),
                          'require_skill_use_proof': proposal.get('require_skill_use_proof', False),
                          'maximum_model_requests': limit,
+        'app_execution_profile': proposal.get('app_execution_profile'),
                          'aggregate_cap_usd': aggregate_cap,
                          'runtime': runtime,
                          'reservation_profile': report['reservation_profile'],
@@ -347,7 +351,8 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
         if live:
             rows = reconcile_probe(root / 'results/cost_log.csv', reservation,
                                    native / 'cost.csv', baseline, maximum_model_requests=limit,
-                                   reservation_profile=report['reservation_profile'])
+                                   reservation_profile=report['reservation_profile'],
+                                   app_execution_profile=report.get('app_execution_profile'))
             report.update(model_requests=len(rows), estimated_cost_usd=sum(
                 float(r['estimated_cost_usd'] or 0) for r in rows),
                 unknown_reserved_usd=sum(float(r['reserved_cost_usd'] or 0) for r in rows))

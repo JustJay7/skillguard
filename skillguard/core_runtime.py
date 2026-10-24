@@ -85,6 +85,7 @@ def _evaluate(root: Path, skill: Path, cases: dict) -> dict:
     task = prepare_task(root, folder, skill, cases)
     env = prepare_environment(root, 'lima')
     report = {'run_id': folder.name, 'model_requests': 0, 'candidate_sha256': selected,
+        'vm_startup_timeout_sec': 180,
         'passed': False, 'scope': 'Deterministic receipt tests in native OpenShell; '
         'partial runtime evidence, not agent resistance or general safe activation',
         'task_sha256': artifact_tree_digest(task)}
@@ -93,8 +94,8 @@ def _evaluate(root: Path, skill: Path, cases: dict) -> dict:
         return recorded_command(args, root=root, env=env, output=folder / name, timeout=timeout)
 
     try:
-        if command(['limactl', 'start', '--yes', '--timeout', '90s', 'sgtrace-clean'],
-                   'vm-start.txt', 120).returncode:
+        if command(['limactl', 'start', '--yes', '--timeout', '180s', 'sgtrace-clean'],
+                   'vm-start.txt', 210).returncode:
             raise RuntimeError('Native VM startup failed')
         if (command(PREFIX + ['systemctl', 'is-active', 'skillguard-openshell'],
                     'gateway-state.txt').returncode and command(PREFIX + [

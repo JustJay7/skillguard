@@ -1,5 +1,18 @@
 # Progress
 
+## Actual live recording and submission materials — October 24
+- [x] Record fresh actions in the actual independent cloud application; use no frames from the recorded-evidence Site.
+- [x] Preserve zero-call concurrent staging failure, reproduce it in a test and serialize snapshot capture. Preserve the later 90-second cold-start failure as infrastructure evidence, not attack detection; declare bounded 180-second starts for new core evaluations and test cleanup.
+- [x] Fresh unsafe review `security-review-f6f58e35`: functional failure, source preserved, two fake-private-file denials including the independent control, zero private read bytes, non-overridable installation block.
+- [x] Fresh repair `security-review-dc754ce2`: twelve native regression cases pass; all four actual agent probes complete correctly in 23 requests (6, 5, 6, 6). Preserve Nemotron's hold and explicitly install only within the existing restricted workspace.
+- [x] Fresh installed agent `receipt-agent-8c661d04`: seven actual model requests, guide read before/after receipt, own saved answer total 23.00, native completion confirmed. Capture its real saved command trail; do not simulate a terminal stream.
+- [x] Verify rollback from `a4429e8081f74193bbec11a3d5db8afd` to `b3ed7fea47ed4e4094ee9c98dd0a3a10` and restoration. Stop native VM. Retain every earlier cost row and unknown hold; recording adds 34 completed provider requests, total 748, within the private cap.
+- [x] Render the actual-live-app MP4 at 152.87 seconds with English narration naming Nebius Token Factory and NVIDIA Nemotron, captions, visible budget redaction and an edited-wait label. Decode the full file; inspect all twelve chapter views; check audible unclipped sound; OCR 153 sampled encoded frames with no detected private-budget/code exposure.
+- [x] Refresh Devpost description, judging instructions, tool feedback, video runbook and upload metadata. Keep the earlier replay video separate; include a local media packet with provenance and transcript.
+- [x] Full offline suite: 1009 passed; freshly extracted source: 1008 passed, one optional native CLI check skipped in the existing dependency environment. Publish the matching sanitized source/evidence update without private configuration or raw footage.
+
+Publication/submission is not claimed complete: the earlier YouTube refusal still applies, final legal/entrant declarations require the entrant, and unattended judging availability through December 15 remains unresolved because included Codespaces hosting suspends. No new bill or idle-limit bypass was introduced. [Actual run](results/oct24-live-recording-verification.json), [video](results/oct24-live-video-verification.json), [materials](docs/submission/README.md).
+
 ## Public backend deployment — October 23–24 (verified)
 - [x] Reject a new hosting bill: Fly app creation was blocked by billing; no paid app or billing setup was created.
 - [x] Verify included Codespaces usage and the existing $0 Codespaces spending stop; create the dedicated two-core SkillGuard Codespace.

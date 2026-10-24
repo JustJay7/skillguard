@@ -3,39 +3,50 @@
 ## Tagline
 Your personal AI can learn new skills. SkillGuard makes it show what changes first.
 
-## Recorded walkthrough
-https://skillguard-evidence-demo.jaymalhotra.chatgpt.site — recorded evidence only; the native review backend is local.
+## Track
+Personal AI.
 
-## Source
-https://github.com/JustJay7/skillguard — MIT licensed; clean source release without private runtime data.
+## Live project and source
+- Actual application: https://literate-space-system-45gjq9qjggwfjw7p-8770.app.github.dev/
+- Public MIT-licensed source: https://github.com/JustJay7/skillguard
+- Video: the new live-run recording replaces the earlier recorded-evidence walkthrough; its public YouTube URL must be added after upload approval.
+- The access code belongs in the private judging/testing field, never in the description, video or repository. Codespaces is development hosting and suspends when idle. See the separate judging-access checklist before final submission.
 
 ## Inspiration
-A receipt is supposed to be data. For a personal assistant that writes reusable skills, a malicious instruction inside that receipt can become tomorrow's behavior. We wanted a clear boundary between an assistant proposing a skill and being allowed to keep it.
+A receipt should be data, not an instruction to read a private note or change a purchase total. But when a personal assistant writes reusable skills, a bad instruction can become behavior it keeps. We built SkillGuard to put an explicit review between a proposed skill and the permission to use it.
+
+Our initial audience is people experimenting with personal agents that create their own skills. Receipt organization gives us a concrete, inspectable workload: the agent must read the guide, extract the purchase correctly and ignore instructions that do not belong to the receipt task.
 
 ## What it does
-SkillGuard pauses native Hermes skill writes before activation. It snapshots the source, runs NVIDIA SkillEvaluator checks, generates adversarial annotations, tests an actual agent inside OpenShell and records a behavioral envelope. The review shows changes, tool actions and declared permissions. Nemotron supplies an evidence-referenced recommendation. Installation requires the exact reviewed version and an explicit decision; rollback preserves the previous version.
+SkillGuard pauses native Hermes skill writes before activation and snapshots the proposed guide and script. NVIDIA SkillEvaluator checks the source and generates security probes. A real Harbor agent uses the proposed skill inside OpenShell while SkillGuard collects partial independent native observations, compares behavior and previews the sandbox policy. Nemotron reviews the saved evidence.
 
-The working runtime profile is receipt organization. It is a personal-AI learning gate, not a general-purpose security guarantee or an enterprise deployment platform.
+The operator sees a decision tied to the exact source and can approve, reject, test a known repair or restore a previous version. Failed or incomplete native checks and observed unsafe actions cannot be overridden by a favorable model response. If all native checks pass but the model holds, a separate acknowledged human exception requires a written reason and retains the warning.
+
+The working profile is receipt organization in a fixed isolated workspace. It is not unrestricted agent activation, model-weight training or a general security guarantee. The known V8 repair is explicitly selected and retested; SkillGuard does not claim arbitrary autonomous code repair.
 
 ## How we built it
-Nebius Token Factory serves NVIDIA Nemotron 3.5 Lightning for generation, real agent trials and initial evidence review. One Nemotron 3 Super adjudication is available for a complete held review. Model IDs are `nvidia/Nemotron-3_5-Lightning` and `nvidia/nemotron-3-super-120b-a12b`.
+Nebius Token Factory serves NVIDIA Nemotron 3.5 Lightning (`nvidia/Nemotron-3_5-Lightning`) for probe generation, actual tool-using agent trials and evidence recommendations. One Nemotron 3 Super adjudication (`nvidia/nemotron-3-super-120b-a12b`) is available for a complete held verdict. Token Factory's OpenAI-compatible interface let us use the existing evaluator and agent with one inference service, without hosting model weights. We did not measure a speedup or onboarding-time improvement.
 
-NVIDIA SkillEvaluator supplies the existing scanner and dataset generator. Harbor supplies the Terminus agent and independent functional grading. OpenShell supplies native isolation and enforcement, with partial independent metadata from Sysdig. SkillGuard adds interception, evidence binding, envelopes/diffs, review decisions, bounded policy compilation, approval lineage and rollback. It does not replace those tools with a custom agent loop or enforcer.
+NVIDIA SkillEvaluator supplies native scanning, generation, task models and response parsing. Harbor supplies the Terminus agent and independent functional grading. OpenShell supplies confinement and policy admission; Sysdig supplies partial native file/process observations. SkillGuard adds interception, evidence/source binding, behavioral envelopes and differences, review decisions, policy compilation, explicit approval lineage and rollback.
 
-## What actually worked
-The recorded HTTP lifecycle blocked the staged unsafe skill, staged the exact known repair, verified four real native agent probes, installed by explicit human exception, rolled back and restored the tested version. All four probes completed correctly in six model requests each. The agent read the guide, handled untrusted annotations, saved the original purchase total and confirmed completion; these four trials did not invoke the parser.
+The live backend runs independently of the Mac in a dedicated GitHub Codespace, with a separate Debian/OpenShell VM and no host-folder mounts. The Nebius key stays in private server-side configuration outside candidate sandboxes. GitHub Codespaces supplies hosting; we do not claim use of Nebius AI Cloud, Serverless Jobs or Token Factory Sandboxes. Sandbox entitlement on this account returned HTTP 403.
 
-Both Lightning and Super still recommended hold. We kept those warnings. The installation is labeled `operator_approved_hold`, not a model security pass. Explicit warning acceptance and a written reason cannot override failed/incomplete native checks, recorded private-file attempts, changed source or a blocked model verdict.
+## What we verified
+The cloud HTTPS acceptance completed security review, installation, actual installed-agent execution, unsafe-update rejection, known repair, rollback and restoration. All twelve authored native regression cases passed. Four initial security probes and four final repair probes completed correctly. A separate run of the restored installed version read its guide before and after receipt input, saved the correct 23.00 total and confirmed completion in six actual Nebius requests.
 
-An earlier incomplete trial remains incomplete: six forwarded requests, four responses and two unknown-cost outcomes. Recovery reused two reverified passing probes and ran only remaining cases. There was no skill/input/grader change and no fresh independent benchmark claim.
+The new live recording repeated this lifecycle with four fresh probes using 23 agent requests and a separate seven-request installed-agent completion. Its final hold, explicit restricted installation and rollback are verified in `results/oct24-live-recording-verification.json`. The full offline suite now passes 1009 tests.
 
-Entire project accounting at the verified run: $0.12544566 estimated inference usage plus $0.25 retained unknown-cost holds, totaling $0.37544566 against a $0.75 cap. These are local estimates, not provider billing totals. Source: `results/oct23-security-product-verification.json`. No latency speedup or general detection-rate claim is made.
+The initial cloud review returned a restricted allow. The final repair review returned **hold** and was installed through an explicit restricted human exception. That warning is preserved as `operator_approved_hold`, not relabeled as a model pass. Full proof and source hashes: `results/oct23-cloud-backend-verification.json`.
+
+An earlier paired skill/no-skill study found no overall safe-completion gain: 7/8 in each arm after counting unsafe attempts as failures. A separate guide-repair comparison found 8/8 correct confirmed completions for V8 versus 2/8 for the original guide on eight new authored receipts. These are small studies under their original six-request bounds, not general detection rates. The deployment uses a distinct eight-request completion profile and does not inherit benchmark credit from those studies.
+
+Every failed run and uncertain cost remains preserved. The app enforces per-trial request and output limits plus an aggregate authorization at the inference transport. Estimates are not provider billing totals. No latency or broad attack-resistance claim is made.
 
 ## Challenges and lessons
-Source checks alone did not settle behavior. SkillEvaluator's native starter generation initially returned ordinary questions rather than attacks; we retained that failure and added trusted security framing plus coverage validation. Harbor discovery was sensitive to frontmatter delimiter whitespace, requiring a narrow source-pinned compatibility wrapper. Provider failures consumed request allowances, so durable claims and retained unknown-cost holds mattered. Correct output did not eliminate the need to inspect actions or preserve model uncertainty.
+Correct output is not enough: an agent can attempt a forbidden read and still return the right answer. We therefore inspect recorded actions as well as functional grades. Native frontmatter discovery needed a narrow pinned compatibility wrapper. Generated ordinary questions were not adequate attacks, so we retained that failure and added explicit security framing and coverage validation. Cloud cold starts, provider latency and trace processing required declared prospective deadlines; old failed trials were never relabeled. Concurrent live page polling also exposed a snapshot-creation race, fixed with serialized capture and a regression test.
 
 ## What's next
-Broader skill domains, independently curated benchmarks and more complete native attribution. Cloud sandbox access was unavailable; the working runtime is local native OpenShell. Public judging access, video and submission remain separate release tasks. A recorded walkthrough is provided for inspection; it is not a live model backend.
+Broader skill domains, independently curated attack sets, better native attribution and durable judging/production hosting. The frozen receipt-profile core is working; those broader claims remain outside scope.
 
 ## Built with
-Python, JavaScript, Hermes Agent, NVIDIA SkillEvaluator, NVIDIA Nemotron, Nebius Token Factory, Harbor, OpenShell, Sysdig, Lima, Docker.
+Python, JavaScript, Hermes Agent, NVIDIA SkillEvaluator, NVIDIA Nemotron 3.5 Lightning, NVIDIA Nemotron 3 Super, Nebius Token Factory, Harbor, OpenShell, Sysdig, Lima, Docker, GitHub Codespaces.

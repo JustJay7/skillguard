@@ -20,17 +20,17 @@ def test_expanded_operator_budget_keeps_old_claims_and_unknown_holds(tmp_path):
                   {'call_id': 'old-unknown', 'reserved_cost_usd': '.25'}])
     original = path.read_bytes()
     assert project_cap(tmp_path) == .75
-    authorize(tmp_path, 25.89)
-    assert project_cap(tmp_path) == 25.89
+    authorize(tmp_path, 12.34)
+    assert project_cap(tmp_path) == 12.34
     assert proposal_cap(tmp_path) == .75
     with pytest.raises(ValueError, match='ceiling'):
         claim_probe(path, tmp_path / 'legacy-claim.json', {'run_id': 'legacy'})
     assert path.read_bytes() == original
     claim_probe(path, tmp_path / 'new-claim.json', {'run_id': 'new',
-        'aggregate_cap_usd': 25.89, 'maximum_model_requests': 6,
+        'aggregate_cap_usd': 12.34, 'maximum_model_requests': 6,
         'reservation_profile': TEXT_RESERVATION})
     status = read(path)
-    assert status['cap_usd'] == 25.89
+    assert status['cap_usd'] == 12.34
     assert status['accounted_usd'] == pytest.approx(1.01)
     assert status['reserved_usd'] == pytest.approx(.31)
     assert path.read_text().splitlines()[1:3] == original.decode().splitlines()[1:3]

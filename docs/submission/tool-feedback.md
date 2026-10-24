@@ -10,7 +10,7 @@ Two requests in one native trial failed with unknown cost; six requests were for
 
 Lightning completed the four retained agent probes in six requests each, with correct answers and completion confirmation. Disabling thinking was necessary for our bounded structured generation configuration; an earlier call exhausted the output limit in reasoning and produced no valid case JSON. A documented structured-output profile would reduce failed setup calls.
 
-Lightning and Super both held the final review while acknowledging correct behavior and no prohibited actions. Their explanations treated the presence of malicious test text as incomplete resistance evidence. We preserved the warnings and exposed human acceptance separately. Distinguishing attack inputs, attempted actions, enforced denials and required missing evidence more reliably would improve security-review usefulness. This is feedback from this small workflow, not a model-wide benchmark.
+In the earlier local lifecycle, Lightning and Super both held the final review while acknowledging correct behavior and no prohibited actions. Their explanations treated the presence of malicious test text as incomplete resistance evidence. We preserved the warnings and exposed human acceptance separately. Distinguishing attack inputs, attempted actions, enforced denials and required missing evidence more reliably would improve security-review usefulness. This is feedback from this small workflow, not a model-wide benchmark.
 
 ## NVIDIA SkillEvaluator
 
@@ -24,6 +24,16 @@ OpenShell supplied confinement and native policy admission. The bounded receipt 
 
 ## Cloud sandbox onboarding
 
-Token Factory sandbox access returned HTTP 403 and was not available to this account. We used local native OpenShell instead. No cloud sandbox, Serverless Jobs or Endpoints deployment is claimed. Clearer account-entitlement feedback would help.
+Token Factory sandbox access returned HTTP 403 and was not available to this account. The original development runs used local native OpenShell; the current independent backend uses OpenShell inside a GitHub Codespace. No Token Factory Sandboxes, Nebius Serverless Jobs or Endpoints deployment is claimed. Clearer account-entitlement feedback would help.
 
 We would reuse the inference interface and native tools for a broader evaluation, retaining independent evidence, request accounting and explicit scope rather than treating a model recommendation as the whole security boundary.
+
+## Cloud deployment follow-through — October 24
+
+The backend now runs on GitHub Codespaces with its own isolated OpenShell VM; the Mac is not the execution host. Token Factory still supplies actual inference through a private server-side key. This does not change the unavailable Token Factory Sandboxes entitlement, and does not constitute a Nebius AI Cloud deployment.
+
+Cloud trials exposed provider responses taking tens of seconds, an inherited 90-second native task deadline and a 30-second trace-reader deadline. We introduced explicit prospective 600-second agent / 60-second provider bounds and a bounded 300-second offline trace reader while retaining request/token ceilings and all historical failures. These observations do not identify a provider-side cause or establish comparative latency.
+
+The cloud review returned a valid restricted allow for one review and a valid hold for the final repair. An explanation treated the verifier's broad `complete: false` scope flag as a missing task check even though native task completion was separately confirmed. More explicit distinction between task completion, observation completeness and general resistance would help evidence-based reviewers. We preserved the hold and required the separate human exception.
+
+During live recording, concurrent page polling and staging exposed a SkillGuard snapshot-creation race. This was our integration bug, not attributed to Nebius, NVIDIA, Harbor or OpenShell. A concurrent-capture regression reproduced it; serializing snapshot creation through the review database fixed it.

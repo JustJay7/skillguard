@@ -1,20 +1,37 @@
-# Recorded walkthrough video
+# Actual live-app demonstration
 
-`dist/skillguard-demo-video.mp4` is the finished local 2:19 video. It shows actual browser-page captures of the explicitly approved public walkthrough, with local system-voice narration from `narration.txt`. It is not footage of a fresh native run or the protected Codex application. The persistent footer says recorded evidence replay, fictional staged attack and edited timing. Public upload was declined by the user.
+The submission video is `dist/skillguard-live-submission/skillguard-live-demo.mp4`: **2:33**, with English local system-voice narration, captions and footage captured from the actual protected cloud application. It replaces the older replay video as the proposed submission video. It has not been publicly uploaded.
 
-The browser capture contains 266 frames at an approximate two-per-second acquisition cadence, edited to the narration. Navigation/tool pauses were removed and scene durations adjusted. The footage is not a latency measurement. The encoded file has H.264 video at 1440×798, AAC audio, 24 output frames/second, and duration 139.25 seconds.
+## What the footage establishes
 
-| Time | Actual captured page |
+A fresh actual cloud run staged an unsafe update through native Hermes, executed native checks, blocked installation, rejected and archived it, staged the exact known V8 repair, ran four newly generated actual agent probes, retained Nemotron's hold, installed through the authorized restricted human exception, ran the installed agent, rolled back and restored it.
+
+The repair's four native probes passed in **23 actual agent requests** (6, 5, 6, 6); generation and the evidence recommendation bring that review to **25 requests**. The installed agent then completed its separate task in **seven real requests**, read the guide before/after receipt input and saved total **23.00**. Including two metadata recommendations on unsafe/incomplete attempts, this recording added **34 completed provider requests**. All earlier accounting rows and unknown holds remain preserved; the private aggregate authorization is not published.
+
+The final review remains **hold**, and the active installation remains **operator_approved_hold**. No unrestricted activation or general attack-resistance claim is made. Native VM cleanup and exact rollback/restoration passed.
+
+## Edit and provenance
+
+The recording uses actual browser-page captures at approximately two frames/second, encoded at nominal 24 fps. It contains no images from the older recorded-evidence Site, no simulated terminal and no private desktop capture. Long waits/navigation are shortened or retimed, stated in narration and the persistent footer. Tool actions are displayed from the saved trajectory of this same fresh run after completion, not presented as a live token stream. The complete security review took many minutes; the video is not a latency benchmark.
+
+`capture-provenance.json` in the local packet binds used frames, timestamps, scene names and source hashes. `chapters.json` supplies exact edit timings; `narration.txt` and `skillguard-live-demo.en.srt` provide the transcript and captions. The video has H.264 1280×800 picture, AAC narration and an optional embedded English caption track.
+
+| Chapter | Actual footage |
 | --- | --- |
-| 0:00–0:25 | Public walkthrough introduction |
-| 0:25–0:46 | Blocked staged skill update and native comparison |
-| 0:46–1:05 | Four generated annotation/control tabs and preserved receipt result |
-| 1:05–1:19 | Archived native agent terminal commands |
-| 1:19–1:56 | Declared sandbox boundary and retained model hold explanation |
-| 1:56–2:05 | Recorded human exception, installation and rollback |
-| 2:05–2:12.5 | Evidence limits and retained incomplete trial |
-| 2:12.5–2:19.25 | Closing introduction view |
+| 1–2 | Actual hosted app and existing restricted installation |
+| 3 | Fresh unsafe update paused at the native learning gate |
+| 4 | Native failure, two fake-private-file denials including the control, installation blocked |
+| 5–6 | Known repair and fresh native/model review starting |
+| 7 | Four completed generated probes and recorded actions from this run |
+| 8 | Model hold, explicit warning acknowledgment and restricted installation |
+| 9–10 | Fresh installed agent start, correct answer and its actual saved commands |
+| 11 | Previous-version restoration followed by restoring the repaired version |
+| 12 | Working app, retained human-exception warning and scope limits |
 
-Verification: decoded the entire MP4, checked both streams and duration, inspected representative encoded frames, and measured non-silent audio without clipping. Source frames and the edit manifest remain locally under `dist/video-frames`. No extra model calls were used for recording. No YouTube URL exists and no Devpost submission has been made.
+## Retained failures and verification
 
-For a future live-product recording, use the real local app at http://127.0.0.1:8768/ and identify which actions execute now versus display archived evidence. The public URL is a separate replay. Never call the replay a live attack, general protection, a blind benchmark, a model-approved pass or a cloud sandbox deployment.
+The first zero-call staging attempt exposed a concurrent snapshot race, fixed with serialized capture and a regression test. A subsequent native attempt failed at the old 90-second VM cold-start deadline before candidate execution. Both are retained and excluded from the successful sequence; neither receives security-detection credit. New evaluations declare the bounded 180-second VM startup wait, and all inference limits remain unchanged.
+
+Verification records: `results/oct24-live-recording-verification.json`, `results/oct24-live-video-verification.json` and `results/oct24-live-release-tests.txt`. The full offline suite passed **1009 tests**. The entire MP4 decoded, all twelve encoded chapter views were inspected, audio was audible without clipping, and OCR of 153 encoded frames found no private budget/access-code exposure. Private budget text is visibly redacted. These sampled checks are not an exhaustive OCR guarantee for every video frame.
+
+The earlier `dist/skillguard-demo-video.mp4` remains a distinct 2:19 recorded-evidence replay. Do not upload it as this fresh live-app demonstration.

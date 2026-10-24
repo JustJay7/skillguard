@@ -437,3 +437,13 @@ A raw model block, failed probe, changed evidence or second escalation stays blo
   representation. All original bytes remain recoverable; 825 MiB was reclaimed. A
   final status-print expression initially failed after compression; a separate hash
   recheck verified the preserved archive. No failed trial was promoted.
+
+## 2026-10-24 — Record fresh cloud execution and retain discovered failures
+
+Decision: record only the protected actual Codespaces application through browser page captures, then edit long waits explicitly for the under-three-minute video. Tool-action displays are identified as saved actions from the same fresh run. The older recorded-evidence Site/video remains separate. No credentials, private budget or access code enter the edited release. Public YouTube upload remains unauthorized until the finished new file is reviewed; preparing submission materials does not submit the entry or accept its legal declarations.
+
+The first zero-call staging attempt exposed concurrent snapshot creation from page polling and staging. Reproduce the race across two ReviewStore instances, then serialize capture with a database write transaction. The failed pending snapshot was rejected and retained; no model charge or unsafe installation resulted.
+
+The next native review failed during a cold VM boot at the inherited 90-second cutoff, before candidate execution. The resulting blocked installation is an infrastructure/incomplete-evidence block, not claimed attack detection. Preserve `core-runtime-98f47c48` and its charged metadata review. New deterministic core evaluations declare a 180-second VM startup bound (210-second command limit), matching the existing live-agent startup bound; cleanup and inference limits remain unchanged. Fresh staging/review after the correction is deployment acceptance, not a rerun counted toward a blind benchmark.
+
+Reason: the requested live demonstration must show real successful execution and accurate causes, including errors it uncovers. Reversal: restore the prior source bounds/transaction behavior in a new commit, without editing historical evidence. Judging access still needs an availability plan because free Codespaces suspends; no always-on promise or billing expansion is inferred.

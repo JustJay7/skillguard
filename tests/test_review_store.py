@@ -1,9 +1,13 @@
 import json
+import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from threading import Barrier
 
 import pytest
 
 from skillguard.envelope.schema import BehavioralEnvelope
+from skillguard.intercept.pending import PendingSkillWrite
 from skillguard.review.store import ReviewStore
 
 
@@ -31,6 +35,32 @@ def test_capture_is_persistent_idempotent_and_preserves_pending(tmp_path: Path) 
     assert source.exists()
     assert reopened.decide(review_id)["decision"] == "held"
     assert not (tmp_path / "skills").exists()
+
+
+def test_concurrent_capture_materializes_one_snapshot(tmp_path: Path, monkeypatch) -> None:
+    source = pending(tmp_path / "pending.json")
+    stores = [ReviewStore(tmp_path / "reviews") for _ in range(2)]
+    start = Barrier(2)
+    materializations = []
+    original = PendingSkillWrite.materialize_create
+
+    def materialize(candidate, folder):
+        materializations.append(candidate.sha256)
+        time.sleep(0.1)
+        return original(candidate, folder)
+
+    monkeypatch.setattr(PendingSkillWrite, 'materialize_create', materialize)
+
+    def capture(store):
+        start.wait(timeout=5)
+        return store.capture(source)
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        futures = [pool.submit(capture, store) for store in stores]
+        ids = [future.result(timeout=10) for future in futures]
+    assert ids[0] == ids[1]
+    assert materializations == [PendingSkillWrite.load(source).sha256]
+    assert stores[0].get(ids[0])['candidate_sha256'] == stores[1].get(ids[1])['candidate_sha256']
 
 
 def test_modified_snapshot_cannot_receive_a_decision(tmp_path: Path) -> None:

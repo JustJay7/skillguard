@@ -12,6 +12,8 @@ In the [public source](https://github.com/JustJay7/skillguard), run `python3 -m 
 
 ## Actual public backend
 
+The October 24 live recording repeated the actual cloud lifecycle: unsafe update blocked with two fake-private-file denials (one is the control), known repair reviewed with four fresh agent probes, retained model hold accepted only for the restricted workspace, installed agent completed correctly in seven requests, and exact rollback/restoration verified. The fresh probes used 23 agent requests; the complete recording added 34 provider requests including generation and recommendations. The new narrated video is 2:33 and uses actual application captures with waits explicitly shortened, rather than the older Site replay. Its public upload is pending entrant approval. [Fresh run evidence](results/oct24-live-recording-verification.json), [video verification](results/oct24-live-video-verification.json), [submission materials](docs/submission/README.md). Full offline suite after recording-exposed fixes: **1009 passed**. A fresh clean source extraction passed **1008 tests with one optional native CLI check skipped**, using the existing dependency environment.
+
 [Open the live SkillGuard workspace](https://literate-space-system-45gjq9qjggwfjw7p-8770.app.github.dev/). This protected application runs in a dedicated GitHub Codespace with its own isolated Debian/OpenShell VM. It uses real server-side Nebius credentials and native agent execution. The operator supplies a separate demo access code; no provider key is sent to visitors. The recorded walkthrough above remains separate.
 
 Codespaces uses the account's included development allowance with a $0 paid-usage limit. It stops when idle or allowance is exhausted; this is supervised development hosting, with no always-on production guarantee. [Cloud setup, private configuration and hosting limits](docs/public-backend.md).
@@ -57,12 +59,12 @@ This uses real native staging, scanning and sandbox execution with zero model ca
 ## Native dependencies and development
 
 ```bash
-make setup
+make setup PYTHON=python3.12
 make evaluator-setup
 make test
 ```
 
-Native checks additionally require the pinned Hermes and SkillEvaluator sources beside this checkout and the configured dedicated Linux VM with Harbor 0.13.2, OpenShell 0.1.2, Docker and Sysdig 0.41.4. Versions and source commits are in [upstream pins](docs/upstream-pins.json). `make setup` alone does not provision that VM. Local socket access is required by offline HTTP tests.
+Native checks require Python 3.12 or 3.13, the pinned Hermes and SkillEvaluator sources beside this checkout and the configured dedicated Linux VM with Harbor 0.13.2, OpenShell 0.1.2, Docker and Sysdig 0.41.4. Versions and source commits are in [upstream pins](docs/upstream-pins.json). `make setup` alone does not provision that VM. Local socket access is required by offline HTTP tests.
 
 The writable application data is under `results/core/`, separate from agent execution and ambient profiles. The process handles one operator action at a time, rejects hostile Host/Origin and missing CSRF tokens, verifies review revisions before approval, and refuses changed sources/evidence. [Core flow and trust boundary](docs/core-flow.md).
 

@@ -18,7 +18,8 @@ EVIDENCE = {'oct23-security-product-verification.json', 'oct23-security-product-
             'public-demo-deployment.json', 'public-demo-browser-verification.json',
             'public-source-deployment.json', 'public-demo-http-verification.json',
             'oct23-release-verification.json', 'oct23-cloud-backend-verification.json',
-            'oct23-cloud-release-tests.txt'}
+            'oct23-cloud-release-tests.txt', 'oct24-live-recording-verification.json',
+            'oct24-live-video-verification.json', 'oct24-live-release-tests.txt'}
 
 
 def build(root: Path) -> dict:
@@ -66,7 +67,7 @@ For the recorded walkthrough, no key or dependencies are needed:
 python3 -m http.server 8769 --bind 127.0.0.1 --directory recorded-demo
 Open http://127.0.0.1:8769/ . This is replay, not live inference or installation.
 
-For native execution, use Python 3.12+ and the pinned Hermes/SkillEvaluator sources
+For native execution, use Python 3.12 or 3.13 and the pinned Hermes/SkillEvaluator sources
 and Linux OpenShell stack documented in README.md, docs/upstream-pins.json,
 config/linux-trace.yaml and docs/core-flow.md. make setup installs Python app
 dependencies only; it does not provision the native VM. Credentials belong only

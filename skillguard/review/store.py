@@ -74,6 +74,7 @@ class ReviewStore:
             raise ValueError("create capture must not include an installed baseline")
         archived_base = None
         with self._connect() as db:
+            db.execute("BEGIN IMMEDIATE")
             existing = db.execute("SELECT id FROM reviews WHERE id=?", (review_id,)).fetchone()
             if existing:
                 self.get(review_id)

@@ -1,31 +1,33 @@
-# Release and submission handoff
+# SkillGuard submission materials
 
-Prepared locally: working restricted application, portable recorded-evidence demo, source, MIT license, Devpost draft, narration, recording runbook and concrete tool feedback. The read-only walkthrough has been publicly published with explicit approval; the clean source is public at https://github.com/JustJay7/skillguard ; the 2:19 narrated browser walkthrough video is prepared locally. The user declined video upload and asked to finish live product work first; final submission remains pending.
+The core product is a real cloud application with private server-side Nebius credentials and an isolated OpenShell runtime. The older Site walkthrough and `dist/skillguard-demo-video.mp4` are recorded-evidence replays and must not be presented as the new live demonstration.
 
-## Verified official requirements
+The finished fresh live-app video (2:33) and local submission packet are under `dist/skillguard-live-submission/`. The actual recorded lifecycle passed, including the seven-request installed-agent task and exact rollback/restoration. Public video upload remains paused under the entrant's earlier instruction. No Devpost entry has been submitted.
 
-Checked October 23 against the [official rules](https://nebiusglobalaihackathon.devpost.com/rules) and [organizer guidance](https://nebiusglobalaihackathon.devpost.com/updates/46205-how-to-build-a-winning-project).
+## Submission fields
 
-- Deadline: October 30, 2026, 10:00am Pacific / 1:00pm Toronto. Internal target: October 28.
-- Provide a functioning demo/test-build URL and public licensed source repository with setup instructions.
-- Submit an English description, selected track and feedback on the tools used.
-- Provide a public YouTube demonstration under three minutes; name Nebius and NVIDIA models aloud.
-- Keep judging access available through the judging period, which ends December 15, 2026.
-- Quebec residency is excluded. The operator answered “Resident outside Quebec”; other eligibility and account declarations still need confirmation.
-
-## Concrete release state
-
-| Item | State |
+| Field | Prepared material |
 | --- | --- |
-| Native local receipt security product | Verified; installation is a human exception, both model holds preserved |
-| Recorded evidence walkthrough | Public at https://skillguard-evidence-demo.jaymalhotra.chatgpt.site ; portable zip ready; no live backend |
-| Source / MIT license | Public: https://github.com/JustJay7/skillguard ; MIT detected; original private history excluded |
-| Devpost description and tool feedback | Drafts ready in this folder |
-| Narration and recording runbook | 2:19 MP4 captured from actual public browser UI, with local system-voice narration; edited replay label retained |
-| Browser visual review | Public replay checked at 717×804 and captured at 1440×756; local live app remains visually unverified |
-| Public demo / public source / video URLs | Demo and source live; video pending |
-| Final submission | Not submitted |
+| Project / track | SkillGuard / Personal AI |
+| English description | [Devpost draft](devpost-draft.md) |
+| Actual project URL | https://literate-space-system-45gjq9qjggwfjw7p-8770.app.github.dev/ |
+| Public MIT-licensed source | https://github.com/JustJay7/skillguard |
+| Testing instructions | [Judging instructions](judging-instructions.md); access code supplied only in the private testing field |
+| Required tool feedback | [Concrete Nebius/NVIDIA feedback](tool-feedback.md) |
+| New live video / narration | See [recording runbook](demo-script.md); final encoded file and verification replace the old replay as the submission video |
+| Upload title / description | [Prepared YouTube metadata](youtube-metadata.md); no invented video URL |
 
-The portable replay is a review aid. It does not make the native backend publicly available or prove that a replay alone satisfies functioning-project access. A public source/test-build release and accurate testing instructions must accompany it.
+## Official requirements checked October 24
 
-The source build requires the configured pinned native stack for real execution; `make setup` alone does not provision that runtime. The portable replay can be served with Python alone. Keep these paths distinct in the submission.
+The [official rules](https://nebiusglobalaihackathon.devpost.com/rules) require a functioning project/test build, public licensed source with setup guidance, an English description, track selection, tool feedback and a public YouTube demonstration under three minutes. The video should show the application functioning. [Organizer guidance](https://nebiusglobalaihackathon.devpost.com/updates/46205-how-to-build-a-winning-project) asks entrants to name Nebius and NVIDIA models aloud.
+
+Deadline: **October 30, 2026, 1:00pm Toronto / 10:00am Pacific**. Internal target: October 28. Judging access must remain available through **December 15**. The entrant previously confirmed residence outside Quebec; remaining personal eligibility and ownership declarations belong to the entrant.
+
+## Remaining publication and access decisions
+
+1. Review the new actual-live-app MP4, then explicitly authorize its public YouTube upload. The earlier refusal to upload has not been silently reversed.
+2. Arrange judging availability. Included Codespaces hosting suspends when idle or quota is exhausted. The owner's restart launcher works, but judges cannot use that private owner-only control. Do not claim unattended uptime through December 15.
+3. Put the live URL and access code in the private testing field, add the real uploaded video URL and confirm the entrant/team details. Never publish the code or provider key in the description, repository, screenshots or video.
+4. The entrant must review and complete final submission and its legal declarations. Preparing these materials does not accept the rules or submit the entry.
+
+The public source/test build includes the application, tests, MIT license, third-party notices and pinned native setup. Native execution needs a virtualization-capable host and the documented dependencies; `make setup` alone is not native runtime provisioning. The replay remains a separate optional inspection aid.

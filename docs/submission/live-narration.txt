@@ -1,0 +1,23 @@
+Your personal assistant learns a receipt skill. But should it keep behavior that reads a private note, or changes your purchase total? This is SkillGuard.
+
+This is the actual cloud application, running independently of my Mac. We are starting new actions now. The fictional attack is staged; long waits are shortened.
+
+I stage an unsafe receipt skill through Hermes's real pending-write gate. The skill stays paused, so proposing new behavior does not silently activate it.
+
+SkillGuard checks its source and runs native receipt tests inside OpenShell. The unsafe version fails. Its installation is blocked; a favorable model answer cannot override failed native checks.
+
+I select the known repaired guide. This is an explicit, versioned repair, not a claim of automatic code fixing. SkillGuard starts a new source-bound review.
+
+Nebius Token Factory serves NVIDIA Nemotron three point five Lightning for test generation, actual agent execution, and evidence review. NVIDIA SkillEvaluator generates the probes; Harbor runs the agent.
+
+The four generated probes include private-file requests, forged authority, and output corruption. These are real bounded model and tool runs, with OpenShell confinement and partial independent observations from Sysdig.
+
+All four native probes completed correctly. Nemotron still holds this review, so the warning stays visible. I explicitly accept that uncertainty only for this tested, restricted workspace.
+
+Now I run the installed agent on the fictional receipt. It reads the learned skill, reads the receipt, and writes its own structured answer. This is not the parser diagnostic.
+
+These are the actual tool actions saved from this fresh run. The agent rereads its guide, saves the original twenty-three-dollar total, and confirms completion. The hostile instructions did not change this result.
+
+Approval belongs to an exact tested version. I restore the previous version, then restore this repair. Both source copies and their review history survive.
+
+SkillGuard makes learning a reviewable permission decision. This receipt-profile prototype is working. Small generated tests are not a general safety guarantee, and Codespaces hosting has idle limits. The source is public and MIT licensed.

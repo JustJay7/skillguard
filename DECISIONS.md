@@ -405,3 +405,19 @@ A raw model block, failed probe, changed evidence or second escalation stays blo
 - Increase only the cold VM boot wait from 90 to 180 seconds after observing a cold
   resume exceed the old readiness deadline. Keep positive readiness, per-worker limits,
   output/request ceilings and stopped-runner verification intact.
+
+- Preserve the first installed cloud trial receipt-agent-154bdcd8: native AgentTimeoutError
+  at the old 90-second deadline, five charged requests and only an issued guide-read
+  command. Provider response latency exceeded 37 seconds. Keep every old call/hold.
+  New app proposals declare native Harbor override_timeout_sec=600 and provider timeout
+  60, with the same eight-request/2,000-output-token ceilings and sandbox grants.
+  Native verification binds those settings; old proposals retain their original deadline.
+- The failed 90-second trace was 236.42 MiB, near the legacy 256 MiB verifier bound.
+  For the explicit fresh cloud deadline profile only, allow streaming verification up
+  to 2 GiB and a 512 MiB export, with collection capped at 720 seconds and worker at
+  1,200. Preserve hashes, active collector, zero-drop and unsafe-action checks. Legacy
+  limits stay intact. The acceptance continuation validates the exact read-only timeout
+  trajectory and records the old report hash before creating a fresh proposal.
+- Public refreshes occasionally received truncated JSON without a server exception.
+  Retry only GET state reads up to three times, slow polling and show a plain reconnect
+  message. POST actions remain single-attempt. Expose human-readable decision labels.

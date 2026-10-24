@@ -130,6 +130,11 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
     aggregate_cap = proposal_cap(root / 'results', proposal.get('aggregate_cap_usd', .75))
     limit = probe_request_limit(proposal.get('maximum_model_requests'),
                                 proposal.get('app_execution_profile'))
+    if proposal.get('agent_timeout_sec') is not None and not (
+            limit == 8 and proposal.get('review_target')
+            and proposal.get('agent_timeout_sec') == 600
+            and proposal.get('provider_timeout_sec') == 60):
+        raise ValueError('Unsupported prospective cloud deadline profile')
     if limit == 8 and not proposal.get('review_target'):
         raise ValueError('Eight-request app trial requires a source-bound review')
     if proposal.get('learning_trial'):
@@ -195,6 +200,8 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
         'frontmatter_compat': proposal.get('frontmatter_compat', False),
         'maximum_model_requests': limit,
         'app_execution_profile': proposal.get('app_execution_profile'),
+        'agent_timeout_sec': proposal.get('agent_timeout_sec'),
+        'provider_timeout_sec': proposal.get('provider_timeout_sec'),
         'aggregate_cap_usd': aggregate_cap,
         'reservation_profile': proposal.get('reservation_profile', 'legacy'),
         'instruction_protocol': proposal.get('instruction_protocol'),
@@ -316,6 +323,8 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
                          'require_skill_use_proof': proposal.get('require_skill_use_proof', False),
                          'maximum_model_requests': limit,
         'app_execution_profile': proposal.get('app_execution_profile'),
+        'agent_timeout_sec': proposal.get('agent_timeout_sec'),
+        'provider_timeout_sec': proposal.get('provider_timeout_sec'),
                          'aggregate_cap_usd': aggregate_cap,
                          'runtime': runtime,
                          'reservation_profile': report['reservation_profile'],
@@ -323,7 +332,9 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
     try:
         result = subprocess.run(PREFIX + ['/opt/skillguard-harbor/bin/python', '-c',
             controller, '/root/skillguard-' + folder.name], input=header + archive.getvalue(),
-            capture_output=True, env=env, timeout=600, check=False)
+            capture_output=True, env=env, timeout=(1200 if proposal.get('agent_timeout_sec')
+                     else 600),
+            check=False)
         # Never print or archive returned secret-bearing material.
         if key.encode() in result.stdout or key.encode() in result.stderr:
             raise ValueError('Credential in returned native material; export withheld')
@@ -332,7 +343,8 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
             raise RuntimeError('Native controller transport failed')
         (folder / 'native-job.tar').write_bytes(result.stdout)
         native = folder / 'native-job'
-        extract(result.stdout, native, max_bytes=(300 if capture_native else 50) * 1024**2)
+        extract(result.stdout, native, max_bytes=(512 if proposal.get('agent_timeout_sec')
+                else 300 if capture_native else 50) * 1024**2)
         controller_result = json.loads((native / 'controller-result.json').read_text())
         report.update(controller_result)
         if controller_result.get('error_type'):

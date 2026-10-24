@@ -201,18 +201,33 @@ function learningComparison(value) {
   if (value.prior_study) details.append(text('p', 'An earlier study was inconclusive because a clarification-list instruction was ambiguous. Its original 1/8 versus 0/8 results remain archived. This table uses different cases and an explicit, identical output rule in both conditions.', 'note'));
   target.append(details);
 }
+async function readState() {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    let response;
+    try { response = await fetch('/api/state', {cache: 'no-store'}); }
+    catch (e) { if (attempt === 2) throw e; continue; }
+    if (!response.ok) {
+      let message = 'Live workspace unavailable. Reconnecting…';
+      try { message = (await response.json()).error || message; } catch (_) { /* no reply */ }
+      throw Error(message);
+    }
+    try { return await response.json(); }
+    catch (e) {
+      if (attempt === 2) throw e;
+      await new Promise(resolve => setTimeout(resolve, 200));
+    }
+  }
+}
 async function refresh() {
   clearTimeout(timer);
   try {
-    const response = await fetch('/api/state', {cache: 'no-store'});
-    if (!response.ok) throw Error((await response.json()).error);
-    state = await response.json();
+    state = await readState();
     if (pollError) { byId('error').hidden = true; pollError = false; }
     const focus = state.reviews.find(r => r.pending) || state.reviews.find(r => r.installed);
     byId('overview').replaceChildren(
       evidenceMetric(state.reviews.some(r => r.pending) ? 'Paused' : state.active ? 'Installed' : 'Ready', 'learning state'),
       evidenceMetric(focus?.security?.verified_probes !== undefined ? `${focus.security.verified_probes} / ${focus.security.planned_probes}` : 'Not run', 'generated probes verified'),
-      evidenceMetric(state.active?.security_decision === 'operator_approved_hold' && !focus?.pending ? 'Human exception' : focus?.security?.decision || 'Awaiting review', 'decision; model warnings stay visible'),
+      evidenceMetric(state.active?.security_decision === 'operator_approved_hold' && !focus?.pending ? 'Human exception' : ({held: 'Held', blocked: 'Blocked', restricted_pass: 'Checks passed'}[focus?.security?.decision] || 'Awaiting review'), 'decision; model warnings stay visible'),
       evidenceMetric(state.previous ? 'Available' : 'No prior version', 'version rollback'));
     const comparisonBusy = ['running', 'verifying'].includes(state.learning?.status);
     const busy = state.job?.status === 'running' || comparisonBusy;
@@ -271,8 +286,8 @@ async function refresh() {
         text('p', `Guide read before receipt: ${result.skill_use.guide_before_receipt_observed ? 'observed' : 'unverified'}. Guide reread after receipt: ${result.skill_use.guide_after_receipt_observed ? 'observed' : 'unverified'}.`, 'note'),
         text('pre', JSON.stringify(result.answer, null, 2)));
     } else byId('agent-output').replaceChildren();
-    timer = setTimeout(refresh, busy ? 1500 : 5000);
-  } catch (e) { showError(e.message, true); timer = setTimeout(refresh, 3000); }
+    timer = setTimeout(refresh, busy ? 3000 : 8000);
+  } catch (e) { showError(e instanceof SyntaxError || e instanceof TypeError ? 'Connection interrupted. Reconnecting to the live workspace…' : e.message, true); timer = setTimeout(refresh, 3000); }
 }
 for (const action of ['stage', 'update', 'unsafe']) byId(action).addEventListener('click', () => act(action === 'update' ? 'repaired' : action === 'stage' && state.active ? 'update' : action));
 byId('import-skill').addEventListener('click', () => act('import', {content: {guide: byId('skill-guide').value, parser: byId('skill-parser').value}}));

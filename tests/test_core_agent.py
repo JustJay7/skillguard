@@ -191,5 +191,6 @@ def test_new_app_bound_does_not_modify_old_template_or_historical_trial(selected
     proposal = json.loads(prepare_proposal(w.root, w.store.root, w.store.get(rid)).read_text())
     assert proposal['maximum_model_requests'] == 8
     assert proposal['app_execution_profile'] == APP_COMPLETION_PROFILE
+    assert proposal['agent_timeout_sec'] == 600 and proposal['provider_timeout_sec'] == 60
     assert template.read_bytes() == original
     assert json.loads(original)['maximum_model_requests'] == 6

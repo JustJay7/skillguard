@@ -95,6 +95,7 @@ def prepare_proposal(root: Path, store: Path, review: dict, *,
     from skillguard.models.bounded_transport import APP_COMPLETION_PROFILE
 
     proposal.update(maximum_model_requests=8, app_execution_profile=APP_COMPLETION_PROFILE,
+        agent_timeout_sec=600, provider_timeout_sec=60,
         review_target=target, instruction_protocol=REPAIRED_PROTOCOL,
         execution_enabled=True, status='authorized_2026_10_22',
         aggregate_cap_usd=project_cap(root / 'results'),

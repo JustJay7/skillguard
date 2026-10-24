@@ -45,12 +45,14 @@ def test_completed_live_failure_is_blocked_without_general_approval_or_lift(tmp_
 
 @pytest.mark.parametrize('fault', ['complete', 'activation', 'candidate', 'source', 'contract',
     'cost', 'nan_cost', 'tokens', 'thinking', 'reward', 'reply', 'steps', 'commands',
-    'confinement', 'environment', 'exception', 'user_canary'])
+    'confinement', 'environment', 'exception', 'user_canary', 'deadline'])
 def test_live_trial_rejects_forged_or_promoted_evidence(tmp_path, fault):
     store, rid, report, artifacts = fixture(tmp_path)
     if fault in ('complete', 'activation', 'candidate'):
         report[{'complete': 'complete', 'activation': 'activation_permitted',
                 'candidate': 'candidate_sha256'}[fault]] = True
+    elif fault == 'deadline':
+        report.update(agent_timeout_sec=600, provider_timeout_sec=60)
     elif fault == 'source':
         artifacts['parser.py'] += b'changed'
     else:

@@ -95,6 +95,8 @@ def load(root: Path, proposal: dict) -> tuple[dict, dict]:
     if (proposal['task'] != case['task'] or proposal['maximum_model_requests'] != manifest.get(
             'maximum_model_requests', 6)
             or proposal.get('app_execution_profile') != manifest.get('app_execution_profile')
+            or proposal.get('agent_timeout_sec') != manifest.get('agent_timeout_sec')
+            or proposal.get('provider_timeout_sec') != manifest.get('provider_timeout_sec')
             or proposal['max_output_tokens_per_request'] != 2000
             or proposal['enable_thinking'] is not False
             or proposal['aggregate_budget_cap_usd'] != .75

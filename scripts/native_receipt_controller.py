@@ -110,6 +110,10 @@ async def execute(root: Path, header: dict):
             and header.get('frontmatter_compat') is True
             and header.get('native_skill_discovery') is True):
         raise ValueError('Eight-request app controller requires native captured skill use')
+    if header.get('agent_timeout_sec') is not None and not (
+            limit == 8 and header.get('agent_timeout_sec') == 600
+            and header.get('provider_timeout_sec') == 60):
+        raise ValueError('Unsupported cloud controller deadline profile')
     budget = AgentCallBudget(root / 'cost.csv', root / 'responses', max_calls=limit,
                              total_limit_usd=header.get('aggregate_cap_usd', .75),
                              reservation_profile=header.get('reservation_profile', 'legacy'))
@@ -228,7 +232,9 @@ async def execute(root: Path, header: dict):
         from scripts.native_agent_capture import NativeAgentCapture
 
         capture = NativeAgentCapture(root, header['event_format'], header.get('runtime', 'docker'),
-                                    receipt_artifacts=header.get('require_skill_use_proof') is True)
+                                    receipt_artifacts=header.get('require_skill_use_proof') is True,
+                                    maximum_runtime_sec=(
+                                        720 if header.get('agent_timeout_sec') else 210))
     try:
         if capture:
             capture.start()
@@ -254,6 +260,7 @@ async def execute_job(root, header, budget, state, upstream_class, capture):
     async with native_harbor_client(budget, api_key=header['api_key'],
                                    authorized_limit_usd=header.get('aggregate_cap_usd', .75),
             app_execution_profile=header.get('app_execution_profile'),
+            request_timeout_sec=header.get('provider_timeout_sec') or 30,
             upstream=upstream_class(), compatibility_probe=(runtime == 'openshell'
                 and header.get('frontmatter_compat') is True
                 and (header.get('native_skill_discovery') is True
@@ -280,6 +287,7 @@ async def execute_job(root, header, budget, state, upstream_class, capture):
             'quiet': True, 'retry': {'max_retries': 0},
             'environment': environment,
             'agents': [{'name': 'terminus-2', 'model_name': 'openai/' + MODEL,
+                'override_timeout_sec': header.get('agent_timeout_sec'),
                 'env': {}, 'kwargs': {'max_turns': header.get('maximum_model_requests', 4),
                     'enable_summarize': False,
                     'record_terminal_session': False, 'temperature': 0,

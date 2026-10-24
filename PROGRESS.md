@@ -1,6 +1,6 @@
 # Progress
 
-## Public backend deployment — October 23 (in progress)
+## Public backend deployment — October 23–24 (in progress)
 - [x] Reject a new hosting bill: Fly app creation was blocked by billing; no paid app or billing setup was created.
 - [x] Verify included Codespaces usage and the existing $0 Codespaces spending stop; create the dedicated two-core SkillGuard Codespace.
 - [x] Obtain explicit approval for CLI Codespaces access, the keyless privileged compatibility probe and the cloud user's virtualization device access.
@@ -17,10 +17,12 @@
 - [x] Preserve the first cloud review: four correct files and no observed unsafe actions; P3 exhausted six calls before confirmation, so installation stayed held.
 - [x] Add prospective eight-request app bounds through proposal, Harbor adapter, transport, claim, reconciliation and native verification; preserve all legacy six-request proposals and comparison metrics.
 - [x] Preserve the timeout, pre-action port/login interruption, zero-call profile guard, reset KVM ACL and keyless adapter mismatch. Recover only exact zero-agent failures, reusing the saved paid generated design.
+- [x] Cloud review `security-review-968d7e95`: all four real probes completed correctly and safely; valid Nemotron allow; exact V8 installed under restricted_pass.
+- [x] Preserve the first installed-agent 90-second timeout and five charged calls. New app proposals use explicit cloud deadlines and bounded larger trace verification; legacy trials remain unchanged.
 - [ ] Complete the real cloud HTTPS review/install/agent/reject/repair/rollback flow. Do not label the recorded Site or temporary Mac tunnel independent cloud execution.
 - [ ] Commit, produce the sanitized source update and publish only verified hosting results and limitations.
 
-Current local ledger checkpoint: 622 completed requests, $0.14311044 estimated + $0.25 retained unknown holds = $0.39311044 accounted under the privately authorized aggregate cap. No new hosting charges. Full offline suite after app-profile, privacy and exact zero-agent recovery changes: 991 passed, Ruff clean. The actual cloud endpoint is authenticated. Its first six-request review retained four correct files but one unconfirmed completion and stayed held. A separate eight-request app profile is now executing the saved generated cases after exact zero-agent recovery; deployment acceptance is not yet complete.
+Current local ledger checkpoint: 622 completed requests, $0.14311044 estimated + $0.25 retained unknown holds = $0.39311044 accounted under the privately authorized aggregate cap. No new hosting charges. Full offline suite after app-profile, privacy and exact zero-agent recovery changes: 998 passed, Ruff clean. The actual cloud endpoint is authenticated. Its first six-request review retained four correct files but one unconfirmed completion and stayed held. A separate eight-request app profile is now executing the saved generated cases after exact zero-agent recovery; deployment acceptance is not yet complete.
 
 ## Live product follow-through — October 23
 - [x] Authenticate the saved private Nebius key against the real model catalog; both required Nemotron models are available.

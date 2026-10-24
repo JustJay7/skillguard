@@ -81,3 +81,13 @@ def test_fast_native_compression_preserves_exact_raw_evidence(tmp_path, monkeypa
     assert metadata['uncompressed_capture_sha256'] == digest(raw)
     assert metadata['uncompressed_capture_bytes'] == len(raw)
     assert not (capture.root / 'events.scap').exists()
+
+
+@pytest.mark.parametrize('openshell,fresh,receipt,maximum', [
+    (False, True, True, 2 * 1024**3), (True, False, True, 2 * 1024**3),
+    (True, True, False, 2 * 1024**3), (True, True, True, 3 * 1024**3)])
+def test_cloud_capture_resource_bound_cannot_expand_legacy_or_unscoped_evidence(
+        openshell, fresh, receipt, maximum):
+    with pytest.raises(ValueError, match='fresh app receipt'):
+        verify_agent_capture(fixture(), openshell=openshell, fresh=fresh,
+                             receipt_artifacts=receipt, maximum_capture_bytes=maximum)

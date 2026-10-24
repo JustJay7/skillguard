@@ -15,10 +15,14 @@ PLUGINS = '/opt/skillguard-sysdig/usr/share/sysdig/plugins'
 
 class NativeAgentCapture:
     def __init__(self, root: Path, event_format: str, runtime: str = 'docker',
-                 *, scoped_metadata: bool = False, receipt_artifacts: bool = False):
+                 *, scoped_metadata: bool = False, receipt_artifacts: bool = False,
+                 maximum_runtime_sec: int = 210):
         self.root, self.event_format = root / 'capture', event_format
         self.root.mkdir()
         self.unit = 'skillguard-agent-' + uuid.uuid4().hex[:8]
+        if maximum_runtime_sec not in {210, 720}:
+            raise ValueError('Unsupported bounded native capture runtime')
+        self.maximum_runtime_sec = maximum_runtime_sec
         self.container_id = None
         self.scoped_metadata = scoped_metadata
         self.receipt_artifacts = receipt_artifacts
@@ -38,7 +42,7 @@ class NativeAgentCapture:
             raise ValueError('Native capture version differs')
         self.metadata['sysdig_version'] = version
         self.command(['systemd-run', f'--unit={self.unit}', '--uid=root',
-            '--property=UMask=0077', '--property=RuntimeMaxSec=210',
+            '--property=UMask=0077', f'--property=RuntimeMaxSec={self.maximum_runtime_sec}',
             f'--setenv=SYSDIG_PLUGIN_DIR={PLUGINS}',
             f'--property=StandardError=append:{self.root}/stats.txt',
             BINARY, '--modern-bpf', '-s', '1', '-E', '-v', '-w', str(self.root / 'events.scap')])

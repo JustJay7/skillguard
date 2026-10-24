@@ -74,7 +74,7 @@ and excluded from source releases. Never put the code in a URL or public README.
 `python -m scripts.public_backend_check` exercises the public HTTPS actions with the
 real native runtime and bounded model calls. It refuses an existing run record. Its
 explicit observation continuation never repeats a model action, including after a
-client-side observation timeout. The observer allows two hours for the bounded native
+client-side observation timeout. The observer allows three hours for the bounded native
 preflight/live sequence; each individual native worker retains its own timeout. Its separate validation
 continuation preserves the first failure and reuses the exact paid test-generation
 response after a fixture-wording correction; earlier passed agent trials are retained.
@@ -110,3 +110,18 @@ GitHub CLI port-forward command, restore its public visibility, then close that 
 local registration connection. Verify `/health` over the public URL afterward: the cloud
 app must remain reachable with `depends_on_mac=false`. Port registration does not turn
 the Mac into the backend. The operator's private launcher performs these checks.
+
+The first cloud eight-request security review passed all four native probes and
+received a valid restricted allow. Its first installed-agent run then timed out under
+the packaged task's old 90-second deadline after five charged requests; the issued
+trajectory contained only the guide read. That failure and its costs remain preserved.
+New app proposals explicitly record a 600-second task deadline and 60-second provider
+deadline, using Harbor's native `override_timeout_sec`. Requests remain capped at eight,
+output at 2,000 tokens/request, thinking disabled and the same shared spending cap.
+
+That prospective deadline profile also records longer native collection (720 seconds),
+a bounded 1,200-second worker and a 512 MiB export ceiling. Only source-verified fresh
+receipt evidence under that profile may stream-verify up to 2 GiB of raw trace; legacy
+trials keep the 256 MiB bound. Full raw hashes, zero-drop checks, identities, native
+completion, output grading and unsafe-action gates remain required. No failed artifact
+is relabeled or given a larger deadline retroactively.

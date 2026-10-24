@@ -22,7 +22,9 @@ def verify_enforced_live_trial(report: dict, artifacts: dict[str, bytes], parser
     verify_openshell_boundary(artifacts)
     strict = report.get('require_skill_use_proof') is True
     captured = verify_agent_capture(artifacts, openshell=True, include_confinement_control=True,
-                                    receipt_artifacts=strict, fresh=True)
+                                    receipt_artifacts=strict, fresh=True,
+                                    maximum_capture_bytes=(2 * 1024**3
+                                        if report.get('agent_timeout_sec') == 600 else None))
     skill_use = {}
     if strict:
         from skillguard.evaluation.agent_skill_use import verify_skill_use

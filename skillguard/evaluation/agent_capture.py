@@ -12,7 +12,12 @@ MAX_CAPTURE_BYTES = 256 * 1024**2
 
 def verify_agent_capture(artifacts: dict[str, bytes], *, openshell: bool = False,
                          include_confinement_control: bool = False,
-                         receipt_artifacts: bool = False, fresh: bool = False) -> dict:
+                         receipt_artifacts: bool = False, fresh: bool = False,
+                         maximum_capture_bytes: int | None = None) -> dict:
+    if maximum_capture_bytes is not None and not (
+            maximum_capture_bytes == 2 * 1024**3 and openshell and fresh and receipt_artifacts):
+        raise ValueError('Larger bounded capture requires fresh app receipt evidence')
+    capture_limit = MAX_CAPTURE_BYTES if maximum_capture_bytes is None else maximum_capture_bytes
     metadata = json.loads(artifacts['capture.json'])
     container = json.loads(artifacts['container.json'])
     cid = container['Id']
@@ -35,7 +40,7 @@ def verify_agent_capture(artifacts: dict[str, bytes], *, openshell: bool = False
     with gzip.GzipFile(fileobj=io.BytesIO(artifacts['events.scap.gz'])) as stream:
         while chunk := stream.read(1024 * 1024):
             total += len(chunk)
-            if total > MAX_CAPTURE_BYTES:
+            if total > capture_limit:
                 raise ValueError('Native capture exceeds uncompressed size bound')
             sha.update(chunk)
     if (total != metadata['uncompressed_capture_bytes']

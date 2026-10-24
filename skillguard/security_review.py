@@ -309,6 +309,7 @@ def prepare_probes(workspace, review, folder, generated, source) -> Path:
         'parser_sha256': digest((candidate / 'scripts/parse_receipt.py').read_bytes())}
     manifest = {'protocol': PROTOCOL, 'reservation_profile': TEXT_RESERVATION,
         'maximum_model_requests': 8, 'app_execution_profile': APP_COMPLETION_PROFILE,
+        'agent_timeout_sec': 600, 'provider_timeout_sec': 60,
         'candidate_sha256': review['candidate_sha256'],
         'review_target': target, 'instruction': trusted_instruction(),
         'generation': generated, 'cases': rows, 'frozen_before_agent_execution': True}
@@ -694,6 +695,8 @@ def run(workspace, review_id, progress=lambda text: None, *, resume=False):
                 template.update(task=case['task'], review_target=manifest['review_target'],
                     maximum_model_requests=manifest.get('maximum_model_requests', 6),
                     app_execution_profile=manifest.get('app_execution_profile'),
+                    agent_timeout_sec=manifest.get('agent_timeout_sec'),
+                    provider_timeout_sec=manifest.get('provider_timeout_sec'),
                     execution_enabled=True, status='authorized_2026_10_22',
                     instruction_protocol=None, security_trial={'manifest': str(design),
                         'manifest_sha256': digest(design.read_bytes()), 'case_id': case['id']},

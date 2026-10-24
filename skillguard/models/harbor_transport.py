@@ -56,7 +56,8 @@ async def native_harbor_client(budget: AgentCallBudget, *, api_key: str,
                                upstream: httpx.BaseTransport | None = None,
                                compatibility_probe: bool = False,
                                authorized_limit_usd: float = .75,
-                               app_execution_profile: str | None = None):
+                               app_execution_profile: str | None = None,
+                               request_timeout_sec: int = 30):
     """Yield SDK kwargs consumed by the installed native Harbor LiteLLM client.
 
     Count actual HTTP requests, including hidden native/SDK retries. This primitive
@@ -64,6 +65,9 @@ async def native_harbor_client(budget: AgentCallBudget, *, api_key: str,
     """
     if type(compatibility_probe) is not bool:
         raise ValueError('Native Harbor compatibility flag must be boolean')
+    if request_timeout_sec not in {30, 60} or (request_timeout_sec == 60
+            and app_execution_profile is None):
+        raise ValueError('Cloud provider deadline requires the explicit app profile')
     ceiling = 6 if compatibility_probe else 4
     if app_execution_profile is not None:
         probe_request_limit(budget.max_calls, app_execution_profile)
@@ -77,7 +81,7 @@ async def native_harbor_client(budget: AgentCallBudget, *, api_key: str,
     from litellm.llms.openai.openai import OpenAIChatCompletion
 
     async with (
-        httpx.AsyncClient(transport=transport, timeout=30, trust_env=False,
+        httpx.AsyncClient(transport=transport, timeout=request_timeout_sec, trust_env=False,
                           follow_redirects=False) as client,
         AsyncOpenAI(api_key=api_key, base_url='https://api.tokenfactory.nebius.com/v1',
                     max_retries=0, http_client=client) as sdk,
@@ -91,5 +95,8 @@ async def native_harbor_client(budget: AgentCallBudget, *, api_key: str,
         # Native Terminus includes llm_kwargs in ATIF metadata. Keep SDK/key objects
         # out of those serializable settings and intercept only its provider client.
         with patch.object(OpenAIChatCompletion, '_get_openai_client', guarded_client):
-            yield {'max_tokens': 2000, 'num_retries': 0,
-                   'extra_body': {'chat_template_kwargs': {'enable_thinking': False}}}
+            options = {'max_tokens': 2000, 'num_retries': 0,
+                       'extra_body': {'chat_template_kwargs': {'enable_thinking': False}}}
+            if request_timeout_sec == 60:
+                options['timeout'] = 60
+            yield options

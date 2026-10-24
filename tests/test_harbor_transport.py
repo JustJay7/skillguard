@@ -45,11 +45,13 @@ def test_native_client_cannot_drop_request_bounds_or_forward_unsupported_modes(t
     assert not calls and guard.budget.calls == 0
 
 
-def test_actual_native_harbor_litellm_request_uses_bounded_sdk_and_exact_token_controls(tmp_path):
+@pytest.mark.parametrize('cloud', [False, True])
+def test_actual_native_harbor_litellm_request_uses_bounded_sdk_and_exact_token_controls(
+        tmp_path, cloud):
     from harbor.llms.lite_llm import LiteLLM
 
     calls = []
-    account = budget(tmp_path)
+    account = budget(tmp_path, max_calls=8 if cloud else 1)
 
     def upstream(request):
         calls.append(json.loads(request.read()))
@@ -61,7 +63,10 @@ def test_actual_native_harbor_litellm_request_uses_bounded_sdk_and_exact_token_c
 
     async def native_call():
         async with native_harbor_client(account, api_key='fake-offline-key',
-                                        upstream=httpx.MockTransport(upstream)) as options:
+                                        upstream=httpx.MockTransport(upstream),
+                compatibility_probe=cloud,
+                app_execution_profile='receipt-app-eight-request-2026-10-23' if cloud else None,
+                request_timeout_sec=60 if cloud else 30) as options:
             assert 'fake-offline-key' not in json.dumps(options)
             assert 'client' not in options
             client = LiteLLM(model_name='openai/' + MODEL,
@@ -192,3 +197,12 @@ def test_eight_request_native_client_requires_the_explicit_app_profile(tmp_path,
         with pytest.raises(ValueError):
             asyncio.run(enter())
     assert account.calls == 0
+
+
+def test_longer_provider_deadline_cannot_expand_the_legacy_client(tmp_path):
+    async def enter():
+        async with native_harbor_client(budget(tmp_path), api_key='fake-offline',
+                                       request_timeout_sec=60):
+            pytest.fail('Legacy profile cannot use the longer cloud deadline')
+    with pytest.raises(ValueError, match='explicit app profile'):
+        asyncio.run(enter())

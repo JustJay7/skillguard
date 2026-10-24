@@ -41,10 +41,19 @@ def verify_live_trial(report: dict, artifacts: dict[str, bytes], parser: bytes |
             openshell_environment_sha256 is None or report.get('frontmatter_compat') is not True
             or (report.get('native_skill_discovery') is not True and not learning_mode))):
         raise ValueError('Native live trial request-bound profile differs')
+    expected_llm = {'max_tokens': 2000, 'num_retries': 0,
+                    'extra_body': {'chat_template_kwargs': {'enable_thinking': False}}}
+    if report.get('agent_timeout_sec') is not None:
+        if (limit != 8 or report['agent_timeout_sec'] != 600
+                or report.get('provider_timeout_sec') != 60
+                or agent.get('override_timeout_sec') != 600):
+            raise ValueError('Native cloud deadline differs from the prospective proposal')
+        expected_llm['timeout'] = 60
+    elif agent.get('override_timeout_sec') is not None:
+        raise ValueError('Legacy trial deadline must not be expanded')
     if (options.get('max_turns') != limit or options.get('enable_summarize') is not False
             or options.get('api_base') != 'https://api.tokenfactory.nebius.com/v1'
-            or options.get('llm_kwargs') != {'max_tokens': 2000, 'num_retries': 0,
-                'extra_body': {'chat_template_kwargs': {'enable_thinking': False}}}):
+            or options.get('llm_kwargs') != expected_llm):
         raise ValueError('Native live trial model settings differ')
     proof = json.loads(artifacts['confinement.json'])
     if (proof.get('passed') is not True or proof.get('uid') != 1000

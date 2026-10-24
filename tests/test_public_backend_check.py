@@ -6,9 +6,10 @@ import pytest
 from scripts.public_backend_check import workflow
 
 
+@pytest.mark.parametrize('first_reply', ['integrity_conflict', 'truncated_json'])
 @pytest.mark.parametrize('interruption', ['TimeoutError', 'ReadTimeout', 'ConnectError'])
 def test_interrupted_observer_does_not_repeat_the_native_action(tmp_path, monkeypatch,
-                                                               interruption):
+                                                               interruption, first_reply):
     folder = tmp_path / 'results/public-hosting'
     folder.mkdir(parents=True)
     origin = 'https://fictional-8770.app.github.dev'
@@ -19,12 +20,18 @@ def test_interrupted_observer_does_not_repeat_the_native_action(tmp_path, monkey
              'url': origin}
     (folder / 'acceptance.json').write_text(json.dumps(prior))
     posts = []
+    reads = []
 
     def response(request):
         if request.method == 'POST':
             posts.append(request.url.path)
             assert request.url.path == '/api/login'
             return httpx.Response(200, json={'authenticated': True})
+        reads.append(request.url.path)
+        if len(reads) == 1:
+            if first_reply == 'truncated_json':
+                return httpx.Response(200, content=b'')
+            return httpx.Response(409, json={'error': 'Evidence settling; actions held'})
         return httpx.Response(200, json={
             'public_hosting': {'mode': 'codespaces'},
             'job': {'action': 'review_security', 'status': 'done'},
@@ -37,6 +44,7 @@ def test_interrupted_observer_does_not_repeat_the_native_action(tmp_path, monkey
         workflow(tmp_path, resume_first_review=True)
     result = json.loads((folder / 'acceptance.json').read_text())
     assert posts == ['/api/login']
+    assert len(reads) >= 2
     assert result['steps'][-1] == {'action': 'review_security', 'status': 'done'}
     assert result['observer_continuation']['model_action_repeated'] is False
     assert json.loads((folder / 'acceptance-observer-interrupted.json').read_text()) == prior

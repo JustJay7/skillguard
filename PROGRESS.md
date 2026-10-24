@@ -1,6 +1,6 @@
 # Progress
 
-## Public backend deployment — October 23–24 (in progress)
+## Public backend deployment — October 23–24 (verified)
 - [x] Reject a new hosting bill: Fly app creation was blocked by billing; no paid app or billing setup was created.
 - [x] Verify included Codespaces usage and the existing $0 Codespaces spending stop; create the dedicated two-core SkillGuard Codespace.
 - [x] Obtain explicit approval for CLI Codespaces access, the keyless privileged compatibility probe and the cloud user's virtualization device access.
@@ -19,10 +19,14 @@
 - [x] Preserve the timeout, pre-action port/login interruption, zero-call profile guard, reset KVM ACL and keyless adapter mismatch. Recover only exact zero-agent failures, reusing the saved paid generated design.
 - [x] Cloud review `security-review-968d7e95`: all four real probes completed correctly and safely; valid Nemotron allow; exact V8 installed under restricted_pass.
 - [x] Preserve the first installed-agent 90-second timeout and five charged calls. New app proposals use explicit cloud deadlines and bounded larger trace verification; legacy trials remain unchanged.
-- [ ] Complete the real cloud HTTPS review/install/agent/reject/repair/rollback flow. Do not label the recorded Site or temporary Mac tunnel independent cloud execution.
-- [ ] Commit, produce the sanitized source update and publish only verified hosting results and limitations.
+- [x] Installed cloud agent `receipt-agent-ccfa354e` completed correctly in six requests under the declared cloud deadlines; unsafe update was then blocked and archived.
+- [x] Preserve the repair's unused-probe fake-key trace reader timeout. Extend only offline processing, losslessly archive its failed raw transport, and resume after re-verifying the completed passing probe; no generation or passing live trial is repeated.
+- [x] Complete the real cloud HTTPS review/install/agent/reject/repair/rollback flow. Final repair `security-review-f76c5e13` passed four native probes; Nemotron held. Install with the authorized restricted human exception, preserve that warning, verify exact rollback and restore the repaired version.
+- [x] Fresh actual use of restored version `b3ed7fea47ed4e4094ee9c98dd0a3a10`: `receipt-agent-acdd70f0` completed correctly in six real requests, observed guide reads before/after input and answer writing, correct total 23.00. Native VM stopped; tested runtime source hashes match local source.
+- [x] Verify the public restart path without inference: restore approved KVM access and port registration after suspension, then close the local registration connection and independently confirm public cloud health. No Mac backend or always-on guarantee.
+- [x] Produce sanitized final deployment evidence, excluding credentials, access code, raw ledger and private cap. Preserve every failed run and all 728 pre-migration accounting rows; unknown holds remain counted. Publish source and evidence together.
 
-Current local ledger checkpoint: 622 completed requests, $0.14311044 estimated + $0.25 retained unknown holds = $0.39311044 accounted under the privately authorized aggregate cap. No new hosting charges. Full offline suite after app-profile, privacy and exact zero-agent recovery changes: 998 passed, Ruff clean. The actual cloud endpoint is authenticated. Its first six-request review retained four correct files but one unconfirmed completion and stayed held. A separate eight-request app profile is now executing the saved generated cases after exact zero-agent recovery; deployment acceptance is not yet complete.
+Final deployment acceptance and restored-agent check passed. The authoritative cloud ledger has 714 completed provider requests and remains within the privately authorized aggregate cap; original unknown holds and later timeout holds remain counted. The downloaded local ledger is an archive, not a second inference authority. No new hosting bill was enabled. Full offline suite: 1006 passed, Ruff clean; clean exported source: 1005 passed, one optional native CLI check skipped. The actual cloud endpoint is authenticated, source hashes match, and the native VM is stopped. This proves the known fictional receipt lifecycle, not a fresh blind benchmark or unrestricted safety. [Final sanitized verification](results/oct23-cloud-backend-verification.json).
 
 ## Live product follow-through — October 23
 - [x] Authenticate the saved private Nebius key against the real model catalog; both required Nemotron models are available.

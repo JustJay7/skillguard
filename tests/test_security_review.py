@@ -550,8 +550,10 @@ def test_runner_start_recovery_requires_no_agent_or_preflight_execution(tmp_path
         verify_runner_start_recovery(tmp_path, previous, recovery)
 
 
+@pytest.mark.parametrize('processing', [False, True])
 @pytest.mark.parametrize('fault', [None, 'live', 'cost', 'error', 'hash'])
-def test_keyless_profile_recovery_rejects_any_live_or_unmatched_preflight(tmp_path, fault):
+def test_keyless_profile_recovery_rejects_any_live_or_unmatched_preflight(
+        tmp_path, fault, processing):
     from skillguard.models.bounded_transport import APP_COMPLETION_PROFILE
     from skillguard.security_review import verify_runner_start_recovery
 
@@ -566,14 +568,18 @@ def test_keyless_profile_recovery_rejects_any_live_or_unmatched_preflight(tmp_pa
     report = {'mode': 'live' if fault == 'live' else 'offline',
               'maximum_model_requests': 8, 'model_requests': 1 if fault == 'cost' else 0,
               'app_execution_profile': APP_COMPLETION_PROFILE}
-    controller = {'mode': 'offline', 'error_type': 'ValueError', 'offline_error':
-        'other error' if fault == 'error' else
+    controller = {'mode': 'offline', 'error_type': 'TimeoutExpired' if processing else 'ValueError',
+        'offline_error': 'other error' if fault == 'error' else
+        'capture.finish() sysdig events.scap timed out after 30 seconds' if processing else
         'ValueError: Native Harbor probe exceeds the current aggregate/request limits\n'}
     (preflight / 'report.json').write_text(json.dumps(report))
     (preflight / 'native-job/controller-result.json').write_text(json.dumps(controller))
     previous = {'verified_probes': 0, 'probes': [], 'incomplete_probe': {
         'workflow_run': folder.name, 'model_requests': 0, 'native_run': None}}
-    recovery = {'reason': 'keyless_controller_profile_mismatch',
+    if processing:
+        previous.update(verified_probes=1, probes=[{'agent_task_passed': True}])
+    recovery = {'reason': ('keyless_capture_processing_timeout' if processing else
+                           'keyless_controller_profile_mismatch'),
         'workflow_sha256': digest((folder / 'workflow.json').read_bytes()),
         'vm_start_sha256': digest((folder / 'vm-start.txt').read_bytes()),
         'preflight_sha256': 'changed' if fault == 'hash' else

@@ -12,6 +12,30 @@ access to the fictional workspace; this is a supervised demonstration, not a mul
 service. Do not submit personal receipts. Reviews retain source bindings, native checks,
 held verdicts, irreversible failure history and the aggregate spending ledger.
 
+## Verified cloud acceptance
+
+The independent cloud HTTPS lifecycle completed review, installation, actual installed
+agent use, unsafe-update rejection, known repair, rollback and restoration. The initial
+review `security-review-968d7e95` received a restricted allow after four native probes.
+Final repair `security-review-f76c5e13` also passed all four native probes, but Nemotron
+returned **hold**. Its installation explicitly records `operator_approved_hold`, the
+acknowledged warning, reason and exact evidence hash. Failed native checks and observed
+unsafe actions remain non-overridable.
+
+After rollback and restoration, the current exact version completed another actual
+receipt task (`receipt-agent-acdd70f0`) in six real Nebius requests. Native evidence
+records guide reads before/after receipt input and answer writing; the receipt total
+is correctly 23.00. All twelve deterministic native preflight cases passed separately.
+The runtime source hashes match the tested release and the native VM stopped after
+execution. All 728 pre-migration accounting rows and unknown holds remain counted.
+[Sanitized acceptance record](../results/oct23-cloud-backend-verification.json).
+
+These are known fictional deployment fixtures and small generated security probes,
+not a new blind learning comparison or a guarantee against arbitrary attacks.
+The source export excludes the key, access code, raw ledger and private spending cap.
+The private operator launcher restores the approved device access and forwarded port
+after suspension, checks independent HTTPS health, and performs no inference.
+
 ## Free development hosting
 
 The deployment investigation uses the account's included GitHub Codespaces allowance
@@ -125,3 +149,15 @@ receipt evidence under that profile may stream-verify up to 2 GiB of raw trace; 
 trials keep the 256 MiB bound. Full raw hashes, zero-drop checks, identities, native
 completion, output grading and unsafe-action gates remain required. No failed artifact
 is relabeled or given a larger deadline retroactively.
+
+On the two-core development host, native trace post-processing may take more than
+30 seconds. The bounded reader now allows 300 seconds after collection has stopped;
+no inference allowance changes. A failed fake-key export remains failed and can be
+losslessly stored with its original hash. Partial review continuation re-verifies
+passing native probes, reuses their exact evidence and the original generated design,
+and executes only unused cases after an exact zero-live-call infrastructure failure.
+
+State polling retries only read-only integrity/transport/truncated-JSON responses.
+Every mutation remains single-attempt. If observation is interrupted after a mutation,
+its existing job is observed rather than repeated. This does not suppress a persistent
+integrity failure or permit changed-source installation.

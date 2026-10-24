@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+import uuid
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -12,7 +13,8 @@ import httpx
 
 def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
              resume_model=False, resume_completion_profile=False, resume_runner_start=False,
-             resume_installed_timeout=False,
+             resume_installed_timeout=False, resume_after_installed=False,
+             resume_repair_native=False,
              hosting_folder=None) -> dict:
     folder = (hosting_folder or root / 'results/public-hosting').resolve()
     if not folder.is_relative_to((root / 'results').resolve()):
@@ -25,9 +27,20 @@ def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
         raise ValueError('Configured public HTTPS test endpoint required')
     mode = 'codespaces' if parsed.hostname.endswith('.app.github.dev') else 'local_tunnel'
     target = folder / 'acceptance.json'
+    observing_unsafe = False
+    if target.exists() and any((resume_first_review, resume_validation, resume_model,
+                               resume_completion_profile, resume_runner_start,
+                               resume_installed_timeout, resume_after_installed,
+                               resume_repair_native)):
+        inputs = folder / 'observer-inputs'
+        inputs.mkdir(mode=0o700, exist_ok=True)
+        preserved = inputs / (uuid.uuid4().hex + '.json')
+        preserved.write_bytes(target.read_bytes())
+        preserved.chmod(0o600)
     if target.exists() and not (resume_first_review or resume_validation
                                 or resume_model or resume_completion_profile
-                                or resume_runner_start or resume_installed_timeout):
+                                or resume_runner_start or resume_installed_timeout
+                                or resume_after_installed or resume_repair_native):
         raise ValueError('Preserve the prior run; do not retry paid trials automatically')
     result = {'passed': False, 'url': origin, 'hosting_mode': mode,
               'fully_cloud_hosted': mode == 'codespaces', 'steps': []}
@@ -179,6 +192,39 @@ def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
         result.pop('error_type', None)
         result.pop('error', None)
 
+    if resume_after_installed:
+        result = json.loads(target.read_text())
+        installed = result.get('installed_agent', {})
+        if (not result.get('steps') or result['steps'][-1] != {
+                'action': 'run_agent', 'status': 'done'}
+                or installed.get('agent_completion_confirmed') is not True
+                or installed.get('version') != result.get('first_installation')):
+            raise ValueError('A completed first installed-agent run is required')
+        archive = folder / 'acceptance-after-installed-use.json'
+        if archive.exists():
+            raise ValueError('Post-installed observer continuation already used')
+        result['post_installed_observer_continuation'] = {'paid_action_repeated': False}
+        result.pop('error_type', None)
+        result.pop('error', None)
+
+    if resume_repair_native:
+        result = json.loads(target.read_text())
+        prior = result.get('repaired_review', {})
+        incomplete = prior.get('incomplete_probe', {})
+        if (result.get('unsafe_review', {}).get('decision') != 'blocked'
+                or prior.get('error') != (
+                    'Native probe incomplete; retained evidence requires review')
+                or not 0 <= prior.get('verified_probes', -1) < 4
+                or incomplete.get('model_requests') != 0
+                or incomplete.get('native_run') is not None):
+            raise ValueError('Exact unused repair-probe native failure required')
+        archive = folder / ('acceptance-repair-native-' + prior['run_id'] + '.json')
+        if archive.exists():
+            raise ValueError('Repair native continuation already attempted')
+        result.setdefault('preserved_repair_native_failures', []).append(prior)
+        result.pop('error_type', None)
+        result.pop('error', None)
+
     def save():
         target.write_text(json.dumps(result, indent=2) + '\n')
 
@@ -190,15 +236,18 @@ def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
         response.raise_for_status()
 
         def state():
-            for attempt in range(3):
+            for attempt in range(10):
                 try:
                     response = client.get('/api/state')
                     response.raise_for_status()
                     return response.json()
-                except httpx.TransportError:
-                    if attempt == 2:
+                except (httpx.TransportError, httpx.HTTPStatusError, json.JSONDecodeError) as error:
+                    if (isinstance(error, httpx.HTTPStatusError)
+                            and error.response.status_code != 409):
                         raise
-                    time.sleep(attempt + 1)
+                    if attempt == 9:
+                        raise
+                    time.sleep(min(attempt + 1, 2))
 
         def action(name, *, observe_only=False, **payload):
             current = state()
@@ -253,10 +302,27 @@ def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
             current = state()
             if not (resume_first_review or resume_validation or resume_model
                     or resume_completion_profile or resume_runner_start
-                    or resume_installed_timeout) and (
+                    or resume_installed_timeout or resume_after_installed
+                    or resume_repair_native) and (
                     current['active'] or any(r['pending'] for r in current['reviews'])):
                 raise ValueError('Public acceptance requires an empty dedicated workspace')
-            if resume_installed_timeout:
+            if resume_repair_native:
+                first = result['first_installation']
+                review = pending(current)
+                if not review['security'].get('can_resume'):
+                    raise ValueError('Verified repair native recovery required')
+                archive.write_bytes(target.read_bytes())
+                current = action('resume_security', review_id=review['id'])
+            elif resume_after_installed:
+                job = current.get('job') or {}
+                observing_unsafe = (result.get('running_action') == 'unsafe'
+                    and job.get('action') == 'unsafe' and job.get('status') in {'running', 'done'})
+                if (not current.get('active') or current['active']['id'] !=
+                        result['first_installation'] or (not observing_unsafe
+                            and any(r['pending'] for r in current['reviews']))):
+                    raise ValueError('Installed source changed after the retained agent use')
+                archive.write_bytes(target.read_bytes())
+            elif resume_installed_timeout:
                 if (not current.get('active') or current['active']['id'] !=
                         result['first_installation']
                         or any(r['pending'] for r in current['reviews'])):
@@ -304,18 +370,21 @@ def workflow(root: Path, *, resume_first_review=False, resume_validation=False,
                 current = action('repaired')
                 review = pending(current)
                 current = action('review_security', review_id=review['id'])
-            if not (resume_validation or resume_model):
-                if resume_installed_timeout:
+            if not (resume_validation or resume_model or resume_repair_native):
+                if resume_after_installed:
                     first = result['first_installation']
                 else:
-                    result['first_review'] = pending(current)['security']
-                    save()
-                    current = approve(current)
-                    first = current['active']['id']
-                result['first_installation'] = first
-                current = action('run_agent', expected_active=first)
-                result['installed_agent'] = current['job']['result']
-                current = action('unsafe')
+                    if resume_installed_timeout:
+                        first = result['first_installation']
+                    else:
+                        result['first_review'] = pending(current)['security']
+                        save()
+                        current = approve(current)
+                        first = current['active']['id']
+                    result['first_installation'] = first
+                    current = action('run_agent', expected_active=first)
+                    result['installed_agent'] = current['job']['result']
+                current = action('unsafe', observe_only=observing_unsafe)
                 review = pending(current)
                 current = action('review_security', review_id=review['id'])
                 review = pending(current)
@@ -354,6 +423,8 @@ if __name__ == '__main__':
     group.add_argument('--resume-validation', action='store_true')
     group.add_argument('--resume-model', action='store_true')
     group.add_argument('--resume-installed-timeout', action='store_true')
+    group.add_argument('--resume-after-installed', action='store_true')
+    group.add_argument('--resume-repair-native', action='store_true')
     group.add_argument('--resume-completion-profile', action='store_true')
     group.add_argument('--resume-runner-start', '--resume-zero-agent',
                        dest='resume_runner_start', action='store_true')
@@ -365,6 +436,8 @@ if __name__ == '__main__':
                       resume_completion_profile=args.resume_completion_profile,
                       resume_runner_start=args.resume_runner_start,
                       resume_installed_timeout=args.resume_installed_timeout,
+                      resume_after_installed=args.resume_after_installed,
+                      resume_repair_native=args.resume_repair_native,
                       hosting_folder=args.hosting_folder)
     print(json.dumps({k: result[k] for k in ('passed', 'url', 'hosting_mode',
                                            'rollback_verified')}, indent=2))

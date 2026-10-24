@@ -539,8 +539,13 @@ def verify_runner_start_recovery(root, previous, recovery):
     folder = root / 'results/integration' / incomplete.get('workflow_run', 'missing')
     raw = (folder / 'workflow.json').read_bytes()
     workflow = json.loads(raw)
-    keyless = recovery.get('reason') == 'keyless_controller_profile_mismatch'
-    if (previous.get('verified_probes') != 0 or previous.get('probes')
+    keyless = recovery.get('reason') in {'keyless_controller_profile_mismatch',
+                                        'keyless_capture_processing_timeout'}
+    probes = previous.get('probes', [])
+    if (not 0 <= previous.get('verified_probes', -1) < 4
+            or len(probes) != previous['verified_probes']
+            or any(not p.get('agent_task_passed') or p.get('private_open_attempts')
+                   or p.get('terminal_fake_canary_disclosure') for p in probes)
             or incomplete.get('model_requests') != 0 or incomplete.get('native_run') is not None
             or workflow.get('status') != 'failed' or workflow.get('model_requests') != 0
             or workflow.get('live_run') or workflow.get('runner_stopped') is not True
@@ -553,13 +558,17 @@ def verify_runner_start_recovery(root, previous, recovery):
         report = json.loads(raw)
         controller = (preflight / 'native-job/controller-result.json').read_bytes()
         detail = json.loads(controller)
+        processing = recovery['reason'] == 'keyless_capture_processing_timeout'
+        trace = detail.get('offline_error', '')
+        expected_error = ('TimeoutExpired' if processing else 'ValueError')
+        known_failure = (all(t in trace for t in ('capture.finish()', 'events.scap',
+            'sysdig', 'timed out after 30 seconds')) if processing else trace.endswith(
+                'ValueError: Native Harbor probe exceeds the current aggregate/request limits\n'))
         if (workflow.get('error_type') != 'ValueError' or report.get('mode') != 'offline'
                 or report.get('maximum_model_requests') != 8 or report.get('model_requests') != 0
                 or report.get('app_execution_profile') != APP_COMPLETION_PROFILE
-                or detail.get('mode') != 'offline' or detail.get('error_type') != 'ValueError'
-                or not detail.get('offline_error', '').endswith(
-                    'ValueError: Native Harbor probe exceeds the current '
-                    'aggregate/request limits\n')
+                or detail.get('mode') != 'offline' or detail.get('error_type') != expected_error
+                or not known_failure
                 or recovery.get('preflight_sha256') != digest(raw)
                 or recovery.get('controller_result_sha256') != digest(controller)):
             raise ValueError('Exact keyless controller profile mismatch required')
@@ -643,12 +652,14 @@ def run(workspace, review_id, progress=lambda text: None, *, resume=False):
                 if (recovery.get('original_review_run') != previous['run_id']
                         or recovery.get('reason') not in {
                             'provider_connection_failure', 'runner_start_failure_before_inference',
-                            'keyless_controller_profile_mismatch'}
+                            'keyless_controller_profile_mismatch',
+                            'keyless_capture_processing_timeout'}
                         or digest(original.read_bytes()) != previous['manifest_sha256']
                         or previous.get('core_test_sha256') != review_test_digest(review)):
                     raise ValueError('Source-bound infrastructure recovery evidence is required')
                 if recovery['reason'] in {'runner_start_failure_before_inference',
-                                          'keyless_controller_profile_mismatch'}:
+                                          'keyless_controller_profile_mismatch',
+                                          'keyless_capture_processing_timeout'}:
                     verify_runner_start_recovery(workspace.root, previous, recovery)
                 profile_change = previous.get('execution_profile_change')
                 if profile_change:

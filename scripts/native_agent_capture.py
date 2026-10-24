@@ -29,8 +29,8 @@ class NativeAgentCapture:
         self.metadata = {'scope': 'Native ' + runtime + ' recorded/scripted agent diagnostic',
                          'complete': False, 'activation_permitted': False}
 
-    def command(self, args, **kwargs):
-        return subprocess.run(args, capture_output=True, timeout=30, check=True, **kwargs)
+    def command(self, args, *, timeout=30, **kwargs):
+        return subprocess.run(args, capture_output=True, timeout=timeout, check=True, **kwargs)
 
     def reader(self, expression):
         return ['env', f'SYSDIG_PLUGIN_DIR={PLUGINS}', BINARY, '-r',
@@ -84,7 +84,7 @@ class NativeAgentCapture:
                 self.metadata['metadata_projection'] = 'Scoped native metadata; partial semantics'
             if self.receipt_artifacts:
                 self.metadata['metadata_projection'] = 'Private-file, exec and receipt artifact I/O'
-            result = self.command(self.reader(expression))
+            result = self.command(self.reader(expression), timeout=300)
             (self.root / 'events.jsonl').write_bytes(result.stdout)
         raw = self.root / 'events.scap'
         if raw.exists():

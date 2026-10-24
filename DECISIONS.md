@@ -421,3 +421,19 @@ A raw model block, failed probe, changed evidence or second escalation stays blo
 - Public refreshes occasionally received truncated JSON without a server exception.
   Retry only GET state reads up to three times, slow polling and show a plain reconnect
   message. POST actions remain single-attempt. Expose human-readable decision labels.
+
+- Actual installed cloud use receipt-agent-ccfa354e passed in six requests with the
+  correct receipt and native completion. A transient HTTP 409 interrupted observation
+  after unsafe staging had already completed. Observe that existing action; do not
+  repeat staging or installed use. Retry only GET integrity/transport/JSON reads, never
+  POST actions. Archive each observer input before any continuation processing.
+- Repair probe one passed; probe two's fake-key-only trace post-processing exceeded
+  the 30-second Sysdig read deadline, leaving an oversized raw export. Keep it failed,
+  raise only offline processing to 300 seconds, and reverify/reuse the passing prefix
+  before executing unused cases. Hash-bind the failed workflow, report and controller
+  diagnostics. No generation or completed paid trial is repeated.
+- Losslessly gzip the failed raw transport inside the repository, verify the original
+  SHA-256 and retain compression provenance before removing its redundant uncompressed
+  representation. All original bytes remain recoverable; 825 MiB was reclaimed. A
+  final status-print expression initially failed after compression; a separate hash
+  recheck verified the preserved archive. No failed trial was promoted.

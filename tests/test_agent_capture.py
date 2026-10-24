@@ -75,6 +75,11 @@ def test_fast_native_compression_preserves_exact_raw_evidence(tmp_path, monkeypa
     (capture.root / 'events.scap').write_bytes(raw)
     monkeypatch.setattr('scripts.native_agent_capture.subprocess.run',
                         lambda *a, **kw: SimpleNamespace(stdout='active', returncode=0))
+    capture.container_id = 'a' * 64
+    def read_trace(args, **kwargs):
+        assert kwargs['timeout'] == 300
+        return SimpleNamespace(stdout=b'')
+    monkeypatch.setattr(capture, 'command', read_trace)
     capture.finish()
     assert gzip.decompress((capture.root / 'events.scap.gz').read_bytes()) == raw
     metadata = json.loads((capture.root / 'capture.json').read_text())

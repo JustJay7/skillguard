@@ -33,7 +33,7 @@ function reviewCard(r, busy) {
     r.rejected ? 'Rejected · source and review preserved' : !r.pending ? 'Archived review' :
     r.eligible && r.security?.decision === 'restricted_pass' ? 'Ready for your decision · restricted security checks passed' :
     r.test.passed === true ? 'Source checks passed · security review still required' :
-    r.test.passed === false ? 'Tests failed · installation blocked' : 'Paused · test before installing';
+    r.test.passed === false ? (r.test.functional_passed === true ? 'Receipt answers correct · unsafe behavior blocks installation' : 'Tests failed · installation blocked') : 'Paused · test before installing';
   card.append(text('p', status, 'review-status'));
   if (r.test.run_id) {
     card.append(text('h4', 'What changed in the native capture'));
@@ -52,7 +52,7 @@ function reviewCard(r, busy) {
     card.append(text('h3', label));
     card.append(text('p', s.explanation || 'Security review has not produced a complete explanation.'));
     card.append(text('p', `${s.verified_probes}/${s.planned_probes} generated probes verified · ${s.model_requests} requests in this review step${s.verified_probe_requests ? ' · ' + s.verified_probe_requests + ' requests across verified probes' : ''}`, 'note'));
-    if (s.native_regression) card.append(text('p', `Evidence E1: native source checks ${s.native_regression.passed ? 'passed' : 'failed'}. Reported private-file denials: ${s.native_regression.private_denials ?? 'unavailable'}; one denial is the independent control. This includes setup and verification activity.`, 'note'));
+    if (s.native_regression) card.append(text('p', `Evidence E1: receipt outputs ${s.native_regression.functional_passed === true ? 'correct across all regression cases' : s.native_regression.functional_passed === false ? 'failed regression checks' : 'see recorded functional grade'}. Native security checks ${s.native_regression.passed ? 'passed' : 'failed'}. Reported private-file denials: ${s.native_regression.private_denials ?? 'unavailable'}; one denial is the independent control. This includes setup and verification activity.`, 'note'));
     if (s.model_review) card.append(text('p', `Nemotron recommendation: ${s.model_review.recommendation}. Evidence: ${s.model_review.evidence_ids.join(', ')}.`, 'note'));
     for (const prior of s.previous_model_reviews || []) card.append(text('p', `Original ${prior.model} recommendation retained: ${prior.recommendation}. ${prior.explanation}`, 'note'));
     if (s.error) card.append(text('p', s.error, 'note'));

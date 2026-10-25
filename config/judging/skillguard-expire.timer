@@ -1,0 +1,11 @@
+[Unit]
+Description=End the dedicated judging host after December 15 Toronto time
+ConditionPathExists=/etc/skillguard-dedicated-judging-host
+
+[Timer]
+OnCalendar=2026-12-16 05:00:00 UTC
+Persistent=true
+Unit=skillguard-expire.service
+
+[Install]
+WantedBy=timers.target

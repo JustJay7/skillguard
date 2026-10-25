@@ -1,5 +1,11 @@
 # Testing SkillGuard
 
+## Primary source/test build and optional live access
+
+Start with the public repository README. On Python 3.12 or 3.13, run `make test-deps` then `make test`; this installs the pinned Harbor/SkillEvaluator test adapters and runs the complete offline suite without model calls. The exact scanner-versus-native case study is in `docs/static-runtime-contrast.md`, with the labeled functional negative fixture under `skills/unsafe-functional/`. Never install that negative fixture.
+
+Native execution additionally requires the pinned virtualization/OpenShell stack and private inference configuration described below. The source is not a preprovisioned VM. The public walkthrough is a read-only evidence tour. These paths must not be described as an always-running native backend.
+
 ## Links and access
 
 Actual app: https://literate-space-system-45gjq9qjggwfjw7p-8770.app.github.dev/

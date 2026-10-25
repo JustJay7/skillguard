@@ -49,7 +49,7 @@ class PublicEntry:
     def __init__(self, app, origin_file: Path, access_code: str, *, hosting_mode='local_tunnel'):
         if len(access_code) < 32:
             raise ValueError('A strong private access code is required')
-        if hosting_mode not in {'local_tunnel', 'codespaces'}:
+        if hosting_mode not in {'local_tunnel', 'codespaces', 'linux_vm'}:
             raise ValueError('Explicit supported hosting mode required')
         self.hosting_mode = hosting_mode
         self.app, self.origin_file = app, origin_file
@@ -101,8 +101,8 @@ class PublicEntry:
     def state(self):
         value = self.app.state()
         value['learning'] = None
-        if self.hosting_mode == 'codespaces' and 'connection' in value:
-            value['connection'] = {**value['connection'], 'deployment': 'codespaces',
+        if self.hosting_mode in {'codespaces', 'linux_vm'} and 'connection' in value:
+            value['connection'] = {**value['connection'], 'deployment': self.hosting_mode,
                 'sandbox': 'Isolated cloud OpenShell VM; starts on demand for native actions'}
         value['public_hosting'] = {'mode': self.hosting_mode,
                                    'depends_on_mac': self.hosting_mode == 'local_tunnel',
@@ -175,6 +175,11 @@ def handler_for(entry):
                         b'connection must remain available.', b'It runs in a dedicated GitHub '
                         b'Codespace with an isolated Linux VM. The cloud workspace must be '
                         b'running; included usage and idle shutdown limits apply.')
+                elif entry.hosting_mode == 'linux_vm':
+                    login = login.replace(b"It runs on the operator's Mac;\nthat computer and its "
+                        b'connection must remain available.', b'It runs on a dedicated Linux '
+                        b'cloud host with an isolated OpenShell VM. Host availability and '
+                        b'provider credits are required.')
                 self.send(200, login, 'text/html; charset=utf-8')
             elif not authenticated:
                 self.send(401, {'error': 'Demo access code required'})
@@ -191,14 +196,18 @@ def handler_for(entry):
                 html = html.replace('<label for="receipt">', '<div hidden><label for="receipt">')
                 html = html.replace('<div id="output" aria-live="polite"></div></details>',
                                     '<div id="output" aria-live="polite"></div></div></details>')
-                location = ('GitHub Codespaces · stops when idle or quota is exhausted'
-                    if entry.hosting_mode == 'codespaces' else 'Runs on the operator’s Mac')
+                location = {'codespaces': 'GitHub Codespaces · '
+                        'stops when idle or quota is exhausted',
+                    'linux_vm': 'Dedicated Linux cloud host',
+                    'local_tunnel': 'Runs on the operator’s Mac'}[entry.hosting_mode]
                 html = html.replace('<main>', '<main><p class="note">PUBLIC LIVE BACKEND · '
                     + location + ' · fictional shared demo workspace · '
                     'actual model calls and native sandbox execution</p>', 1)
-                if entry.hosting_mode == 'codespaces':
-                    html = html.replace('Live app · running on this Mac',
-                                        'Live app · running in GitHub Codespaces')
+                if entry.hosting_mode in {'codespaces', 'linux_vm'}:
+                    running = ('Live app · running in GitHub Codespaces'
+                        if entry.hosting_mode == 'codespaces'
+                        else 'Live app · running in the cloud')
+                    html = html.replace('Live app · running on this Mac', running)
                     html = html.replace('this local app owns the real review and installation '
                         'controls.', 'this protected cloud workspace owns the real review and '
                         'installation controls.')
@@ -255,7 +264,7 @@ def main():
     parser.add_argument('--origin-file', type=Path, required=True)
     parser.add_argument('--access-file', type=Path, required=True)
     parser.add_argument('--port', type=int, default=8770)
-    parser.add_argument('--hosting-mode', choices=['local_tunnel', 'codespaces'],
+    parser.add_argument('--hosting-mode', choices=['local_tunnel', 'codespaces', 'linux_vm'],
                         default='local_tunnel')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[2]

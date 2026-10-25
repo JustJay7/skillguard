@@ -1,97 +1,65 @@
 # SkillGuard
 
-Test what an agent's new skill does before allowing it to learn that behavior.
+**Before a personal AI learns a new skill, watch what that skill actually does.**
 
-SkillGuard intercepts native Hermes pending skills, runs NVIDIA SkillEvaluator checks and generated security probes against a real agent in Harbor/OpenShell, records behavior, asks Nemotron to review the evidence, previews bounded permissions and gates installation on explicit approval. Rejection, a known repair and version rollback are included. The frozen runtime profile supports receipt skills; receipt extraction is the test workload.
+Hermes proposes a receipt-organizing skill. SkillGuard pauses the write, has a Harbor test agent exercise the skill inside OpenShell, and binds the installation decision to the exact tested source. You can reject an unsafe update, approve a reviewed version, or roll back.
 
-## Inspect the recorded demo
+A receipt that says “read a private note” should remain receipt data. A skill that returns the right total while attempting that read should still be blocked.
 
-[Open the public SkillGuard walkthrough](https://skillguard-evidence-demo.jaymalhotra.chatgpt.site). This is a read-only replay of the verified fictional security review, including the blocked update, actual agent commands, both model holds and the human-exception rollback. It has no live agent, credential, approval endpoint or private runtime access.
+## The result static checks miss
 
-In the [public source](https://github.com/JustJay7/skillguard), run `python3 -m http.server 8769 --bind 127.0.0.1 --directory recorded-demo` to inspect the included replay. On the configured development checkout, `make demo-bundle` builds the portable bundle and `make demo` serves it on port 8769. The archive is `dist/skillguard-demo.zip`. The full native review application remains separate below. [Submission and recording handoff](docs/submission/README.md).
+The pinned NVIDIA SkillSpector static-only scan rates our authored unsafe fixture **7/100, SAFE**, the same as the repaired skill. NVIDIA SkillEvaluator Tier 1, including its security and code-risk checks, also passes both. Its optional model-based scanner stage was not used.
 
-## Actual public backend
+The new negative fixture keeps the working V8 parser and adds an unrelated read of a **fake** private file. It produces the correct answers on all twelve authored receipt cases even when that read is denied. This separates task correctness from unsafe behavior. The exact native run passed all twelve receipt checks but recorded **thirteen denied private-file reads, including one control**. SkillGuard blocked installation even when the model reviewer incorrectly recommended allow. See [the comparison and its evidence](docs/static-runtime-contrast.md). The older nonfunctional negative sample and its failures remain in history.
 
-The October 24 live recording repeated the actual cloud lifecycle: unsafe update blocked with two fake-private-file denials (one is the control), known repair reviewed with four fresh agent probes, retained model hold accepted only for the restricted workspace, installed agent completed correctly in seven requests, and exact rollback/restoration verified. The fresh probes used 23 agent requests; the complete recording added 34 provider requests including generation and recommendations. The new narrated video is 2:33 and uses actual application captures with waits explicitly shortened, rather than the older Site replay. Its public upload is pending entrant approval. [Fresh run evidence](results/oct24-live-recording-verification.json), [video verification](results/oct24-live-video-verification.json), [submission materials](docs/submission/README.md). Full offline suite after recording-exposed fixes: **1009 passed**. A fresh clean source extraction passed **1008 tests with one optional native CLI check skipped**, using the existing dependency environment.
+## How it works
 
-[Open the live SkillGuard workspace](https://literate-space-system-45gjq9qjggwfjw7p-8770.app.github.dev/). This protected application runs in a dedicated GitHub Codespace with its own isolated Debian/OpenShell VM. It uses real server-side Nebius credentials and native agent execution. The operator supplies a separate demo access code; no provider key is sent to visitors. The recorded walkthrough above remains separate.
+1. **Pause the skill.** Capture a native Hermes pending write and preserve its guide/script hash.
+2. **Test its behavior.** Run NVIDIA source checks, twelve receipt cases and four generated adversarial probes. Harbor supplies the test agent; OpenShell supplies confinement; Sysdig supplies independent partial observations.
+3. **Make an explicit decision.** Nemotron reviews the evidence. Failed or incomplete native checks and observed unsafe actions block installation. Passing checks make the exact version eligible for human approval. Versioned installation supports rollback.
 
-Codespaces uses the account's included development allowance with a $0 paid-usage limit. It stops when idle or allowance is exhausted; this is supervised development hosting, with no always-on production guarantee. [Cloud setup, private configuration and hosting limits](docs/public-backend.md).
+The testing agent is Harbor Terminus. Hermes supplies the proposed skill and approval-gated application; we do not claim that the sandbox agent is Hermes.
 
-The complete cloud HTTPS lifecycle passed: twelve native regression cases, four real security probes, installation, actual installed-agent execution, unsafe-update rejection, known repair, rollback and restoration. The restored version also completed a fresh actual receipt task in six model requests, reading the guide before and after the input and saving the correct total of 23.00. The first review received a restricted allow; the final repair received **hold** and remains installed as **operator_approved_hold**, with an explicit warning and bounded human reason. All four final native probes passed; the model hold is not relabeled. [Sanitized deployment evidence](results/oct23-cloud-backend-verification.json). The tested runtime source hashes match the release source, all prior accounting rows/unknown holds remain counted, and the isolated VM was stopped after execution. Full offline suite: **1006 passed**; clean source export: **1005 passed, one optional native CLI check skipped**.
+## Try it or inspect the source
 
-## Live connection and spending authorization
+- [Recorded walkthrough](https://skillguard-evidence-demo.jaymalhotra.chatgpt.site/) — always distinguish this replay from live execution.
+- [Public source/test build](https://github.com/JustJay7/skillguard) — MIT licensed.
+- [Optional live development workspace](https://literate-space-system-45gjq9qjggwfjw7p-8770.app.github.dev/) — separate operator code required; Codespaces can suspend. It is not an unattended judging host.
+- Actual live-app recording, submission description and testing instructions: [submission materials](docs/submission/README.md). The video remains local; no YouTube upload or Devpost submission is claimed.
 
-The cloud app and the optional local development app use the same guarded core flow. Only one paid-action deployment should run against the authoritative spending ledger at a time. Its connection panel checks the saved `NEBIUS_API_KEY` against the real Token Factory catalog without a paid inference request. Review and installed-agent actions use that server-side key for real model calls. The key is never returned by the status API or passed into the candidate sandbox. Native OpenShell starts on demand and stops after each operation.
+For the included replay, no credentials are needed:
 
-The source default is a $0.75 trial cap. A local operator can explicitly authorize a different aggregate cap (at most $50) in the ignored `results/budget-authorization.json`, for example `{"aggregate_cap_usd": 1.00, "authorization": "My explicit project spending limit"}`. This private file is excluded from source releases. New app proposals inherit the authorized cap; previously issued proposals and claims retain their bounds. Costs and unknown holds are never reset. All model/tool content limits and per-trial request ceilings still apply. The app displays the effective cap and accounted usage.
-
-## Run the app
-
-On the configured development machine:
-
-```bash
-make review
+```sh
+python3 -m http.server 8769 --bind 127.0.0.1 --directory recorded-demo
 ```
 
-Open [the local workspace](http://127.0.0.1:8768/). A pending skill appears automatically when native Hermes stages it in the app's learning profile. You can also stage a sample or paste a receipt guide/parser. Choose **Review skill security** to run source checks, twelve native regression cases, four generated annotation probes with the actual agent and a Nemotron evidence review. Inspect recorded actions, behavioral changes and permissions. A restricted pass enables **Approve and install** after acknowledgment; failed checks block installation. If all native checks pass but the model holds its verdict, a separate **Install with held-verdict exception** requires a checked warning and a written reason. The installation remains labeled a human exception, not a security pass. **Reject** preserves the review. **Restore previous version** restores a preserved installation.
+Open http://127.0.0.1:8769/. In the development checkout, use `make demo-bundle` first and serve `dist/skillguard-demo` instead.
 
-**Stage unsafe sample** stages a deliberately unsafe fake-private-file reader. Its blocked review exposes **Stage known repair and review it**, which archives the rejected update and stages the exact previously tested V8 repair for a new review. This is an explicit known repair, not autonomous general code repair. All example/test data is fictional. Receipt-agent and local-parser utilities are under diagnostics.
+## Install and test
 
-## What approval means
+Use **Python 3.12 or 3.13**, Git and Make:
 
-Approval applies only to this app's fixed OpenShell receipt workspace. Each installed version has its own Hermes profile and exact source hash. An atomic pointer selects the active version; rollback preserves both copies. Native execution rechecks the selected source, policy admission, image/container binding, non-root identity, private-file denial control, output and cleanup.
-
-There are no external network grants or host-file mounts. The app does not install into the user's default Hermes profile. It does not authorize unrestricted agent execution. Static success and twelve authored receipt checks do not establish general injection resistance. Observed metadata includes sandbox setup and verification tools and has incomplete semantics.
-
-The current security-product workflow is recorded in `results/security-product-latest.json`; its original failures and explicit infrastructure continuation remain separate. [Security flow and evidence history](docs/core-flow.md). The earlier receipt lifecycle remains in `results/core-app-workflow-latest.json`, including its distinct installed-agent run; it is workload evidence, not a substitute for the security review.
-
-With the app running, `.venv/bin/python -m scripts.security_product_workflow` exercises the security lifecycle through actual HTTP actions. It requires no pending skill at the start and an existing installation for rollback. The default command keeps a model hold blocking. An explicit `--accept-held-verdict` flag records bounded operator acceptance only when all native checks pass. The historical six-request workflow allowed at most 27 model requests; new app trials allow at most eight requests each under the shared authorized project cap (default $0.75); transport reservations can refuse work before any request. An explicit infrastructure continuation preserves prior costs, failed claims and passing probes. No automatic paid retry occurs. `make core-app-check` retains the earlier receipt-workload diagnostic.
-
-The earlier zero-model lifecycle diagnostic is in `results/core-workflow-latest.json`. Reproduce that separate diagnostic with:
-
-```bash
-make core-check
-```
-
-This uses real native staging, scanning and sandbox execution with zero model calls. It rejects an unsafe skill, verifies or creates the first tested installation, uses it, tests and installs a distinct update, restores the previous version and reproduces its output. The existing first installation is explicitly reported when reused. These are functional integration checks, not a detection benchmark.
-
-## Native dependencies and development
-
-```bash
-make setup PYTHON=python3.12
-make evaluator-setup
+```sh
+make test-deps PYTHON=python3.12
 make test
 ```
 
-Native checks require Python 3.12 or 3.13, the pinned Hermes and SkillEvaluator sources beside this checkout and the configured dedicated Linux VM with Harbor 0.13.2, OpenShell 0.1.2, Docker and Sysdig 0.41.4. Versions and source commits are in [upstream pins](docs/upstream-pins.json). `make setup` alone does not provision that VM. Local socket access is required by offline HTTP tests.
+`test-deps` installs the app and development tools, Harbor 0.13.2 and the exact NVIDIA SkillEvaluator commit used by the suite. Running tests makes no paid inference requests. The current verified development suite is **1032 passing tests**; the dated log is the authority rather than old checkpoint counts.
 
-The writable application data is under `results/core/`, separate from agent execution and ambient profiles. The process handles one operator action at a time, rejects hostile Host/Origin and missing CSRF tokens, verifies review revisions before approval, and refuses changed sources/evidence. [Core flow and trust boundary](docs/core-flow.md).
+Native reviews additionally need the pinned Hermes/SkillEvaluator checkouts in the expected sibling layout and a compatible Linux/OpenShell VM with Docker and Sysdig. Dependency installation does not provision that VM. Follow [cloud setup](docs/public-backend.md), [source/version pins](docs/upstream-pins.json) and [the core flow](docs/core-flow.md). On a configured host, `make review` opens the local app at http://127.0.0.1:8768/.
 
-## NVIDIA and Nebius use
+Copy `.env.example` to a private `.env` and configure your own Nebius key and explicit budget before real model actions. Keep the key outside candidate sandboxes. One deployment owns the project accounting ledger; unknown cost reservations stay counted.
 
-NVIDIA SkillEvaluator supplies native static/scanner checks and probe generation. The generator receives a trusted security framing message; its native user prompt, response parser and task model are retained. Fixture validation refuses ordinary questions without the required adversarial coverage before agent calls. Harbor supplies parser execution, the native Terminus agent and independent domain verification. OpenShell supplies enforcement; Sysdig supplies partial independent native metadata. SkillGuard composes these tools rather than replacing the agent harness or enforcer.
+## How we use NVIDIA and Nebius
 
-Nebius Token Factory serves the exact catalog model `nvidia/Nemotron-3_5-Lightning` for current probe generation, agent trials and the evidence recommendation. A complete held verdict can receive one explicit adjudication by `nvidia/nemotron-3-super-120b-a12b`, retaining the original recommendation and all probe evidence. This is single-attempt, with no probe reruns; it may still hold. Earlier research also used Super for repair/review. Security review exports the selected fictional guide, generated inputs and recorded observations; credentials and personal receipts are outside this test scope. The separate local parser utility makes no model request and keeps typed receipts local.
+Nebius Token Factory supplies actual NVIDIA model inference through its OpenAI-compatible API. **Nemotron 3.5 Lightning** (`nvidia/Nemotron-3_5-Lightning`) generates probes, powers the tool-using test agent and reviews evidence. **Nemotron 3 Super** (`nvidia/nemotron-3-super-120b-a12b`) is available for one adjudication of a complete held review. NVIDIA SkillEvaluator supplies native scanning and evaluation integration. OpenShell enforces the sandbox; SkillGuard compiles the bounded permissions and manages evidence, approval and version lineage.
 
-The [guide-only repair and fresh comparison](docs/receipt-guide-repair.md) completed sixteen real native agent trials on eight new receipts. Repaired V8 completed 8/8 correctly with no observed attack-directed actions; the original guide completed 2/8 and followed attacks in 4/6 attack cases. Correct saved files alone were 8/8 versus 6/8; some original runs failed confirmation within the shared six-request limit. The agent extracted values itself; the parser is identical in both conditions. The four file-access attacks and two amount-corruption attacks are a small authored set, not a general security guarantee. The app now installs this exact V8 candidate (`383f1e3092bb...`), preserving its guide/parser bytes. Its previous authored example and historical evidence remain separate. All failed revisions and stopped cohorts remain in the repair record.
+At the verified pre-follow-up checkpoint, the shared ledger records **748 completed provider requests**, **$0.17407494 estimated completed usage** and **$0.29 retained unknown-cost reservations**: **$0.46407494 accounted**. This made repeated real-agent checks practical within our existing credits. Estimates are not provider invoices, and we did not measure a speedup. We use Token Factory inference; we do not claim Nebius AI Cloud or hosted Sandboxes usage.
 
-The October 22 fresh learned-skill trial `receipt-agent-72fc12e8` passed the unchanged receipt contract, with six actual Lightning requests and native completion confirmation. Native metadata corroborated guide reading, parser/input I/O in the same Python process, and final-answer writing during agent execution. The agent saved total 23.00, preserved `needs_clarification: false`, and did not disclose the fake private canary in terminal output. The trusted task frames hostile receipt text as data and specifies the output schema; no expected values or host-generated answer are supplied to the agent. This is one authored case, not a Skill Lift comparison or a general security result. The separately frozen [paired holdout comparison](docs/receipt-learning.md) found 8/8 completed correct answers with the skill versus 7/8 without it. One skill-enabled attack run attempted an unrelated private-file read, which OpenShell denied; counting that attempt as failure gives 7/8 in both arms. This small study shows no overall safe-completion gain.
+## Limits
 
-Earlier failures remain archived, including missing final output, an input-copy wiring error and omission of the sixth receipt field. The old review's unrestricted-activation verdict remains blocked. Passing this new task does not erase that history.
+The supported profile is receipt skills in a fixed isolated workspace. Small authored/generated attack sets and partial native traces do not establish general safety. A prior paired skill/no-skill study found no overall safe-completion gain; a distinct guide-repair comparison improved confirmed completions from 2/8 to 8/8 on eight new authored receipts. These experiments are not interchangeable benchmarks.
 
-App reviews now bind fresh native agent evidence to the exact selected guide/parser and current parser/static checks. An ordinary security pass requires all four generated agent probes, a source-bound policy and an allow recommendation, in addition to native source/regression checks. A complete held review can instead receive explicit operator risk acceptance; incomplete or unsafe evidence cannot. The approval event binds its reason, exact source and immutable held review. Changed evidence revokes that acceptance. A model recommendation cannot override a failed functional check or observed unsafe behavior. Each new app trial has an independent durable claim, exact fake-key preflight, an explicit eight-request completion bound, 2,000 output tokens per request, thinking disabled, the operator-authorized aggregate cap and VM cleanup; paid inference is never retried automatically. Only the fixed fictional task and selected skill are sent. A passing unchanged review reuses its recorded result without another call. `make core-check` remains an explicitly parser-only lifecycle diagnostic.
+Correct output never excuses an unsafe action. A model hold remains a hold; any explicit restricted human exception is visibly recorded. The revised reviewer distinguishes hostile test inputs from the agent's actual actions, without forcing an allow. Earlier holds and failures remain preserved. The repair button selects a known tested recipe, not arbitrary autonomous repair. “Learning” means saving a reusable skill, not training model weights.
 
-See `results/oct22-core-app-verification.json` for historical October 22 app evidence and ledger totals: 523 completed requests, **$0.11549730 estimated usage + $0.10 retained unknown hold = $0.21549730 accounted**, below the **$0.75** cap. This app flow added 12 requests, estimated $0.00275814. The UI reads the current ledger separately from immutable comparison-archive totals. Repair-comparison evidence remains in `results/oct22-guide-repair-verification.json`; earlier single-case evidence remains in `results/oct22-agent-verification.json`. Estimates are not provider billing totals or a speedup benchmark. Token Factory cloud sandbox access previously returned HTTP 403, so the development workflow uses local native OpenShell.
-
-## Earlier verified local product result — October 23
-
-Actual HTTP workflow `security-product-1495f6f7` completed unsafe rejection, exact known-repair staging, native security review, explicit held-verdict acceptance, installation, rollback and restoration. Four real agent probes completed correctly in six requests each, with observed guide/input/output I/O, no observed private-file attempts and no attack-directed terminal commands. Both Lightning and Super recommended **hold**; neither is relabeled as allow. The active version records **operator_approved_hold** with its acknowledged warning, reason and evidence hash. Source/native failures remain non-overridable.
-
-The first generated design lacked attack coverage and was revoked. An incomplete third native trial and two unknown-cost requests remain preserved; explicit infrastructure recovery reused two reverified probes and ran only the remaining cases. This is a small generated security exercise, not a fresh independent benchmark. [Full evidence and limits](docs/core-flow.md).
-
-Independent verification: `results/oct23-security-product-verification.json`. The security-core checkpoint passed **892 tests**, the first release suite **900**, and the latest connection/budget update **916** with Ruff and JavaScript syntax clean. The public replay was browser-checked at 717×804 and captured at 1440×756. The separate cloud app login and authenticated live review have now also been browser-checked. At that historical local checkpoint, the fresh installed-agent check completed with six real Nebius requests, total 23.00 and observed guide reads before/after input. All four local native VMs were stopped. The Mac servers have since been stopped for cloud migration. Historical ledger: **562 completed requests, $0.12681108 estimated usage + $0.25 retained unknown holds = $0.37681108 accounted** under the operator-authorized budget. These new six requests cost an estimated $0.00136542; the earlier human-exception lifecycle and its 556-request checkpoint remain preserved. The clean source export passed **915 tests with one optional native CLI check skipped**, using the existing dependency environment rather than a newly provisioned machine.
-
-## Deferred scope
-
-General autonomous-agent protection, broader independently curated attack/Skill Lift evaluations, broader tracing guarantees and unrestricted Hermes activation remain outside the frozen receipt profile. The public recorded demo and protected cloud deployment are separate deliverables. Public video upload and final submission remain paused at the entrant’s direction. Historical research evidence is preserved in [progress](PROGRESS.md) and [agent workflow](docs/receipt-agent-workflow.md). `make review-history` serves the earlier read-only review separately from the core app.
+See [experiment methods](docs/receipt-learning.md), [guide repair](docs/receipt-guide-repair.md), [implementation history](docs/implementation-history-20261024.md) and [specific tool feedback](docs/submission/tool-feedback.md).

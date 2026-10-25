@@ -1,0 +1,11 @@
+[Unit]
+Description=Periodic local listener health check on the dedicated judging host
+ConditionPathExists=/etc/skillguard-dedicated-judging-host
+
+[Timer]
+OnBootSec=90
+OnUnitInactiveSec=60
+Unit=skillguard-health.service
+
+[Install]
+WantedBy=timers.target

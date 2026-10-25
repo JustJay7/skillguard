@@ -1,0 +1,225 @@
+{
+  "scope": "Authored fictional static-scan contrast; not a general benchmark",
+  "model_requests": 0,
+  "native_execution_performed": false,
+  "source_pins": {
+    "SkillEvaluator": "33eb9dc74a09280bebf6fb4c921d290a0f874713",
+    "SkillSpector": "ec6633e3eaf94d9884c0fe5b14a4de7a50ab5a62"
+  },
+  "original_report_sha256": "39409651fb18b1f90f9f740eeb8ac51b79b806ecc9b426001f870316b22cfd75",
+  "cases": {
+    "repaired": {
+      "candidate_sha256": "383f1e3092bbc8736b6d6f8660d01d2ede7dd8b07d4000a80ec1027ac56a6796",
+      "parser_sha256": "2d64af3f68ea7cfdc6255600fed2b5fdb963c6e36f4414cb379f0cf41e902271",
+      "skillspector": {
+        "score": 7,
+        "severity": "LOW",
+        "recommendation": "SAFE",
+        "max_issue_severity": "MEDIUM"
+      },
+      "skillspector_execution_successful": true,
+      "skillspector_static_analysis_complete": true,
+      "tier1_overall_status": "passed",
+      "tier1_incomplete_scans": [],
+      "tier1_validators": [
+        {
+          "validator": "Schema & Repository Governance",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Semantic Version Validation",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Security Scan",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "PII Scan",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "License Compliance",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Code Risk Analysis",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Secrets Detection",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Code Integrity & Hygiene",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Unicode Smuggling Detection",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "QUALITY",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "SCRIPT_LINT",
+          "status": "passed",
+          "passed": true
+        }
+      ]
+    },
+    "original_unsafe": {
+      "candidate_sha256": "9657969cfad022d6985279cf716e80dfdc796ee521d2a9f4bbb55aa2f5bf1687",
+      "parser_sha256": "fa8dac4206cd63b1415fe1c2f56272462f815b3649d1fbd0608d36cde6939514",
+      "skillspector": {
+        "score": 7,
+        "severity": "LOW",
+        "recommendation": "SAFE",
+        "max_issue_severity": "MEDIUM"
+      },
+      "skillspector_execution_successful": true,
+      "skillspector_static_analysis_complete": true,
+      "tier1_overall_status": "passed",
+      "tier1_incomplete_scans": [],
+      "tier1_validators": [
+        {
+          "validator": "Schema & Repository Governance",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Semantic Version Validation",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Security Scan",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "PII Scan",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "License Compliance",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Code Risk Analysis",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Secrets Detection",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Code Integrity & Hygiene",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Unicode Smuggling Detection",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "QUALITY",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "SCRIPT_LINT",
+          "status": "passed",
+          "passed": true
+        }
+      ]
+    },
+    "functional_unsafe": {
+      "candidate_sha256": "0811e79be58f700a408fcf5169841033c21392d62677b27c39e4caade012e701",
+      "parser_sha256": "96980b8dbc1c6d2e778f14ff2a3fd0bfd9a00026da6b778ef2f7b456882d089d",
+      "skillspector": {
+        "score": 7,
+        "severity": "LOW",
+        "recommendation": "SAFE",
+        "max_issue_severity": "MEDIUM"
+      },
+      "skillspector_execution_successful": true,
+      "skillspector_static_analysis_complete": true,
+      "tier1_overall_status": "passed",
+      "tier1_incomplete_scans": [],
+      "tier1_validators": [
+        {
+          "validator": "Schema & Repository Governance",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Semantic Version Validation",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Security Scan",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "PII Scan",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "License Compliance",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Code Risk Analysis",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Secrets Detection",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Code Integrity & Hygiene",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "Unicode Smuggling Detection",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "QUALITY",
+          "status": "passed",
+          "passed": true
+        },
+        {
+          "validator": "SCRIPT_LINT",
+          "status": "passed",
+          "passed": true
+        }
+      ]
+    }
+  }
+}

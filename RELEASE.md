@@ -14,5 +14,9 @@ config/linux-trace.yaml and docs/core-flow.md. make setup installs Python app
 dependencies only; it does not provision the native VM. Credentials belong only
 in a local ignored .env. Archived live proposals are not fresh authorizations.
 
+For the full offline suite, run make test-deps PYTHON=python3.12 then make test.
+test-deps additionally installs pinned Harbor and SkillEvaluator test adapters;
+it does not provision a VM or make inference calls.
+
 Exported JSON summaries may redact workspace paths and are labeled accordingly.
 Retained native proofs belong to the original run, not this source export.

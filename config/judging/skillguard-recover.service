@@ -1,0 +1,10 @@
+[Unit]
+Description=Recover only the SkillGuard application process after a health failure
+ConditionPathExists=/etc/skillguard-dedicated-judging-host
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl restart skillguard.service
+TimeoutStartSec=120

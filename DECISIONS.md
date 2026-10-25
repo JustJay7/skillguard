@@ -447,3 +447,122 @@ The first zero-call staging attempt exposed concurrent snapshot creation from pa
 The next native review failed during a cold VM boot at the inherited 90-second cutoff, before candidate execution. The resulting blocked installation is an infrastructure/incomplete-evidence block, not claimed attack detection. Preserve `core-runtime-98f47c48` and its charged metadata review. New deterministic core evaluations declare a 180-second VM startup bound (210-second command limit), matching the existing live-agent startup bound; cleanup and inference limits remain unchanged. Fresh staging/review after the correction is deployment acceptance, not a rerun counted toward a blind benchmark.
 
 Reason: the requested live demonstration must show real successful execution and accurate causes, including errors it uncovers. Reversal: restore the prior source bounds/transaction behavior in a new commit, without editing historical evidence. Judging access still needs an availability plan because free Codespaces suspends; no always-on promise or billing expansion is inferred.
+## 2026-10-24 — unattended judging needs a compatible credit-only host
+
+The user requires the actual application through December 15 without owner
+restarts, keeps the video local, and forbids a new hosting bill. The current
+Codespace is asleep. Its included usage is insufficient for continuous hosting;
+do not add keepalive traffic or expose an account-wide GitHub token in a public
+judging launcher. Prepare a separate compatible Linux host under Google's
+non-billable Free Trial, contingent on verified eligibility, live credit/expiry,
+regional pricing, quota and native compatibility. No paid upgrade is authorized.
+
+The signed-in account has no active billing account and the trial page requires
+overdue identity verification. The user will perform that account-only step.
+The final screenshot also shows **Paid account** behind the notice; therefore
+pause that path and ask whether a real new non-billable trial is offered before
+the entrant completes verification just for this project. Do not create a VM
+against that paid account or assume it has available credit.
+Until it is complete, the new Linux-host mode and service files are preparation,
+not a deployed or uptime-verified replacement. Preserve existing installed skill,
+reviews, costs and uncertain holds on migration, with one inference authority.
+The dedicated-host mode retains direct HTTPS Host/Origin checks and does not
+inherit GitHub's rewritten-header exception. Startup/recovery never retries a
+consumed paid trial. Reverse by retaining the present verified source release
+and declining to create a replacement if trial/credit gates fail.
+
+### Google ruled out; check the existing Azure student entitlement
+
+The entrant confirmed no Google Free Trial is offered. Stop that path without
+resource creation, paid conversion or further verification for nonexistent
+credit. Check the existing student route instead: Microsoft documents $100 for
+a year without a credit card and disables the student subscription at credit
+exhaustion unless the customer chooses a paid upgrade. Do not upgrade or remove
+the spending limit. Microsoft's current retail API shows Central India D2als_v6
+Linux at $0.052/hour, Standard IPv4 at $0.005/hour and S6 LRS disk at
+$3.3088/month. A conservative 1,277-hour window estimates $78.58 in base cost;
+with $15 provisional usage reserve it requires at least $93.58 uncommitted
+credit. These are forecasts, not actual entitlement or a hard resource cap.
+
+The portal asks the McGill account holder to sign in again. No new authentication
+credential was entered or created. Wait for that sign-in before checking actual
+student offer status, balance, expiry and SKU/region quota. The selected machine
+has documented nested virtualization support, but real KVM/native compatibility,
+latency and unattended service recovery still require execution. No Azure
+resource, billable upgrade, provider-key export or inference has been performed.
+
+### Signed-in Azure trial is too short; academic activation is separate
+
+The entrant completed school-account sign-in. The portal initially selected a
+display filter hiding the sole active subscription; changing only that display
+filter exposed an owner-accessible Azure Plan. Both billing profile and account
+show free credit expiring in 30 days, with no usage charges or resources. Do not
+treat the short trial as year-long Student credit or deploy a judging host that
+would end before December 15. The official Student link instead opens Academic
+Verification requiring the entrant's date of birth. Prepare known school fields,
+then leave identity entry/verification and any agreement to the entrant. Ask for
+"Student ready" only after the free Student offer is active; actual credit and
+quota gates still apply. No paid upgrade or extra hosting bill is authorized.
+
+### Student activated; preserve the real Azure entitlement blocker
+
+The entrant completed verification. Verify the actual year-long Student offer,
+balance and expiry privately rather than inferring them from marketing. The
+local CLI login was rejected by McGill conditional access; stop it and use the
+permitted portal. Do not work around the school policy.
+
+The Central India D2als_v6 plan fits the credit forecast with a 64 GiB Standard
+SSD, but real deployment validation rejects the region. Read the assigned allowed
+locations instead of guessing repeated deployments. The known nesting-capable
+sizes in those regions exceed the available credit for the complete window;
+smaller B2als_v2/B2s alternatives checked in Canada/France are unavailable and
+lack hardware nesting. Do not replace native isolation, expand timeouts, upgrade
+billing or claim continuous hosting merely to erase this blocker.
+
+Prepare a free subscription-management support request for Microsoft to permit
+the affordable region or provide a compatible entitlement. Sending a support
+message needs explicit user authorization; keep the account-specific draft and
+raw errors private. Reversible next step after an entitlement change: revalidate
+the original prepared host, verify spending protection, then execute the existing
+migration and recovery acceptance. No Azure resources or private exports yet.
+
+The entrant explicitly approved sending the account-specific request and, at the
+final Create screen, explicitly approved accepting Microsoft's support terms.
+Submit it under existing Basic support, severity C, email contact, without
+advanced diagnostic access or saving new contact changes. Verify the Open case
+and its Microsoft acknowledgement, retaining its ID privately. The next blocker
+is Microsoft's entitlement decision; no paid upgrade or continuous-hosting claim
+is authorized by ticket submission. No Azure hosting resource or key transfer.
+# Submission follow-up: independent gates and reproducible setup
+
+The functional unsafe fixture preserves the V8 parser's receipt answers while adding
+one visible fake-private-file read at its entry point. It is a labeled negative test,
+not an approved skill. Preserve the exact native pending candidate so both scanners
+and the runtime examine the same guide/parser bytes. Keep functional grading separate
+from confinement and unsafe-action gates; correct output never overrides a failed
+security check. Reversal: remove the sample button/fixture without changing old reviews.
+
+The first input-versus-action reviewer prompt still produced an unsafe allow by
+mistaking excess denied reads for the single control. Keep that unfavorable result
+and native block. Prospectively name both functional/security flags and excess count
+in v3; do not re-run the same negative case to obtain a desired verdict or coerce the
+returned advice. The authoritative native gate stays unchanged. Old prompt hashes,
+holds and operator exceptions remain part of their own review histories.
+
+Install the real pinned Harbor and SkillEvaluator adapters through `make test-deps`
+instead of hiding missing dependencies with broad skips. A new Python 3.12 environment
+must run the full offline suite and lint. This installs test dependencies only, not a
+VM, credentials or live inference. Reversal: remove the convenience target while
+retaining explicit installation requirements.
+
+Lead the submission with the public source/test build and labeled evidence tour;
+the optional Codespace is not an unattended host. The latest source can be published
+under the entrant's existing public-source authorization after export checks. The
+explicit instruction to keep video local still applies. No automatic Devpost legal
+acceptance, video upload, paid hosting or idle-suspension workaround follows from this.
+
+## 2026-10-25 — Recover storage without replacing the experiment
+- Decision: stop new native reviews below 2 GiB free host space and retain the native transport as a checksum-verified gzip archive rather than a second raw tar copy.
+- Reason: the fresh repaired-skill review exhausted cloud storage after one paid generation but before agent inference. Preserve that failure and every accounting row. The operator explicitly approved private trace backup and removal of only checksum-verified backed-up copies.
+- Continuation: a single-use recovery event must bind the original generated response, candidate, regression digest, ENOSPC observer, cleanup proof and unchanged ledger. Reuse the exact completed response; do not regenerate attacks or reset agent claims.
+- Reverse: restore removed native artifacts from the private manifest on the Mac; retain exclusive recovery claims and prior failures. Public releases exclude the raw backup.

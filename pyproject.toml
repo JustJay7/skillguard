@@ -47,3 +47,4 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 [tool.ruff.lint.per-file-ignores]
 # Byte-exact inherited parser: the guide-only study and source-digest test require it unchanged.
 "skills/repaired*/receipt-organizer/scripts/parse_receipt.py" = ["E501", "F841", "I001", "UP015"]
+"skills/unsafe-functional/receipt-organizer/scripts/parse_receipt.py" = ["E501", "F841", "I001", "UP015"]

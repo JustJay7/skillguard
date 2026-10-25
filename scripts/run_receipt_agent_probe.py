@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import argparse
 import csv
+import errno
+import gzip
 import io
 import json
 import os
@@ -21,6 +23,31 @@ from skillguard.models.bounded_transport import probe_request_limit
 from skillguard.models.probe_claim import claim_probe, proposal_claim_path, reconcile_probe
 from skillguard.models.spending_policy import proposal_cap
 from skillguard.review.snapshot import artifact_tree_digest, digest
+
+
+def require_free_storage(root: Path) -> None:
+    if shutil.disk_usage(root).free < 2 * 1024**3:
+        raise OSError(errno.ENOSPC, 'Native review requires at least 2 GiB free host storage')
+
+
+def archive_native_transport(folder: Path, raw: bytes) -> dict:
+    target = folder / 'native-job.tar.gz'
+    if target.exists() or target.is_symlink():
+        raise FileExistsError('Preserve the previous native transport archive')
+    with (target.open('xb') as output,
+          gzip.GzipFile(fileobj=output, mode='wb', compresslevel=1, mtime=0) as compressed):
+        compressed.write(raw)
+    original_sha = digest(raw)
+    import hashlib
+
+    with gzip.open(target, 'rb') as stream:
+        if hashlib.file_digest(stream, 'sha256').hexdigest() != original_sha:
+            raise ValueError('Native transport compression changed bytes')
+    proof = {'archive': target.name, 'original_sha256': original_sha,
+             'original_bytes': len(raw), 'compressed_bytes': target.stat().st_size,
+             'lossless_verified': True}
+    (folder / 'transport-storage.json').write_text(json.dumps(proof, indent=2) + '\n')
+    return proof
 
 BOOT = '''import pathlib,sys,tarfile
 root=pathlib.Path(sys.argv[1]); root.mkdir(mode=0o700)
@@ -112,6 +139,7 @@ def verify_enforced_prerequisites(root: Path, proposal: dict, preflight: dict):
 def run(root: Path, *, live: bool, recorded_from: Path | None = None,
         proposal_path: Path | None = None, capture_native: bool = False,
         runtime: str = 'docker') -> dict:
+    require_free_storage(root)
     if runtime not in {'docker', 'openshell'}:
         raise ValueError('Unsupported native runtime')
     if live and recorded_from is not None:
@@ -341,7 +369,7 @@ def run(root: Path, *, live: bool, recorded_from: Path | None = None,
         (folder / 'transport-stderr.txt').write_bytes(result.stderr)
         if result.returncode:
             raise RuntimeError('Native controller transport failed')
-        (folder / 'native-job.tar').write_bytes(result.stdout)
+        report['transport_storage'] = archive_native_transport(folder, result.stdout)
         native = folder / 'native-job'
         extract(result.stdout, native, max_bytes=(512 if proposal.get('agent_timeout_sec')
                 else 300 if capture_native else 50) * 1024**2)

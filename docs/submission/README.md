@@ -10,7 +10,9 @@ The finished fresh live-app video (2:33) and local submission packet are under `
 | --- | --- |
 | Project / track | SkillGuard / Personal AI |
 | English description | [Devpost draft](devpost-draft.md) |
-| Actual project URL | https://literate-space-system-45gjq9qjggwfjw7p-8770.app.github.dev/ |
+| Primary project/test build | https://github.com/JustJay7/skillguard; native setup and offline test instructions in README |
+| Guided evidence tour | https://skillguard-evidence-demo.jaymalhotra.chatgpt.site/ (read-only replay) |
+| Optional live development app | https://literate-space-system-45gjq9qjggwfjw7p-8770.app.github.dev/ (can suspend) |
 | Public MIT-licensed source | https://github.com/JustJay7/skillguard |
 | Testing instructions | [Judging instructions](judging-instructions.md); access code supplied only in the private testing field |
 | Required tool feedback | [Concrete Nebius/NVIDIA feedback](tool-feedback.md) |
@@ -26,7 +28,7 @@ Deadline: **October 30, 2026, 1:00pm Toronto / 10:00am Pacific**. Internal targe
 ## Remaining publication and access decisions
 
 1. Review the new actual-live-app MP4, then explicitly authorize its public YouTube upload. The earlier refusal to upload has not been silently reversed.
-2. Arrange judging availability. Included Codespaces hosting suspends when idle or quota is exhausted. The owner's restart launcher works, but judges cannot use that private owner-only control. Do not claim unattended uptime through December 15.
+2. Lead with the public source/test build and setup instructions. The rules allow a test build instead of always-on hosting. The read-only tour is an inspection aid, not native execution. Codespaces remains an optional supervised live path; it suspends when idle and the owner-only launcher cannot give judges unattended access. Do not claim a dedicated host or guaranteed uptime through December 15.
 3. Put the live URL and access code in the private testing field, add the real uploaded video URL and confirm the entrant/team details. Never publish the code or provider key in the description, repository, screenshots or video.
 4. The entrant must review and complete final submission and its legal declarations. Preparing these materials does not accept the rules or submit the entry.
 

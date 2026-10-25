@@ -1,0 +1,14 @@
+[Unit]
+Description=Check the local SkillGuard listener without model requests
+After=skillguard.service
+OnFailure=skillguard-recover.service
+ConditionPathExists=/etc/skillguard-dedicated-judging-host
+
+[Service]
+Type=oneshot
+User=skillguard
+Group=skillguard
+WorkingDirectory=/workspaces/skillguard
+ExecStart=/workspaces/skillguard/.venv/bin/python scripts/judging_health.py --origin-file results/public-hosting/origin.txt
+TimeoutStartSec=25
+UMask=0077

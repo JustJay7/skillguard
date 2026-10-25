@@ -5,6 +5,7 @@ from http.server import ThreadingHTTPServer
 
 import pytest
 
+from scripts.judging_health import check as judging_health
 from skillguard.ui.public_server import COOKIE, PublicEntry, handler_for
 
 CODE = 'fictional-offline-access-code-at-least-32-characters'
@@ -129,6 +130,48 @@ def test_cloud_hosting_labels_keep_idle_limits_visible(public):
     assert b'GitHub Codespaces' in html and b'quota is exhausted' in html
     assert b'running on this Mac' not in html
     assert entry.state()['public_hosting']['depends_on_mac'] is False
+
+
+def test_dedicated_host_keeps_auth_and_origin_without_codespaces_proxy_exception(public):
+    entry, server = public
+    entry.hosting_mode = 'linux_vm'
+    health = json.loads(request(public, '/health')[1])
+    assert health['mode'] == 'linux_vm' and health['depends_on_mac'] is False
+    assert request(public, '/api/state')[0] == 401
+    login_html = request(public, '/')[1]
+    assert b'dedicated Linux' in login_html and b"operator's Mac" not in login_html
+    cookie = login(public)
+    html = request(public, '/', headers={'Cookie': cookie})[1]
+    assert b'Dedicated Linux cloud host' in html
+    assert b'GitHub Codespaces' not in html and b'running on this Mac' not in html
+    headers = {'Origin': ORIGIN, 'Cookie': cookie, 'X-SkillGuard-CSRF': 'fixture-csrf'}
+    assert request(public, '/api/action', method='POST', headers=headers,
+                   payload={'action': 'review_security'})[0] == 202
+    headers['Origin'] = 'https://attacker.example'
+    assert request(public, '/api/action', method='POST', headers=headers,
+                   payload={'action': 'review_security'})[0] == 403
+    headers.update({'Host': f'localhost:{server.server_address[1]}',
+        'X-Forwarded-Host': 'live.example', 'X-Forwarded-Proto': 'https',
+        'Origin': f'http://localhost:{server.server_address[1]}',
+        'X-SkillGuard-Origin': ORIGIN})
+    assert request(public, '/api/action', method='POST', headers=headers,
+                   payload={'action': 'review_security'})[0] == 403
+    assert len(entry.app.calls) == 1
+
+
+def test_judging_health_uses_only_loopback_and_refuses_the_old_host(public, monkeypatch):
+    entry, server = public
+    entry.hosting_mode = 'linux_vm'
+    monkeypatch.setenv('HTTP_PROXY', 'http://127.0.0.1:1')
+    judging_health(entry.origin_file, port=server.server_address[1])
+    assert not entry.app.calls and not entry.sessions
+    entry.hosting_mode = 'codespaces'
+    with pytest.raises(ValueError, match='Expected protected'):
+        judging_health(entry.origin_file, port=server.server_address[1])
+    entry.origin_file.write_text('https://attacker.example/redirect')
+    with pytest.raises(ValueError, match='Configured HTTPS'):
+        judging_health(entry.origin_file, port=server.server_address[1])
+    assert not entry.app.calls
 
 
 @pytest.mark.parametrize('fault', [None, 'forwarded', 'port', 'origin', 'cookie', 'mode'])

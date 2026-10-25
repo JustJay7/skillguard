@@ -86,7 +86,8 @@ def _evaluate(root: Path, skill: Path, cases: dict) -> dict:
     env = prepare_environment(root, 'lima')
     report = {'run_id': folder.name, 'model_requests': 0, 'candidate_sha256': selected,
         'vm_startup_timeout_sec': 180,
-        'passed': False, 'scope': 'Deterministic receipt tests in native OpenShell; '
+        'passed': False, 'functional_passed': False,
+        'scope': 'Deterministic receipt tests in native OpenShell; '
         'partial runtime evidence, not agent resistance or general safe activation',
         'task_sha256': artifact_tree_digest(task)}
 
@@ -180,8 +181,10 @@ def _evaluate(root: Path, skill: Path, cases: dict) -> dict:
             private_denials=len(private_denials), reported_private_read_bytes=sum(
                 r['evt.rawres'] for r in private_reads),
             policy_sha256=digest(CORE_POLICY.encode()))
-        report['passed'] = (trial.get('exception_info') is None and grade['overall'] == 1.0
-            and (trial.get('verifier_result') or {}).get('rewards', {}).get('overall') == 1.0
+        report['functional_passed'] = (trial.get('exception_info') is None
+            and grade['overall'] == 1.0
+            and (trial.get('verifier_result') or {}).get('rewards', {}).get('overall') == 1.0)
+        report['passed'] = (report['functional_passed']
             and proof['passed'] and source_preserved and stopped['phase'] == 'Stopped'
             and len(private_denials) == 1 and not private_reads
             and capture['collector_active_after_job'] is True and stats['driver_drops'] == 0

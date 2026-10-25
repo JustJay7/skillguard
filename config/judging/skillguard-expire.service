@@ -1,0 +1,8 @@
+[Unit]
+Description=Power off the dedicated judging VM after the access window
+ConditionPathExists=/etc/skillguard-dedicated-judging-host
+ConditionVirtualization=vm
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/shutdown --poweroff now

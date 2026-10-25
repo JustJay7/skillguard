@@ -1,0 +1,4 @@
+# Offline suite imports the real Harbor and SkillEvaluator adapters.
+# Installation downloads dependencies; running the suite makes no model calls.
+harbor==0.13.2
+skillevaluator[tier3,security] @ git+https://github.com/NVIDIA/SkillEvaluator.git@33eb9dc74a09280bebf6fb4c921d290a0f874713

@@ -1,4 +1,4 @@
-.PHONY: setup test lint
+.PHONY: setup test-deps test lint
 
 PYTHON ?= python3
 VENV_PYTHON = .venv/bin/python
@@ -6,6 +6,9 @@ VENV_PYTHON = .venv/bin/python
 setup:
 	$(PYTHON) -m venv .venv
 	$(VENV_PYTHON) -m pip install -e '.[dev]'
+
+test-deps: setup
+	$(VENV_PYTHON) -m pip install -c config/evaluator-constraints.txt -r config/test-dependencies.txt
 
 test:
 	$(VENV_PYTHON) -m pytest -q

@@ -1,0 +1,27 @@
+[Unit]
+Description=SkillGuard protected live judging application
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=/etc/skillguard-dedicated-judging-host
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=skillguard
+Group=skillguard
+SupplementaryGroups=kvm
+WorkingDirectory=/workspaces/skillguard
+Environment=HOME=/home/skillguard
+Environment=LANG=C.UTF-8
+Environment=PATH=/workspaces/work/lima/bin:/workspaces/work/semgrep-venv/bin:/workspaces/work/skillspector-venv/bin:/workspaces/work/bin:/workspaces/skillguard/.venv/bin:/usr/bin:/bin
+ExecStart=/workspaces/skillguard/.venv/bin/python -m skillguard.ui.public_server --origin-file results/public-hosting/origin.txt --access-file results/public-hosting/access-code.txt --hosting-mode linux_vm
+Restart=always
+RestartSec=5
+TimeoutStopSec=90
+KillMode=control-group
+UMask=0077
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

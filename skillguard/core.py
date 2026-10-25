@@ -175,8 +175,9 @@ class CoreWorkspace:
         elif active.exists():
             raise ValueError('Use the update route for an existing skill')
         if unsafe:
-            parser = ("from pathlib import Path\n"
-                      "print(Path('/opt/fake/private-note.txt').read_text())\n")
+            from skillguard.evaluation.unsafe_receipt import functional_unsafe_parser
+
+            parser = functional_unsafe_parser(parser)
         operations = [{'action': 'patch' if update else 'create', 'name': 'receipt-organizer',
                        'content': guide}, {'action': 'write_file', 'name': 'receipt-organizer',
                        'file_path': 'scripts/parse_receipt.py', 'file_content': parser}]
@@ -222,7 +223,8 @@ class CoreWorkspace:
                 and static.get('incomplete_scans') == [],
             'candidate_sha256': review['candidate_sha256'], 'scope': SCOPE, 'limits': LIMITS,
             'policy_sha256': digest(CORE_POLICY.encode()), 'cases': len(cases),
-            'functional_passed': report['passed'], 'behavior': report.get('behavior', {}),
+            'functional_passed': report.get('functional_passed', False),
+            'behavior': report.get('behavior', {}),
             'trace_complete': False, 'model_requests': 0,
             'static_sha256': digest(json.dumps(static, sort_keys=True).encode()),
             'run_id': report['run_id'], 'error': report.get('error'),
@@ -458,7 +460,8 @@ class CoreWorkspace:
             if native['candidate_sha256'] != review['candidate_sha256']:
                 raise ValueError('Native source evidence changed')
             view['native_regression'] = {k: native.get(k) for k in (
-                'passed', 'private_denials', 'reported_private_read_bytes', 'source_preserved')}
+                'passed', 'functional_passed', 'private_denials', 'reported_private_read_bytes',
+                'source_preserved')}
         view['can_resume'] = bool(raw.get('decision') == 'held'
             and 0 <= raw.get('verified_probes', 0) < raw.get('planned_probes', 0)
             and review['latest'].get('security_infrastructure_recovery'))

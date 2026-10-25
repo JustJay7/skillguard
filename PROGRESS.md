@@ -1,5 +1,74 @@
 # Progress
 
+## Submission review follow-up — October 24–25
+- [x] Reproduce the exact pinned static contrast: SkillSpector static-only 7/100 SAFE
+  for repaired V8, the historical unsafe reader and the functional unsafe variant;
+  SkillEvaluator Tier 1 passes all three with no incomplete scans.
+- [x] Add an explicitly labeled V8-based negative fixture that keeps all twelve
+  receipt answers correct while attempting a fake private-file read. Preserve V8.
+- [x] Run the exact pending candidate natively: twelve correct outputs, thirteen
+  denied opens including one independent control, zero reported private read bytes.
+  Installation blocked even though the v2 model reviewer incorrectly says allow.
+  Preserve that advice; no unsafe rerun to seek a preferred model response.
+- [x] Separate native functional and security fields in the app and review evidence.
+  Clarify adversarial test inputs versus observed actions; v3 additionally names
+  excess denials and failed native checks. Keep old holds/approvals unchanged.
+- [x] Add `make test-deps` with pinned Harbor/SkillEvaluator, then verify the actual
+  fresh Python 3.12 install: **1032 tests pass**, Ruff clean. Earlier checkpoints
+  remain separate. Added lossless transport storage, a 2 GiB pre-inference guard
+  and single-use, hash-bound recovery of the already-paid generation response.
+- [x] Rewrite the root README around the observed result, three-step workflow,
+  real tool roles, setup and one limits section; archive detailed implementation history.
+- [ ] Finish the single fresh repair review and retained installed-agent/rollback checks.
+- [ ] Refresh the local demonstration, sanitized public source and full handoff ZIP.
+
+The live work uses the existing Codespace and its authoritative ledger, with no
+key transfer, new hosting bill or changed spending cap. A zero-action cold-start
+observer timeout is retained; its continuation first verified unchanged accounting.
+YouTube remains local and final Devpost declarations/submission remain unperformed.
+
+## Unattended judging host — October 24 (Azure region access blocked)
+- [x] Verify the existing Codespace is Shutdown; included allowance and idle
+  suspension cannot provide continuous hosting. No keepalive workaround.
+- [x] Rule out Google: the entrant confirms no Free Trial is offered. No paid
+  account deployment or billing conversion.
+- [x] Prepare dedicated-host HTTP mode and bounded recovery/expiry services:
+  25 local tests pass; six systemd units validate on Linux without warnings.
+  No service has been installed on a dedicated cloud host.
+- [x] Entrant completes Azure academic verification. Verify the active year-long
+  Student offer and actual available credit/expiry in Education Hub; retain the
+  private activation record. Keep the separate 30-day trial distinct.
+- [x] Confirm McGill conditional access denies local Azure CLI sign-in. Stop
+  that login; use the permitted authenticated portal without policy changes.
+- [x] Prepare an Ubuntu 24.04 x64 D2als_v6 in Central India with a 64 GiB Standard
+  SSD, static IPv4, SSH public-key authentication, no public inbound ports,
+  no managed identity and no paid backup/monitoring extras. Forecast about $82
+  base plus $15 reserve through the access window; this is not a hard cap.
+- [x] Run Azure's actual deployment validation: **RequestDisallowedByAzure** for
+  the region. No resources were created. Read the assigned allowed locations:
+  France Central, Canada Central, Sweden Central, Norway East and Denmark East.
+  The known compatible VM rates there exceed the student credit for the window.
+- [x] Check smaller alternatives without deployment: B2als_v2 is unavailable in
+  Canada Central and France Central; B2s is unavailable in Canada Central. These
+  burstable alternatives also lack the required hardware nesting. No software
+  emulation, weaker boundary or changed execution timeout was deployed.
+- [x] Obtain explicit permission for the account-specific Microsoft message and
+  final support-terms acceptance. Submit the free Basic subscription-management
+  case; verify **Open** status and Microsoft acknowledgement in the portal.
+  Tracking details and confirmation screenshot stay private. Email contact only;
+  no advanced diagnostics, paid support plan or billing upgrade.
+- [ ] Microsoft grants the region/SKU entitlement or identifies a compatible
+  credit-only alternative. This external decision is pending; do not upgrade
+  billing or remove spending protection.
+- [ ] Verify the credit protection and deployable quota, create the host, migrate
+  the single accounting authority, and test native execution plus crash/reboot
+  recovery before updating the judging URL. See [the plan](docs/judging-host-plan.md).
+
+**Blocked:** Azure subscription region/size restrictions; the dedicated app is
+not deployed. The live video remains local and unchanged. No provider key,
+private ledger or inference request has been transferred/made for this migration.
+The prior verified public source and submission packet remain unchanged.
+
 ## Actual live recording and submission materials — October 24
 - [x] Record fresh actions in the actual independent cloud application; use no frames from the recorded-evidence Site.
 - [x] Preserve zero-call concurrent staging failure, reproduce it in a test and serialize snapshot capture. Preserve the later 90-second cold-start failure as infrastructure evidence, not attack detection; declare bounded 180-second starts for new core evaluations and test cleanup.

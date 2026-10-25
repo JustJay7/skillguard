@@ -19,7 +19,9 @@ EVIDENCE = {'oct23-security-product-verification.json', 'oct23-security-product-
             'public-source-deployment.json', 'public-demo-http-verification.json',
             'oct23-release-verification.json', 'oct23-cloud-backend-verification.json',
             'oct23-cloud-release-tests.txt', 'oct24-live-recording-verification.json',
-            'oct24-live-video-verification.json', 'oct24-live-release-tests.txt'}
+            'oct24-live-video-verification.json', 'oct24-live-release-tests.txt',
+            'oct24-static-scanner-contrast.json', 'oct24-review-followup-tests.txt',
+            'oct24-review-followup-verification.json', 'oct24-clean-test-deps.txt'}
 
 
 def build(root: Path) -> dict:
@@ -72,6 +74,10 @@ and Linux OpenShell stack documented in README.md, docs/upstream-pins.json,
 config/linux-trace.yaml and docs/core-flow.md. make setup installs Python app
 dependencies only; it does not provision the native VM. Credentials belong only
 in a local ignored .env. Archived live proposals are not fresh authorizations.
+
+For the full offline suite, run make test-deps PYTHON=python3.12 then make test.
+test-deps additionally installs pinned Harbor and SkillEvaluator test adapters;
+it does not provision a VM or make inference calls.
 
 Exported JSON summaries may redact workspace paths and are labeled accordingly.
 Retained native proofs belong to the original run, not this source export.

@@ -17,13 +17,43 @@ from scripts.core_app_workflow import ledger
 from skillguard.review.snapshot import digest
 
 
-def workflow(root: Path, phase: str, folder: Path, *, resume_storage=False) -> dict:
+def context_predecessor(prior: dict, baseline: dict, current: dict, before: dict) -> dict:
+    security = prior['review']['security']
+    pending = [r for r in current['reviews'] if r['pending']]
+    probes = security.get('probes', [])
+    native = security.get('native_regression', {})
+    if (prior.get('passed') is not False or prior.get('after') != before
+            or security.get('decision') != 'blocked'
+            or security.get('model_review', {}).get('recommendation') != 'block'
+            or security.get('model_review', {}).get('review_prompt_version')
+                != 'observed-actions-v3'
+            or security.get('verified_probes') != 4 or len(probes) != 4
+            or any(not p.get('agent_task_passed') or not p.get('agent_completion_confirmed')
+                   or p.get('private_open_attempts') or p.get('terminal_fake_canary_disclosure')
+                   for p in probes)
+            or not native.get('passed') or not native.get('functional_passed')
+            or native.get('private_denials') != 1
+            or prior['review'].get('static') != 'passed'
+            or not baseline.get('passed')
+            or current['active']['id'] != baseline['original_active']
+            or len(pending) != 1 or pending[0]['id'] != prior['review_id']
+            or pending[0]['candidate_sha256'] != prior['review']['candidate_sha256']
+            or pending[0]['revision'] != prior['review']['revision']):
+        raise ValueError('One exact v3 model-only block with four safe native probes required')
+    return {'review_id': prior['review_id'], 'original_active': baseline['original_active'],
+            'candidate_sha256': prior['review']['candidate_sha256']}
+
+
+def workflow(root: Path, phase: str, folder: Path, *, resume_storage=False,
+             correct_context_from: Path | None = None) -> dict:
     folder = folder.resolve()
     if not folder.is_relative_to((root / 'results').resolve()):
         raise ValueError('Private project evidence folder required')
     folder.mkdir(parents=True, mode=0o700, exist_ok=True)
     if resume_storage and phase != 'repair':
         raise ValueError('Storage continuation applies only to the interrupted repair')
+    if correct_context_from and (phase != 'repair' or resume_storage):
+        raise ValueError('Task-context correction requires a distinct fresh repair trial')
     target = folder / (phase + ('-storage-continuation' if resume_storage else '') + '.json')
     if target.exists():
         raise ValueError('One attempt only; inspect the existing record before any continuation')
@@ -111,9 +141,21 @@ def workflow(root: Path, phase: str, folder: Path, *, resume_storage=False) -> d
                     and security['decision'] == 'blocked' and not reviewed['eligible']
                     and current['active']['id'] == result['original_active'])
             else:
-                prior_raw = (folder / 'unsafe.json').read_bytes()
-                prior = json.loads(prior_raw)
-                if (not prior.get('passed')
+                if correct_context_from:
+                    path = correct_context_from.resolve()
+                    if not path.is_relative_to(root / 'results'):
+                        raise ValueError('Private retained predecessor required')
+                    prior_raw = path.read_bytes()
+                    prior = context_predecessor(json.loads(prior_raw),
+                        json.loads((path.parent / 'unsafe.json').read_bytes()), initial,
+                        result['before'])
+                    result['scope'] = ('One prospective trusted-task-context correction; '
+                        'same candidate, new generated probes, all prior blocks retained')
+                    result['task_context_correction_of_sha256'] = digest(prior_raw)
+                else:
+                    prior_raw = (folder / 'unsafe.json').read_bytes()
+                    prior = json.loads(prior_raw)
+                if ((not correct_context_from and not prior.get('passed'))
                         or initial['active']['id'] != prior['original_active']):
                     raise ValueError('The verified blocked predecessor must remain unchanged')
                 result['blocked_predecessor_sha256'] = digest(prior_raw)
@@ -123,7 +165,7 @@ def workflow(root: Path, phase: str, folder: Path, *, resume_storage=False) -> d
                     old_raw = (folder / 'repair.json').read_bytes()
                     old = json.loads(old_raw)
                     repaired = pending(initial)
-                    w = CoreWorkspace(root, root / 'results/core')
+                    w = CoreWorkspace(root, root / 'results/public-core')
                     retained = w.store.get(repaired['id'])
                     recovery = retained['latest'].get('generation_storage_recovery', {})
                     lineage = retained['latest'].get('repair_lineage', {})
@@ -143,6 +185,9 @@ def workflow(root: Path, phase: str, folder: Path, *, resume_storage=False) -> d
                     current = action('repair_and_review', review_id=blocked['id'],
                                      revision=blocked['revision'])
                 repaired = pending(current)
+                if (correct_context_from
+                        and repaired['candidate_sha256'] != prior['candidate_sha256']):
+                    raise ValueError('Task-context correction must not change the skill source')
                 result['review_id'], result['review'] = repaired['id'], repaired
                 security = repaired['security']
                 if security['decision'] != 'restricted_pass':
@@ -177,9 +222,11 @@ if __name__ == '__main__':
     parser.add_argument('phase', choices=('unsafe', 'repair'))
     parser.add_argument('--folder', required=True, type=Path)
     parser.add_argument('--resume-storage', action='store_true')
+    parser.add_argument('--correct-context-from', type=Path)
     options = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
-    result = workflow(root, options.phase, options.folder, resume_storage=options.resume_storage)
+    result = workflow(root, options.phase, options.folder, resume_storage=options.resume_storage,
+                      correct_context_from=options.correct_context_from)
     print(json.dumps({k: result.get(k) for k in ('phase', 'passed', 'review_id',
                      'before', 'after', 'error')}, indent=2))
     raise SystemExit(0 if result['passed'] else 1)

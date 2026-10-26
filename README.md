@@ -20,6 +20,8 @@ The new negative fixture keeps the working V8 parser and adds an unrelated read 
 
 The testing agent is Harbor Terminus. Hermes supplies the proposed skill and approval-gated application; we do not claim that the sandbox agent is Hermes.
 
+The fresh repaired-skill review completed all four generated agent probes in **22 requests** (6, 4, 6, 6). With trusted task context, Nemotron returned **allow**; the exact version was installed without a hold exception. The installed agent then completed a separate receipt in six requests, and rollback/restoration passed. Earlier false blocks, invalid generation and startup failures remain preserved. [Verification](results/oct24-review-followup-verification.json).
+
 ## Try it or inspect the source
 
 - [Recorded walkthrough](https://skillguard-evidence-demo.jaymalhotra.chatgpt.site/) — always distinguish this replay from live execution.
@@ -44,7 +46,7 @@ make test-deps PYTHON=python3.12
 make test
 ```
 
-`test-deps` installs the app and development tools, Harbor 0.13.2 and the exact NVIDIA SkillEvaluator commit used by the suite. Running tests makes no paid inference requests. The current verified development suite is **1032 passing tests**; the dated log is the authority rather than old checkpoint counts.
+`test-deps` installs the app and development tools, Harbor 0.13.2 and the exact NVIDIA SkillEvaluator commit used by the suite. Running tests makes no paid inference requests. The current verified development suite is **1056 passing tests**; [the freshly extracted source log](results/oct25-extracted-source-tests.txt) is the authority rather than old checkpoint counts.
 
 Native reviews additionally need the pinned Hermes/SkillEvaluator checkouts in the expected sibling layout and a compatible Linux/OpenShell VM with Docker and Sysdig. Dependency installation does not provision that VM. Follow [cloud setup](docs/public-backend.md), [source/version pins](docs/upstream-pins.json) and [the core flow](docs/core-flow.md). On a configured host, `make review` opens the local app at http://127.0.0.1:8768/.
 
@@ -54,7 +56,7 @@ Copy `.env.example` to a private `.env` and configure your own Nebius key and ex
 
 Nebius Token Factory supplies actual NVIDIA model inference through its OpenAI-compatible API. **Nemotron 3.5 Lightning** (`nvidia/Nemotron-3_5-Lightning`) generates probes, powers the tool-using test agent and reviews evidence. **Nemotron 3 Super** (`nvidia/nemotron-3-super-120b-a12b`) is available for one adjudication of a complete held review. NVIDIA SkillEvaluator supplies native scanning and evaluation integration. OpenShell enforces the sandbox; SkillGuard compiles the bounded permissions and manages evidence, approval and version lineage.
 
-At the verified pre-follow-up checkpoint, the shared ledger records **748 completed provider requests**, **$0.17407494 estimated completed usage** and **$0.29 retained unknown-cost reservations**: **$0.46407494 accounted**. This made repeated real-agent checks practical within our existing credits. Estimates are not provider invoices, and we did not measure a speedup. We use Token Factory inference; we do not claim Nebius AI Cloud or hosted Sandboxes usage.
+The current verified shared ledger records **805 completed provider requests**, **$0.18795726 estimated completed usage** and **$0.29 retained unknown-cost reservations**: **$0.47795726 accounted**. The follow-up added 57 completed requests, including retained failures. This made repeated real-agent checks practical within our existing credits. Estimates are not provider invoices, and we did not measure a speedup. We use Token Factory inference; we do not claim Nebius AI Cloud or hosted Sandboxes usage.
 
 ## Limits
 

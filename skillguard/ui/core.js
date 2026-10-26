@@ -48,7 +48,7 @@ function reviewCard(r, busy) {
   }
   if (r.security?.run_id) {
     const s = r.security;
-    const label = s.decision === 'blocked' ? 'Blocked · do not install' : s.decision === 'restricted_pass' ? 'Passed for the restricted workspace · your approval is required' : 'Held · more evidence required';
+    const label = s.decision === 'blocked' ? 'Blocked · do not install' : s.decision === 'restricted_pass' ? (r.installed ? 'Passed for the restricted workspace · installed' : 'Passed for the restricted workspace · your approval is required') : 'Held · more evidence required';
     card.append(text('h3', label));
     card.append(text('p', s.explanation || 'Security review has not produced a complete explanation.'));
     card.append(text('p', `${s.verified_probes}/${s.planned_probes} generated probes verified · ${s.model_requests} requests in this review step${s.verified_probe_requests ? ' · ' + s.verified_probe_requests + ' requests across verified probes' : ''}`, 'note'));

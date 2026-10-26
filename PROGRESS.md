@@ -14,13 +14,34 @@
   Clarify adversarial test inputs versus observed actions; v3 additionally names
   excess denials and failed native checks. Keep old holds/approvals unchanged.
 - [x] Add `make test-deps` with pinned Harbor/SkillEvaluator, then verify the actual
-  fresh Python 3.12 install: **1032 tests pass**, Ruff clean. Earlier checkpoints
+  fresh Python 3.12 install: **1056 tests pass**, Ruff clean. Earlier checkpoints
   remain separate. Added lossless transport storage, a 2 GiB pre-inference guard
   and single-use, hash-bound recovery of the already-paid generation response.
 - [x] Rewrite the root README around the observed result, three-step workflow,
   real tool roles, setup and one limits section; archive detailed implementation history.
-- [ ] Finish the single fresh repair review and retained installed-agent/rollback checks.
-- [ ] Refresh the local demonstration, sanitized public source and full handoff ZIP.
+- [x] Recover cloud storage with private, checksum-verified backups within the specifically
+  approved 8 GB aggregate limit. Keep all accounting and approval stores intact.
+- [x] Complete the interrupted V3 review using its exact paid generation, with zero
+  additional generation calls. Four actual agent probes pass in 23 requests. Preserve
+  the model's false block of normal receipt/guide reads; do not install that review.
+- [x] Add independent trusted task context T1 to the reviewer, with no policy/gate
+  change. Clean Python 3.12 suite: 1056 passed, Ruff clean.
+- [x] Complete V4 on the same source: four newly generated probes passed in 22 agent
+  requests (6, 4, 6, 6), valid Nemotron allow, exact installation without hold exception,
+  six-request installed-agent completion, rollback to the original version and restoration.
+  Reverify/reuse two paid passing probes across the exact zero-request build recovery;
+  retain the earlier false block, invalid generation and startup failures.
+- [x] Reclaim 2,396,820,874 bytes of duplicate guest traces only after matching the
+  verified private Mac backup. Aggregate logical backup 7,783,135,119 bytes <= approved 8 GB;
+  accounting, installed skills and approval evidence preserved. Current ledger 805 completed,
+  estimated $0.18795726 + $0.29 retained unknown = $0.47795726 accounted.
+- [x] Refresh the local demonstration (2:34) with the functional unsafe contrast,
+  fresh allow, installed-agent result and additional model-free UI rollback check.
+  Full decode, audible unclipped audio, 11 visual views and 154 sampled privacy OCR checks pass.
+- [x] Verify the exported source independently: 1056 tests passed in 34.57 seconds,
+  Ruff clean under ordinary localhost permission. Preserve the initial sandbox bind restriction.
+- [x] Refresh the sanitized public source and complete source/media/context handoff;
+  verify source identity, ZIP CRC and every packaged file checksum. Video stays local.
 
 The live work uses the existing Codespace and its authoritative ledger, with no
 key transfer, new hosting bill or changed spending cap. A zero-action cold-start

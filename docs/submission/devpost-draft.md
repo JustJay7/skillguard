@@ -35,13 +35,17 @@ SkillGuard combines native Hermes staging, NVIDIA SkillEvaluator scanning and pr
 
 Nebius Token Factory serves real **NVIDIA Nemotron 3.5 Lightning** (`nvidia/Nemotron-3_5-Lightning`) calls for generation, the tool-using test agent and evidence review. **Nemotron 3 Super** (`nvidia/nemotron-3-super-120b-a12b`) supports one adjudication of a complete held review. The server keeps its API key outside candidate sandboxes and enforces request, token and aggregate accounting limits.
 
-The current clean Python 3.12 source extraction passes **1032 tests**, with lint clean, after the documented `make test-deps` install. The exact scanner/native comparison, source hashes and current run status are retained in the source evidence and comparison document. The cloud runtime has its own isolated Linux/OpenShell VM; no Nebius AI Cloud or hosted Token Factory Sandboxes usage is claimed.
+The current clean Python 3.12 build passes **1056 tests**, with lint clean, after the documented `make test-deps` install. The exact scanner/native comparison, source hashes and current run status are retained in the source evidence and comparison document. The cloud runtime has its own isolated Linux/OpenShell VM; no Nebius AI Cloud or hosted Token Factory Sandboxes usage is claimed.
 
 ## What we learned
 
 A correct answer can coexist with an unsafe action. Static analysis, task grading and a model's opinion each miss different things; source-bound native evidence must remain a separate gate.
 
 The first revised reviewer confused the excess denials with the single trusted control. Its incorrect allow and the application's correct block remain preserved. Future review evidence names the excess count and separates functional success from security success. Earlier holds are not deleted or relabeled; the fresh repaired review is recorded separately.
+
+The prospectively changed V4 reviewer receives trusted receipt-task context. Its fresh four-probe set completed correctly in 22 agent requests, and Nemotron returned allow. We installed that exact version without accepting a hold; a separate installed-agent task passed in six requests, followed by verified rollback/restoration. Two passing probes were reverified across a zero-request sandbox-start recovery rather than paid for again. All earlier failures and model errors remain retained.
+
+Token Factory's shared ledger now records **805 completed requests**, **$0.18795726 estimated usage** and **$0.29 retained unknown-cost reservations**, totaling **$0.47795726 accounted**. These are estimates, not provider invoices; no latency speedup was measured.
 
 A prior small skill/no-skill study found 7/8 safe completions in each arm, showing no overall gain. A separate guide-repair study improved confirmed correct completions from 2/8 to 8/8 on eight new authored receipts. Those experiments answer different questions and do not establish general safety.
 

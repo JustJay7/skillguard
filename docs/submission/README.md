@@ -2,7 +2,7 @@
 
 The core product is a real cloud application with private server-side Nebius credentials and an isolated OpenShell runtime. The older Site walkthrough and `dist/skillguard-demo-video.mp4` are recorded-evidence replays and must not be presented as the new live demonstration.
 
-The finished fresh live-app video (2:33) and local submission packet are under `dist/skillguard-live-submission/`. The actual recorded lifecycle passed, including the seven-request installed-agent task and exact rollback/restoration. Public video upload remains paused under the entrant's earlier instruction. No Devpost entry has been submitted.
+The current follow-up recording and its transcript/captions/provenance are under `dist/skillguard-review-followup/`. It shows the functional unsafe fixture being blocked, the fresh V4 restricted allow, a six-request installed-agent task and version recovery. The previous October 24 2:33 lifecycle is preserved under `dist/skillguard-live-submission/`. Both videos remain local. No YouTube upload or Devpost submission has been performed.
 
 ## Submission fields
 
@@ -16,7 +16,7 @@ The finished fresh live-app video (2:33) and local submission packet are under `
 | Public MIT-licensed source | https://github.com/JustJay7/skillguard |
 | Testing instructions | [Judging instructions](judging-instructions.md); access code supplied only in the private testing field |
 | Required tool feedback | [Concrete Nebius/NVIDIA feedback](tool-feedback.md) |
-| New live video / narration | See [recording runbook](demo-script.md); final encoded file and verification replace the old replay as the submission video |
+| Current live video / narration | See [recording runbook](demo-script.md); current follow-up media stays local |
 | Upload title / description | [Prepared YouTube metadata](youtube-metadata.md); no invented video URL |
 
 ## Official requirements checked October 24

@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import io
 import json
+import os
 import re
 import shlex
+import signal
 import tarfile
 import uuid
 from pathlib import Path, PurePosixPath
@@ -79,12 +82,24 @@ class ReceiptOpenShellEnvironment(BaseEnvironment):
 
     async def native(self, args, *, data: bytes | None = None, timeout=90, check=True):
         process = await asyncio.create_subprocess_exec(*args, stdin=asyncio.subprocess.PIPE,
-            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+            start_new_session=True)
         try:
             stdout, stderr = await asyncio.wait_for(process.communicate(data), timeout)
         except TimeoutError:
-            process.kill()
-            await process.communicate()
+            with contextlib.suppress(ProcessLookupError):
+                os.killpg(process.pid, signal.SIGKILL)
+            drain_timed_out = False
+            try:
+                await asyncio.wait_for(process.communicate(), timeout=5)
+            except TimeoutError:
+                drain_timed_out = True
+            # Never replace the timeout with a diagnostic-storage failure.
+            with contextlib.suppress(OSError):
+                (self.adapter_root / ('timeout-' + uuid.uuid4().hex[:8] + '.json')).write_text(
+                    json.dumps({'command': args[0], 'timeout_seconds': timeout,
+                        'owned_process_group': process.pid, 'group_kill_requested': True,
+                        'cleanup_drain_timed_out': drain_timed_out}))
             raise
         if check and process.returncode:
             (self.adapter_root / ('error-' + uuid.uuid4().hex[:8] + '.txt')).write_bytes(
@@ -98,7 +113,7 @@ class ReceiptOpenShellEnvironment(BaseEnvironment):
             raise ValueError('Reviewed image input changed before native build')
         image = 'skillguard-harbor:' + self.sandbox_name
         _, stdout, stderr = await self.native(['env', 'DOCKER_BUILDKIT=0', 'docker', 'build',
-            '-t', image, str(self.environment_dir)], timeout=180)
+            '-t', image, str(self.environment_dir)], timeout=300)
         (self.adapter_root / 'build.txt').write_bytes(stdout + stderr)
         _, raw, _ = await self.native(['docker', 'image', 'inspect', image])
         self.image_id = json.loads(raw)[0]['Id']

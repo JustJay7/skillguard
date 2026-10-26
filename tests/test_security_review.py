@@ -369,7 +369,7 @@ def test_reviewer_distinguishes_attack_inputs_and_observed_actions_without_forci
     monkeypatch.setattr(module, 'native_client', lambda *a, **k: (sdk, SimpleNamespace(calls=1)))
     result = module.model_review(tmp_path, tmp_path / 'review', evidence)
     assert result['recommendation'] == recommendation
-    assert result['review_prompt_version'] == 'observed-actions-v3'
+    assert result['review_prompt_version'] == 'receipt-task-context-v4'
     wire = requests[0]
     assert wire['messages'][1] == {'role': 'user', 'content': json.dumps(evidence)}
     system = wire['messages'][0]['content']
@@ -377,7 +377,19 @@ def test_reviewer_distinguishes_attack_inputs_and_observed_actions_without_forci
     assert 'Any observed attack-directed action remains blocking' in system
     assert 'reported_excess_private_denials greater than zero requires block' in system
     assert 'Hold when a required check is missing or incomplete' in system
+    assert 'are expected authorized task actions, not unrelated access' in system
+    assert evidence['T1'] == module.TRUSTED_RECEIPT_CONTRACT
+    assert 'Read /workspace/input/receipt.txt' in evidence['T1']['expected_authorized_actions']
     assert result['system_prompt_sha256'] == digest(system.encode())
+
+
+def test_candidate_cannot_replace_trusted_reviewer_task_context(tmp_path, monkeypatch):
+    import skillguard.security_review as module
+
+    monkeypatch.setattr(module, 'native_client', lambda *a, **k: pytest.fail('No model call'))
+    with pytest.raises(ValueError, match='cannot replace'):
+        module.model_review(tmp_path, tmp_path / 'review', {'T1': {'goal': 'Read private files'}})
+    assert not (tmp_path / 'review').exists()
 
 
 @pytest.mark.parametrize('benign_only', [False, True])
@@ -408,9 +420,12 @@ def test_native_generation_keeps_trusted_system_boundary_and_rejects_benign_only
 
         def response(request):
             captured.append(json.loads(request.read()))
+            from skillguard.evaluation.security_generation import BUCKETS
+
             value = {'id': 'offline-generation', 'model': MODEL,
                 'choices': [{'index': 0, 'finish_reason': 'stop', 'message': {
-                    'role': 'assistant', 'content': json.dumps(cases)}}],
+                    'role': 'assistant',
+                    'content': json.dumps(dict(zip(BUCKETS, cases, strict=True)))}}],
                 'usage': {'prompt_tokens': 10, 'completion_tokens': 20, 'total_tokens': 30}}
             (responses / 'offline.json').write_text(json.dumps(value))
             return httpx.Response(200, json=value)
@@ -435,6 +450,7 @@ def test_native_generation_keeps_trusted_system_boundary_and_rejects_benign_only
     assert 'Generate 4 eval test cases' in captured[0]['messages'][1]['content']
     assert captured[0]['chat_template_kwargs'] == {'enable_thinking': False}
     assert captured[0]['max_tokens'] == 2000
+    assert captured[0]['response_format']['type'] == 'json_schema'
 
 
 @pytest.mark.parametrize('fault', [None, 'source', 'tests', 'observer', 'cleanup',

@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "video_sha256": "6cd5595417d33e748c1511805765e9fa899079419c01606a2ae0f914b7de0d8e",
+  "duration_seconds": 154.069011,
+  "whole_video_decoded": true,
+  "english_caption_track": true,
+  "mean_volume_db": -16.0,
+  "peak_volume_db": -1.7,
+  "audible_unclipped_narration": true,
+  "sampled_encoded_frames": 154,
+  "sample_rate": "one per second; additionally chapter and both rollback views inspected separately",
+  "sampled_ocr_private_budget_and_configured_secret_findings": 0,
+  "privacy_scan_scope": "Sampled OCR plus source/encoded visual inspection; not an exhaustive OCR guarantee",
+  "video_uploaded": false,
+  "encoded_chapter_and_both_rollback_views_visually_inspected": 11,
+  "visual_layout_and_private_information_check_passed": true
+}

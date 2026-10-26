@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "tests_passed": 1056,
+  "lint": "passed",
+  "python": "3.12",
+  "freshly_extracted": true,
+  "dependency_environment": "Previously created by actual make test-deps; no shared pre-existing environment used for setup verification",
+  "tested_source_archive_sha256": "81fad2b66f5cbb138c3397bc92f1e802941ef001f052a0236330fcec7cd08a17",
+  "tested_executable_file_count": 314,
+  "tested_executable_content_sha256": "bd97696926ccb9d54d4aa43d8fa72a0b143dbe09004298609daf9300f2c9aa45",
+  "model_requests": 0,
+  "sandbox_restriction_preserved": "First sandboxed run could not bind loopback HTTP fixtures; unchanged source passed with ordinary localhost permission",
+  "test_output": "results/oct25-extracted-source-tests.txt"
+}

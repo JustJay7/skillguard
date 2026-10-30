@@ -57,9 +57,15 @@ Copy `.env.example` to a private `.env` and configure your own Nebius key and ex
 
 ## How we use NVIDIA and Nebius
 
+### Final evaluation and research additions — October 30
+
+- [Matched Nemotron/Qwen comparison](docs/model-comparison-20261030/README.md): eight fixed text-only receipt/review cases per model, one attempt each. Both scored **7/8** and both failed the same poisoned-total case. This is not a native-agent benchmark and does not establish a superior model.
+- [Tavily threat research](docs/tavily-research.md): the authenticated app retrieves cited external guidance, derives a bounded coverage checklist, and includes its categories in future probe-generation guidance. Source content cannot authorize actions or installation. The existing video predates this feature.
+- The October 30 full offline suite passed **1058 tests**, with lint clean. Earlier extracted-release logs remain historical records.
+
 Nebius Token Factory supplies actual NVIDIA model inference through its OpenAI-compatible API. **Nemotron 3.5 Lightning** (`nvidia/Nemotron-3_5-Lightning`) generates probes, powers the tool-using test agent and reviews evidence. **Nemotron 3 Super** (`nvidia/nemotron-3-super-120b-a12b`) is available for one adjudication of a complete held review. NVIDIA SkillEvaluator supplies native scanning and evaluation integration. OpenShell enforces the sandbox; SkillGuard compiles the bounded permissions and manages evidence, approval and version lineage.
 
-The current verified shared ledger records **805 completed provider requests**, **$0.18795726 estimated completed usage** and **$0.29 retained unknown-cost reservations**: **$0.47795726 accounted**. The follow-up added 57 completed requests, including retained failures. This made repeated real-agent checks practical within our existing credits. Estimates are not provider invoices, and we did not measure a speedup. We use Token Factory inference; we do not claim Nebius AI Cloud or hosted Sandboxes usage.
+After the October 30 comparison, the authoritative cloud ledger records **821 completed provider requests**, **$0.18829238 estimated completed usage** and **$0.29 retained unknown-cost reservations**: **$0.47829238 accounted**. The earlier follow-up added 57 completed requests, including retained failures; the final comparison added 16. Estimates are not provider invoices, and we did not measure a speedup. We use Token Factory inference; we do not claim Nebius AI Cloud or hosted Sandboxes usage.
 
 ## Limits
 

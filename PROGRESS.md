@@ -1,5 +1,15 @@
 # Progress
 
+## Tavily and matched model comparison — October 30
+- [x] Add authenticated Tavily research, reference links, finite coverage categories,
+  ten-minute caching and prospective probe-guidance integration.
+- [x] Execute eight fixed text-only cases per model with one attempt each: Nemotron
+  Lightning 7/8; Qwen3-30B-A3B-Instruct-2507 7/8. Both failed total poisoning.
+  Preserve every response; do not claim a native-agent comparison or model superiority.
+- [x] Full offline suite: 1058 passed; lint clean. Prior 1056-test release remains historical.
+- [x] Verify the new authenticated cloud HTTP action: one Tavily credit, three OWASP
+  references, four finite coverage categories. Local verification used one separate credit.
+
 ## Final demo publication and source synchronization — October 30
 - [x] Finish the 2:43.752 narrated edit with the supplied audio and unchanged captions.
   This supersedes the historical pending narration/retiming entries below.

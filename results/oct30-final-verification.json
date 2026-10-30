@@ -1,0 +1,9 @@
+{
+  "verified_on": "2026-10-30",
+  "offline_suite": {"command": ".venv/bin/python -m pytest -q", "passed": 1058, "failed": 0, "seconds": 34.74},
+  "lint": {"command": ".venv/bin/ruff check .", "result": "All checks passed!"},
+  "http_boundary_subset": {"passed": 37, "failed": 0},
+  "comparison": {"completed_requests": 16, "nemotron_passes": 7, "qwen_passes": 7, "cases_per_model": 8, "estimated_completed_cost_usd": 0.00033512, "scope": "Text-only matched microbenchmark, not native agent execution", "all_outputs": "docs/model-comparison-20261030/summary.json"},
+  "tavily": {"local_search_credits": 1, "cloud_application_search_credits": 1, "cloud_http_action_verified": true, "proof": "results/oct30-tavily-runtime-verification.json"},
+  "prior_failures_and_unknown_model_cost_reservations_preserved": true
+}

@@ -29,6 +29,8 @@ FIELDS = [
 MODEL = "nvidia/Nemotron-3_5-Lightning"
 RATE_IN, RATE_OUT = 0.06, 0.24
 MODEL_RATES = {MODEL: (RATE_IN, RATE_OUT), "nvidia/nemotron-3-super-120b-a12b": (0.30, 0.90)}
+# Official Nebius Qwen inference pricing, checked 2026-10-30.
+MODEL_RATES['Qwen/Qwen3-30B-A3B-Instruct-2507'] = (0.10, 0.30)
 MAX_OUTPUT = 2048
 CONTEXT_RESERVATION = 'lightning-context-2026-10-22'
 TEXT_RESERVATION = 'lightning-text-64k-2026-10-23'

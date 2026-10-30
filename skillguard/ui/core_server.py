@@ -32,13 +32,20 @@ class Application:
             with self.guard:
                 if job is self.job:
                     return {**summary, 'csrf': self.token, 'job': job,
-                            'connection': dict(self.connection)}
+                            'connection': dict(self.connection),
+                            'threat_research': self.threat_research()}
+
+    def threat_research(self):
+        from skillguard.threat_research import load
+
+        root = getattr(self.workspace, 'root', None)
+        return load(root) if root else {}
 
     def start(self, action, payload):
         if action not in {'stage', 'update', 'unsafe', 'test', 'approve', 'reject',
                           'rollback', 'run', 'test_agent', 'repaired', 'run_agent',
                           'review_security', 'import', 'repair_and_review', 'resume_security',
-                          'escalate_security', 'check_connection'}:
+                          'escalate_security', 'check_connection', 'research_threats'}:
             raise ValueError('Unknown action')
         with self.guard:
             if self.job and self.job['status'] == 'running':
@@ -49,7 +56,11 @@ class Application:
             try:
                 w = self.workspace
                 with w.lock():
-                    if action == 'check_connection':
+                    if action == 'research_threats':
+                        from skillguard.threat_research import research
+
+                        result = research(w.root)
+                    elif action == 'check_connection':
                         result = check_provider(w.root)
                         with self.guard:
                             self.connection = result

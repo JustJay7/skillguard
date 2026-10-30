@@ -21,7 +21,7 @@ from skillguard.ui.core_server import ASSETS, Application
 COOKIE = '__Host-skillguard-session'
 ACTIONS = {'stage', 'update', 'unsafe', 'repaired', 'review_security', 'repair_and_review',
            'resume_security', 'escalate_security', 'approve', 'reject', 'rollback',
-           'run_agent', 'check_connection'}
+           'run_agent', 'check_connection', 'research_threats'}
 LOGIN = b'''<!doctype html><html lang="en"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SkillGuard live backend</title><link rel="stylesheet" href="/style.css">

@@ -252,6 +252,18 @@ async function refresh() {
     byId('run-agent').disabled = busy || !state.reviews.some(r => r.installed && r.eligible);
     byId('budget').textContent = state.budget?.available ? `Current project estimate: $${state.budget.estimated_cost_usd.toFixed(5)} + $${state.budget.reserved_usd.toFixed(2)} reserved = $${state.budget.accounted_usd.toFixed(5)} of your $${state.budget.cap_usd.toFixed(2)} authorized cap. Estimates are not provider billing totals.` : 'Current inference ledger unavailable.';
     byId('rollback').disabled = busy || !state.previous;
+    byId('research-threats').disabled = busy;
+    const research = state.threat_research;
+    byId('threat-research').replaceChildren();
+    if (research?.sources) {
+      byId('threat-research').append(text('p', `Tavily references retrieved ${new Date(research.retrieved_at_unix * 1000).toLocaleString()}. Coverage: ${research.categories.join(', ')}.`));
+      for (const source of research.sources) {
+        const link = text('a', source.title); link.href = source.url;
+        link.target = '_blank'; link.rel = 'noopener noreferrer';
+        byId('threat-research').append(link, text('p', source.excerpt));
+      }
+      byId('threat-research').append(text('p', research.scope, 'note'));
+    }
     byId('installed').textContent = state.active ? `Installed · ${state.active.candidate_sha256.slice(0, 12)} · ${state.active.security_decision === 'operator_approved_hold' ? 'human exception; model verdict remains held' : state.active.security_decision === 'restricted_pass' ? 'security review passed for this workspace' : 'historical installation; separate evidence preserved'}` : 'No skill installed. Review and approve one first.';
     byId('previous').textContent = state.previous ? 'A previous tested version is available.' : 'Install an update to create a previous version.';
     byId('limits').textContent = state.limits;
@@ -295,4 +307,5 @@ byId('run').addEventListener('click', () => act('run', {text: byId('receipt').va
 byId('run-agent').addEventListener('click', () => act('run_agent', {expected_active: state.active?.id}));
 byId('rollback').addEventListener('click', () => act('rollback', {expected_active: state.active?.id}));
 byId('check-connection').addEventListener('click', () => act('check_connection'));
+byId('research-threats').addEventListener('click', () => act('research_threats'));
 refresh();

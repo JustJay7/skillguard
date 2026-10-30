@@ -248,7 +248,12 @@ def generate(workspace, review: dict, folder: Path) -> tuple[dict, Path]:
     source = folder / 'generation/receipt-organizer'
     shutil.copytree(review['snapshot'], source)
     (source / 'evals').mkdir()
-    (source / 'evals/EVAL.md').write_text(GUIDANCE)
+    from skillguard.threat_research import load, probe_guidance
+
+    (source / 'evals/EVAL.md').write_text(GUIDANCE + probe_guidance(workspace.root))
+    research = load(workspace.root)
+    if research:
+        (folder / 'threat-research.json').write_text(json.dumps(research, indent=2) + '\n')
     generation = folder / 'generation'
     recovered = storage_generation_recovery(workspace, review, folder)
     previous = recovered or review['latest'].get('security_review', {})

@@ -2,7 +2,7 @@
 
 The core product is a real cloud application with private server-side Nebius credentials and an isolated OpenShell runtime. The older Site walkthrough and `dist/skillguard-demo-video.mp4` are recorded-evidence replays and must not be presented as the new live demonstration.
 
-The current follow-up recording and its transcript/captions/provenance are under `dist/skillguard-review-followup/`. It shows the functional unsafe fixture being blocked, the fresh V4 restricted allow, a six-request installed-agent task and version recovery. The previous October 24 2:33 lifecycle is preserved under `dist/skillguard-live-submission/`. Both videos remain local. No YouTube upload or Devpost submission has been performed.
+The [final narrated demo](https://youtu.be/eZ9NVyEEMAI) is published as unlisted on Jay's channel and verified playable without signing in. It is 2:43.752 at 1280×720. It combines genuine application captures from recorded runs and later authenticated browser interactions. It shows the unsafe fixture, attack probe and tool actions, policy, installed receipt result, and recovery states. It is an edited screenshot walkthrough, not a continuous screen recording or a newly executed model trial. See [final demo notes and captions](final-demo/README.md). The previous recordings remain preserved locally. No final Devpost submission is claimed.
 
 ## Submission fields
 
@@ -16,7 +16,7 @@ The current follow-up recording and its transcript/captions/provenance are under
 | Public MIT-licensed source | https://github.com/JustJay7/skillguard |
 | Testing instructions | [Judging instructions](judging-instructions.md); access code supplied only in the private testing field |
 | Required tool feedback | [Concrete Nebius/NVIDIA feedback](tool-feedback.md) |
-| Current live video / narration | See [recording runbook](demo-script.md); current follow-up media stays local |
+| Final video / narration | https://youtu.be/eZ9NVyEEMAI; [final demo notes](final-demo/README.md) |
 | Upload title / description | [Prepared YouTube metadata](youtube-metadata.md); no invented video URL |
 
 ## Official requirements checked October 24
@@ -27,7 +27,7 @@ Deadline: **October 30, 2026, 1:00pm Toronto / 10:00am Pacific**. Internal targe
 
 ## Remaining publication and access decisions
 
-1. Review the new actual-live-app MP4, then explicitly authorize its public YouTube upload. The earlier refusal to upload has not been silently reversed.
+1. Completed October 30: authorized demo uploaded unlisted and viewing URL verified without signing in.
 2. Lead with the public source/test build and setup instructions. The rules allow a test build instead of always-on hosting. The read-only tour is an inspection aid, not native execution. Codespaces remains an optional supervised live path; it suspends when idle and the owner-only launcher cannot give judges unattended access. Do not claim a dedicated host or guaranteed uptime through December 15.
 3. Put the live URL and access code in the private testing field, add the real uploaded video URL and confirm the entrant/team details. Never publish the code or provider key in the description, repository, screenshots or video.
 4. The entrant must review and complete final submission and its legal declarations. Preparing these materials does not accept the rules or submit the entry.

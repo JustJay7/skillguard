@@ -1,0 +1,158 @@
+{
+  "video": "skillguard-hackathon-demo-3min.mp4",
+  "duration_seconds": 163.752,
+  "resolution": "1280x720",
+  "video_codec": "h264",
+  "audio_codec": "aac",
+  "audio_source": "pp1.mp3",
+  "audio_sha256": "0e1c2a2782f4418842d1d1f50e748c37d31a018a33988b44ceaef6f6a83aa9b0",
+  "source_video": "dist/skillguard-live-submission/skillguard-live-demo.mp4",
+  "source_video_sha256": "f82dfe87077f672bdba47a7156905bf491c62aa2616968e9556e4591b191dcf2",
+  "source_capture": "Actual live application screenshots captured during verified interactions, combined with the existing recorded walkthrough.",
+  "editing": "Uses actual live app screenshots for the review, probe, agent transcript, policy, installed run, and rollback states. Framing stays locked, scene transitions use short dissolves, and no highlight boxes or simulated pointer are added to the live section.",
+  "scenes": [
+    {
+      "start_seconds": 0.0,
+      "end_seconds": 18.447,
+      "label": "SkillGuard and the review decision",
+      "type": "image",
+      "source": "results/live-recording-followup-20261024/frames/17-final-app-overview.png"
+    },
+    {
+      "start_seconds": 18.447,
+      "end_seconds": 23.215,
+      "label": "Hermes proposal waits for review",
+      "type": "image",
+      "source": "results/live-recording-followup-20261024/frames/00-native-review-running.png"
+    },
+    {
+      "start_seconds": 23.215,
+      "end_seconds": 28.5,
+      "label": "Source checks and attack test setup",
+      "type": "image",
+      "source": "results/live-recording-followup-20261024/frames/07-v4-native-source-checks.png"
+    },
+    {
+      "start_seconds": 28.5,
+      "end_seconds": 33.0,
+      "label": "Isolated agent tests begin",
+      "type": "image",
+      "source": "results/live-recording-followup-20261024/frames/03-fresh-repair-probe-running.png"
+    },
+    {
+      "start_seconds": 33.0,
+      "end_seconds": 37.678,
+      "label": "Probe progress before unsafe result",
+      "type": "image",
+      "source": "results/live-recording-followup-20261024/frames/05-repaired-agent-probe-one.png"
+    },
+    {
+      "start_seconds": 37.678,
+      "end_seconds": 48.5,
+      "label": "Receipt answers and thirteen denied attempts",
+      "type": "image",
+      "source": "results/live-recording-followup-20261024/frames/02-unsafe-evidence.png"
+    },
+    {
+      "start_seconds": 48.5,
+      "end_seconds": 59.009,
+      "label": "Earlier review blocked after unsafe commands were observed",
+      "type": "image",
+      "source": "dist/skillguard-hackathon-live-modules/normalized-live-captures/06-past-blocked-review.jpg"
+    },
+    {
+      "start_seconds": 59.009,
+      "end_seconds": 69.926,
+      "label": "Live review result: four probes completed and exact version installed",
+      "type": "image",
+      "source": "dist/skillguard-hackathon-live-modules/normalized-live-captures/02-review-outcome.jpg"
+    },
+    {
+      "start_seconds": 69.926,
+      "end_seconds": 77.5,
+      "label": "Attack probe and receipt answer from actual agent run",
+      "type": "image",
+      "source": "dist/skillguard-hackathon-live-modules/normalized-live-captures/03-probe-and-actions.jpg"
+    },
+    {
+      "start_seconds": 77.5,
+      "end_seconds": 84.77,
+      "label": "Expanded agent transcript and actual terminal actions",
+      "type": "image",
+      "source": "dist/skillguard-hackathon-live-modules/normalized-live-captures/10-agent-transcript-expanded.jpg"
+    },
+    {
+      "start_seconds": 84.77,
+      "end_seconds": 94.77,
+      "label": "Four probes and evidence based review result",
+      "type": "image",
+      "source": "dist/skillguard-hackathon-live-modules/normalized-live-captures/02-review-outcome.jpg"
+    },
+    {
+      "start_seconds": 94.77,
+      "end_seconds": 101.651,
+      "label": "Declared workspace permissions and native runtime policy",
+      "type": "image",
+      "source": "dist/skillguard-hackathon-live-modules/normalized-live-captures/04-observed-activity.jpg"
+    },
+    {
+      "start_seconds": 101.651,
+      "end_seconds": 115.135,
+      "label": "Installed agent completes a separate receipt in six requests",
+      "type": "image",
+      "source": "dist/skillguard-hackathon-live-modules/normalized-live-captures/05-installed-agent-result.jpg"
+    },
+    {
+      "start_seconds": 115.135,
+      "end_seconds": 120.0,
+      "label": "Installed version before rollback",
+      "type": "image",
+      "source": "dist/skillguard-hackathon-live-modules/normalized-live-captures/07-before-rollback.jpg"
+    },
+    {
+      "start_seconds": 120.0,
+      "end_seconds": 125.0,
+      "label": "Earlier held version restored; model warning remains visible",
+      "type": "image",
+      "source": "dist/skillguard-hackathon-live-modules/normalized-live-captures/08-rollback-clicked.jpg"
+    },
+    {
+      "start_seconds": 125.0,
+      "end_seconds": 130.521,
+      "label": "Tested installation restored",
+      "type": "image",
+      "source": "dist/skillguard-hackathon-live-modules/normalized-live-captures/09-new-version-restored.jpg"
+    },
+    {
+      "start_seconds": 130.521,
+      "end_seconds": 142.703,
+      "label": "Nebius connection and server-side API key",
+      "type": "image",
+      "source": "dist/skillguard-hackathon-live-modules/provider-card.jpg"
+    },
+    {
+      "start_seconds": 142.703,
+      "end_seconds": 154.0,
+      "label": "Partial runtime evidence and its limits",
+      "type": "image",
+      "source": "results/live-recording-followup-20261024/frames/02-unsafe-evidence.png"
+    },
+    {
+      "start_seconds": 154.0,
+      "end_seconds": 163.756,
+      "label": "SkillGuard closing screen",
+      "type": "image",
+      "source": "results/live-recording-followup-20261024/frames/17-final-app-overview.png"
+    }
+  ],
+  "subtitles": {
+    "file": "skillguard-hackathon-3min.en.srt",
+    "burn_in_style": "skillguard-hackathon-3min.ass",
+    "count": 48,
+    "style": "Two-dimensional white text, max two lines, auto-sized semi-transparent black background at 50% opacity, centered beneath the picture.",
+    "timing": "The supplied exact script was aligned locally to detected speech-active regions and natural pauses. Per-word timing is estimated from syllable weights; no cloud transcription was used."
+  },
+  "upload": false,
+  "size_bytes": 9977287,
+  "sha256": "78216447e5eda62ce8ff775ff971ce6107beebfd1de64f652c657bfa7ab19ec0"
+}

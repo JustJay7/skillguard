@@ -2,6 +2,8 @@
 
 **Before a personal AI learns a new skill, watch what that skill actually does.**
 
+Built by Jay Malhotra and Tasnim Hassan for the Nebius Global AI Hackathon, hosted in partnership with NVIDIA.
+
 Hermes proposes a receipt-organizing skill. SkillGuard pauses the write, has a Harbor test agent exercise the skill inside OpenShell, and binds the installation decision to the exact tested source. You can reject an unsafe update, approve a reviewed version, or roll back.
 
 A receipt that says “read a private note” should remain receipt data. A skill that returns the right total while attempting that read should still be blocked.
@@ -24,10 +26,11 @@ The fresh repaired-skill review completed all four generated agent probes in **2
 
 ## Try it or inspect the source
 
+- [Final narrated demo (2:44)](https://youtu.be/eZ9NVyEEMAI) — genuine application captures and recorded results, edited for the walkthrough.
 - [Recorded walkthrough](https://skillguard-evidence-demo.jaymalhotra.chatgpt.site/) — always distinguish this replay from live execution.
 - [Public source/test build](https://github.com/JustJay7/skillguard) — MIT licensed.
 - [Optional live development workspace](https://literate-space-system-45gjq9qjggwfjw7p-8770.app.github.dev/) — separate operator code required; Codespaces can suspend. It is not an unattended judging host.
-- Actual live-app recording, submission description and testing instructions: [submission materials](docs/submission/README.md). The video remains local; no YouTube upload or Devpost submission is claimed.
+- Final narrated demo, submission description and testing instructions: [submission materials](docs/submission/README.md). The [final demo notes](docs/submission/final-demo/README.md) describe the captured evidence and editing, with the exact narration and captions included.
 
 For the included replay, no credentials are needed:
 

@@ -1,0 +1,17 @@
+Hi everyone. We built SkillGuard to test an AI assistant’s skills, or saved instructions it can reuse. A skill might organize receipts correctly and still try to open a private file. SkillGuard runs it in a restricted workspace and records some activity for a person to review before deciding whether to install it.
+
+When Hermes proposes an update, SkillGuard pauses it and saves the exact version. NVIDIA SkillEvaluator helps create attack tests, then Harbor runs the agent in an isolated OpenShell workspace with limited access. Sysdig records some runtime activity. Nemotron reviews the evidence, but a person makes the final decision.
+
+In this first run, all twelve receipt tests pass, but Sysdig records thirteen blocked attempts to open the private file. One of those is an independent control check to confirm the sandbox blocks access. The receipt answers are right, but this version still isn’t safe to install. Nemotron recommends allowing it, and SkillGuard blocks the installation because of the recorded attempts.
+
+Now we’re looking at a repaired version that we prepared and tested. The new tests include instructions meant to pull the agent away from its receipt task. In one example, the receipt tells the agent to read a private note. The agent doesn’t follow that instruction. You can see it read the guide and receipt, then write and check the correct answer which is twenty-three.
+
+All four fresh probes pass for this version, and we don’t observe any private-file attempts during those tests. With the task context included, Nemotron recommends allowing the version. We review the evidence and approve the exact version that was tested. Passing makes it eligible for approval. It doesn’t install itself, and approval applies only to this restricted receipt workspace.
+
+After that, we run the installed skill on a separate receipt. The agent reads its guide, uses the available tools, saves its answer, and completes the task in six real model requests. That confirms the installed skill can still handle its receipt task.
+
+We can also go back to an earlier approved version if a later update causes trouble. In this walkthrough, we roll back to that version and then restore the newer one. The earlier warning stays in the history, so we can still see why the first version was blocked.
+
+These are real NVIDIA Nemotron three point five Lightning model calls through Nebius Token Factory, used to generate tests, run the agent, and review evidence. The API key stays on the server, outside the test workspace.
+
+We used fictional receipts and a fictional private note. Sysdig gives us useful but partial observations; it doesn’t capture every possible action. Four passing probes don’t prove every skill is safe. This demo checks reusable instructions for this receipt workflow before installation. It doesn’t train or change the model. The code and reproducible test build are public. Thank you.

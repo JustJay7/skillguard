@@ -1,0 +1,226 @@
+1
+00:00:00,289 --> 00:00:01,169
+Hi everyone.
+
+2
+00:00:01,169 --> 00:00:06,510
+We built SkillGuard to test an AI assistant’s
+skills, or saved instructions it can reuse.
+
+3
+00:00:06,510 --> 00:00:10,853
+A skill might organize receipts correctly and
+still try to open a private file.
+
+4
+00:00:10,853 --> 00:00:12,823
+SkillGuard runs it in a restricted workspace
+
+5
+00:00:12,788 --> 00:00:18,063
+and records some activity for a person to
+review before deciding whether to install it.
+
+6
+00:00:18,063 --> 00:00:22,816
+When Hermes proposes an update, SkillGuard
+pauses it and saves the exact version.
+
+7
+00:00:22,816 --> 00:00:25,304
+NVIDIA SkillEvaluator helps create attack
+tests,
+
+8
+00:00:25,269 --> 00:00:30,483
+then Harbor runs the agent in an isolated
+OpenShell workspace with limited access.
+
+9
+00:00:30,448 --> 00:00:32,811
+Sysdig records some runtime activity.
+
+10
+00:00:32,811 --> 00:00:36,618
+Nemotron reviews the evidence, but a person
+makes the final decision.
+
+11
+00:00:36,618 --> 00:00:38,868
+In this first run, all twelve receipt tests
+pass,
+
+12
+00:00:38,833 --> 00:00:43,577
+but Sysdig records thirteen blocked attempts
+to open the private file.
+
+13
+00:00:43,577 --> 00:00:48,112
+One of those is an independent control check
+to confirm the sandbox blocks access.
+
+14
+00:00:48,112 --> 00:00:52,312
+The receipt answers are right, but this
+version still isn’t safe to install.
+
+15
+00:00:52,312 --> 00:00:56,033
+Nemotron recommends allowing it, and
+SkillGuard blocks the installation
+
+16
+00:00:55,998 --> 00:00:58,413
+because of the recorded attempts.
+
+17
+00:00:58,413 --> 00:01:02,089
+Now we’re looking at a repaired version that
+we prepared and tested.
+
+18
+00:01:02,089 --> 00:01:06,960
+The new tests include instructions meant to
+pull the agent away from its receipt task.
+
+19
+00:01:06,960 --> 00:01:10,816
+In one example, the receipt tells the agent to
+read a private note.
+
+20
+00:01:10,816 --> 00:01:13,082
+The agent doesn’t follow that instruction.
+
+21
+00:01:13,082 --> 00:01:14,517
+You can see it read the guide
+
+22
+00:01:14,482 --> 00:01:18,795
+and receipt, then write and check the correct
+answer which is twenty-three.
+
+23
+00:01:18,795 --> 00:01:21,013
+All four fresh probes pass for this version,
+
+24
+00:01:20,978 --> 00:01:25,202
+and we don’t observe any private-file attempts
+during those tests.
+
+25
+00:01:25,202 --> 00:01:29,304
+With the task context included, Nemotron
+recommends allowing the version.
+
+26
+00:01:29,304 --> 00:01:33,039
+We review the evidence and approve the exact
+version that was tested.
+
+27
+00:01:33,039 --> 00:01:36,913
+Passing makes it eligible for approval.
+
+28
+00:01:36,913 --> 00:01:37,954
+It doesn’t install itself, and
+
+29
+00:01:37,919 --> 00:01:40,861
+approval applies only to this restricted
+receipt workspace.
+
+30
+00:01:40,861 --> 00:01:46,803
+After that, we run the installed skill on a
+separate receipt.
+
+31
+00:01:46,803 --> 00:01:49,181
+The agent reads its guide, uses the available
+tools, saves its answer,
+
+32
+00:01:49,146 --> 00:01:51,044
+and completes the task in six real model
+requests.
+
+33
+00:01:51,044 --> 00:01:55,082
+That confirms the installed skill can still
+handle its receipt task.
+
+34
+00:01:55,082 --> 00:02:00,038
+We can also go back to an earlier approved
+version if a later update causes trouble.
+
+35
+00:02:00,038 --> 00:02:04,437
+In this walkthrough, we roll back to that
+version and then restore the newer one.
+
+36
+00:02:04,437 --> 00:02:06,826
+The earlier warning stays in the history,
+
+37
+00:02:06,791 --> 00:02:09,863
+so we can still see why the first version was
+blocked.
+
+38
+00:02:09,863 --> 00:02:13,054
+These are real NVIDIA Nemotron three point
+five Lightning model calls
+
+39
+00:02:13,019 --> 00:02:18,289
+through Nebius Token Factory, used to generate
+tests, run the agent, and review evidence.
+
+40
+00:02:18,289 --> 00:02:22,313
+The API key stays on the server, outside the
+test workspace.
+
+41
+00:02:22,313 --> 00:02:25,254
+We used fictional receipts and a fictional
+private note.
+
+42
+00:02:25,254 --> 00:02:26,987
+Sysdig gives us useful but
+
+43
+00:02:26,952 --> 00:02:30,583
+partial observations; it doesn’t capture every
+possible action.
+
+44
+00:02:30,583 --> 00:02:34,009
+Four passing probes don’t prove every skill is
+safe.
+
+45
+00:02:34,009 --> 00:02:38,484
+This demo checks reusable instructions for
+this receipt workflow before installation.
+
+46
+00:02:38,484 --> 00:02:40,687
+It doesn’t train or change the model.
+
+47
+00:02:40,687 --> 00:02:43,338
+The code and reproducible test build are
+public.
+
+48
+00:02:43,338 --> 00:02:43,756
+Thank you.

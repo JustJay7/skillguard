@@ -591,3 +591,16 @@ acceptance, video upload, paid hosting or idle-suspension workaround follows fro
 - Preserve: V2's unsafe allow, V3's false block, malformed V4 generation, interrupted starts, the two reused passing probes, all 805 completed ledger rows and $.29 unknown holds. Current estimates $.18795726 plus $.29 reserved = $.47795726 accounted. No fresh paid retry followed a completed adverse verdict.
 - Storage: every selected original trace matched the verified private Mac backup before removal. Aggregate logical export 7,783,135,119 bytes stays below the approved 8 GB; deleting exact guest duplicates reclaimed 2,396,820,874 bytes. Keys, ledger, skills and approval evidence were untouched.
 - Release: lead with the public MIT source/test build. The new 2:34 actual-app screenshot edit stays local with captions and provenance. Do not upload YouTube, submit Devpost, claim hosted-Sandboxes use, or promise unattended Codespaces uptime. Reverse source changes through Git; restore old trace bytes using the private verified manifest.
+
+
+## 2026-10-26 — Preserve context in the narration edit
+- Decision: supersede the rejected phrase-by-phrase crops with eight connected views,
+  one continuous camera path within each capture, narrow evidence outlines and brief
+  dissolves only between source captures. Avoid global dimming and per-phrase resets.
+- Reason: the entrant found the earlier zoom targets ambiguous and cuts disruptive.
+  Geometry and pixel-change metrics do not establish presentation quality; visually
+  inspect the encoded focus views as well. Exact delivery timing awaits recorded audio.
+- Evidence: retain original screenshot hashes, label editorial movement and saved
+  results, and avoid claiming a new uncut runtime recording. Keep every output local.
+- Reverse: earlier cuts and the complete package remain intact; choose an earlier
+  movie or rerender locally from the recorded camera paths. No runtime/source change.

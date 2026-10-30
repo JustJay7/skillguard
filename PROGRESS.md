@@ -1,5 +1,88 @@
 # Progress
 
+## Final demo publication and source synchronization — October 30
+- [x] Finish the 2:43.752 narrated edit with the supplied audio and unchanged captions.
+  This supersedes the historical pending narration/retiming entries below.
+- [x] Publish the final MP4 on Jay's YouTube channel as unlisted:
+  https://youtu.be/eZ9NVyEEMAI . Verify playback in an unsigned-in Incognito window,
+  the Unlisted label, correct title, and 2:43 player duration. Copyright check: no issues.
+- [x] Add final narration, SRT/ASS captions, capture provenance, team credits and the
+  viewing URL to the sanitized source release. Keep private configuration and runtime
+  stores excluded. The core application files already matched the public release.
+- [ ] Entrant completes Devpost fields and final submission declarations.
+
+
+## Natural spoken narration refinement — October 27
+- [x] Rewrite the full untimed script (658 words) with connected transitions and
+  explain the key terms through the receipt example. Remove semicolons and first-person
+  singular. Match both recording files and preserve all verified evidence limits.
+- [ ] Picture-edit retiming remains pending the spoken recording.
+
+## Untimed full product narration — October 27
+- [x] Add the requested “Hi everyone” team introduction; identify Tasnim Hassan and Jay.
+- [x] Expand narration (618 words) to explain proposed skill pause/version capture,
+  static and generated tests, Harbor/OpenShell, native observations, model review,
+  explicit approval, install/use/rollback, model calls and evidence limitations.
+- [x] Remove all timestamps and verify spoken files match with team pronouns throughout.
+- [ ] Reshape and retime the picture sequence after the entrant records the narration.
+
+## Spoken sentence flow — October 26
+- [x] Rewrite the full narration as connected speech (391 words), including the
+  entrant’s exact requested “correct answer which is twenty-three” construction.
+- [x] Verify all eleven sections match across recording files, use team pronouns
+  and retain the important evidence counts, tool roles, privacy and scope qualifiers.
+- [ ] Exact picture timing and final mix still await the recorded narration.
+
+## Team narration pronouns — October 26
+- [x] Use “we” and “our” throughout the complete spoken script, including the
+  introduction and closing. Verify both script files match and no I/my/me remains.
+
+## Team attribution correction — October 26
+- [x] Credit “Tasnim Hassan and I” in the narration opening and synchronize both
+  script files and revision metadata (382 words total). Video remains unchanged/local.
+
+## Product introduction for the recording — October 26
+- [x] Add a 56-word conversational opening explaining users, motivation and the
+  test/review/approval flow. Preserve every existing walkthrough paragraph (379 words total).
+- [x] Add an original editorial introduction card before the continuous walkthrough.
+  Reserve about 26 seconds and overlap the transition to stay below three minutes.
+- [x] Decode all 4,308 frames; verify 179.5 seconds, one video track/no audio,
+  inspect encoded intro/transition/end samples and confirm the original cut is unchanged.
+  Intro text is original public project copy; three encoded OCR checks pass.
+- [ ] Entrant narration, precise retiming and final audio/captions remain pending.
+  Everything remains local; the title card can be replaced with the entrant’s recording.
+
+## Conversational narration revision — October 26
+- [x] Rewrite all ten spoken sections in conversational language (323 words), keeping
+  the test counts, control qualifier, real tool/model/provider roles, privacy boundary,
+  blocked unsafe update, clean installation, installed-agent completion and rollback.
+- [x] Verify the formatted and plain scripts match. Preserve the original picture-timing
+  script and provenance; leave all video bytes unchanged. Everything remains local.
+- [ ] Retiming, final audio and captions await the entrant’s recording of the new script.
+
+## Continuous video revision — October 26
+- [x] Replace the rejected 35-shot edit with eight connected views. Keep one continuous
+  camera path per view, maximum 1.45× zoom and seven half-second source transitions.
+- [x] Outline the exact source evidence while retaining the surrounding page. Tighten
+  the fresh 4/4 result independently from the adjacent request count.
+- [x] Keep the spoken script, earlier movies and complete ZIP unchanged. The revised
+  picture cut remains silent and local; no inference, cloud actions or uploads.
+- [x] Decode all 3,697 frames, inspect 22 encoded focus views, verify source/script/
+  original-video/ZIP hashes and check 154 one-second privacy OCR samples: zero findings.
+  Local replacement: `dist/skillguard-human-narration/continuous/`; provenance retained.
+- [ ] Exact synchronization, final audio and captions await the entrant’s narration.
+
+## Local human-narration picture polish — October 26
+- [x] Keep the existing 285-word spoken script and 2:34 chapter timing unchanged.
+- [x] Build 35 phrase cues with 22 quick result zoom-ins/returns, gentle pans and changes
+  of view over the original verified captures; label all movement as editorial.
+- [x] Decode the entire silent edit, verify camera movement/returns on encoded frames,
+  inspect all 35 views and check 154 one-second privacy OCR samples with no findings.
+- [x] Preserve earlier videos and the complete ZIP byte-for-byte. No model requests,
+  backend actions, uploads or public repository changes for this edit.
+- [ ] Fit exact word timings, final audio mix and captions to the entrant’s recording
+  when supplied. Current picture timing is an approximation from script phrases.
+
 ## Submission review follow-up — October 24–25
 - [x] Reproduce the exact pinned static contrast: SkillSpector static-only 7/100 SAFE
   for repaired V8, the historical unsafe reader and the functional unsafe variant;

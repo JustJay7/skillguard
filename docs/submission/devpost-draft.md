@@ -11,7 +11,7 @@ Personal AI.
 - Public MIT-licensed source/test build: https://github.com/JustJay7/skillguard
 - Guided read-only evidence walkthrough: https://skillguard-evidence-demo.jaymalhotra.chatgpt.site/
 - Optional protected development app: https://literate-space-system-45gjq9qjggwfjw7p-8770.app.github.dev/
-- Video: finished live-run recordings remain local. Add the actual public YouTube URL only after the entrant authorizes upload.
+- Video: https://youtu.be/eZ9NVyEEMAI — final 2:43.752 narrated demo; see `final-demo/README.md` for its capture and editing notes.
 
 The source/test build and its setup guide are the durable project route. The walkthrough is explicitly a replay; Codespaces is an optional live development environment that can suspend. The judge access code belongs only in the private testing field, never the description or repository. See the testing instructions for the native runtime requirements and current access limits.
 

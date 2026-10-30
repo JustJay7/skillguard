@@ -256,11 +256,12 @@ async function refresh() {
     const research = state.threat_research;
     byId('threat-research').replaceChildren();
     if (research?.sources) {
-      byId('threat-research').append(text('p', `Tavily references retrieved ${new Date(research.retrieved_at_unix * 1000).toLocaleString()}. Coverage: ${research.categories.join(', ')}.`));
+      byId('threat-research').append(text('p', `Tavily references retrieved ${new Date(research.retrieved_at_unix * 1000).toLocaleString()}. Coverage: ${research.categories.map(c => c.replaceAll('_', ' ')).join(', ')}.`));
       for (const source of research.sources) {
         const link = text('a', source.title); link.href = source.url;
         link.target = '_blank'; link.rel = 'noopener noreferrer';
-        byId('threat-research').append(link, text('p', source.excerpt));
+        const reference = document.createElement('p'); reference.append(link);
+        byId('threat-research').append(reference);
       }
       byId('threat-research').append(text('p', research.scope, 'note'));
     }

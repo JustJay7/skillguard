@@ -233,7 +233,7 @@
   "skillguard/ui/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "skillguard/ui/app.js": "87255ef382050fc22b09a66f88188895ccb978dcbb75110319722dfd74c8685f",
   "skillguard/ui/core.html": "ced16af0e22cf518b19096da78d8da22d6ef1bf02721ff4d5d58c867a4513b76",
-  "skillguard/ui/core.js": "007744b53c8cf5965a6e1e7620b553ee03acf60abe73cc37faf5ea93933e1ecd",
+  "skillguard/ui/core.js": "9e5afda1652a6aae9b34897aaac575195a9c8e6175bc3a01e679c0b44ab18931",
   "skillguard/ui/core_server.py": "c7ad386e843d42d62491398922b5aab42111544a384be152303ce78d4149ded3",
   "skillguard/ui/demo.css": "d9a6f62fc751b0101465555b426fbd7b697d0df663943fdce5c5749499e4519d",
   "skillguard/ui/demo.html": "fd33abc824cc97a629e0143515c4c294dba197261e8f3497c0983ed9d9222f04",

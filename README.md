@@ -1,7 +1,6 @@
 # SkillGuard
 
-**Before a personal AI learns a new skill, watch what that skill actually does.**
-
+bb
 Built by Jay Malhotra and Tasnim Hassan for the Nebius Global AI Hackathon, hosted in partnership with NVIDIA.
 
 Hermes proposes a receipt-organizing skill. SkillGuard pauses the write, has a Harbor test agent exercise the skill inside OpenShell, and binds the installation decision to the exact tested source. You can reject an unsafe update, approve a reviewed version, or roll back.
